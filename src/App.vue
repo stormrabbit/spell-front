@@ -2,57 +2,68 @@
   v-app(id="inspire")
     v-navigation-drawer(v-model="drawer", app)
       v-list(dense)
-        v-list-item(link)
+        v-list-item(link, v-for="cs in cClassesList", :key="cs._id", @click="chooseClass(cs)")
           v-list-item-action
             v-icon 
           v-list-item-content
-            v-list-item-title Home2
-      
-        v-list-item(link)
-          v-list-item-action
-            v-icon 
-          v-list-item-content
-            v-list-item-title Contact
+            v-list-item-title {{cs.nickname}}
     v-app-bar(app,
       color="indigo",
       dark)
       v-app-bar-nav-icon(@click.stop="drawer = !drawer") 
-      v-toolbar-title Application
+      v-toolbar-title {{cTitle}}
     v-content
       v-container( class="fill-height",fluid)
         v-row(align="center", justify="center")
           v-col(class="text-center")
-            v-tooltip(left)
-              template(v-slot:activator="{ on }")
-                v-btn(  :href="source",
-                  icon,
-                  large,
-                  target="_blank",
-                  v-on="on")
-                  v-icon(large) mdi-code-tags
-              span Source
-            v-tooltip(right)
-              template(v-slot:activator="{ on }")
-                v-btn(icon,
-                  large,
-                  href="https://codepen.io/johnjleider/pen/zgxeLQ",
-                  target="_blank",
-                  v-on="on")
-                v-icon(large) mdi-codepen
-              span Codepen
+            v-btn(color="primary", @click="reload") reload
+          v-col(class="text-center")
     v-footer(color="indigo", app)    
-      span(class="white--text") &copy; 2019
+      span(class="white--text") &copy; stormrabbit
   
 </template>
 
 <script>
-  export default {
-    props: {
-      source: String,
-      mockData: []
+export default {
+  props: {
+    source: String
+  },
+  mounted: function() {
+    this.reload();
+  },
+  data: () => ({
+    drawer: false,
+    chosenOne: {
+      nickname :'待选择',
     },
-    data: () => ({
-      drawer: false,
-    }),
+    classesList: [],
+  }),
+  computed: {
+    cClassesList: function() {
+      return this.classesList  ;
+    },
+    cTitle: function() {
+      return this.chosenOne.nickname;
+    }
+  },
+  methods: {
+    chooseClass: function(clsObj) {
+        this.chosenOne = clsObj;
+        this.drawer = false;
+    },
+    reload: function() {
+      this.classesList = [];
+      const _self = this;
+      this.$axios
+        .get("http://localhost:3000/classes")
+        .then(res => {
+          if (res) {
+            _self.classesList = res.data;
+            _self.chosenOne = _self.classesList[0];
+          } 
+        })
+        .catch(() => _self.classesList = []);
+    }
   }
+};
 </script>
