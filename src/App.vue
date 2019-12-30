@@ -5,7 +5,7 @@
     ClassesTitleBar(:title="cTitle", :list="sps",:onCallBack="() => {drawer = !drawer}")
     v-content
       HomePage
-    v-footer(color="indigo", app)    
+    v-footer(color="primary",dark, app)    
       span(class="white--text") &copy; stormrabbit
 </template>
 
@@ -25,7 +25,6 @@ export default {
   },
   mounted: function() {
     this.reload();
-    this.loadSpells();
   },
   data: () => ({
     spellsCanBePick: [],
@@ -34,21 +33,7 @@ export default {
     chosenOne: {
       nickname: "待选择"
     },
-    classesList: [],
-    items: [
-      {
-        text: "全部"
-      },
-      {
-        text: "一环"
-      },
-      {
-        text: "二环"
-      },
-      {
-        text: "三环"
-      }
-    ]
+    classesList: []
   }),
   computed: {
     cClassesList: function() {
@@ -65,11 +50,17 @@ export default {
     chooseClass: function(clsObj) {
       this.chosenOne = clsObj;
       this.drawer = false;
+      this.loadSpells(this.chosenOne.name);
+      // Light theme
+      this.$vuetify.theme.themes.light.primary = this.chosenOne.color;
+
+      // Dark theme
+      this.$vuetify.theme.themes.dark.primary = this.chosenOne.color;
     },
-    loadSpells: function() {
+    loadSpells: function(cls) {
       this.spellsCanBePick = [];
       const _self = this;
-      this.$axios.get("http://localhost:3000/spells?cls=wizard").then(res => {
+      this.$axios.get(`http://localhost:3000/spells?cls=${cls}`).then(res => {
         _self.spellsCanBePick = res.data;
       });
     },
@@ -81,7 +72,7 @@ export default {
         .then(res => {
           if (res) {
             _self.classesList = res.data;
-            _self.chosenOne = _self.classesList[0];
+            _self.chooseClass(_self.classesList.filter( cl => cl.name === 'wizard')[0]);
           }
         })
         .catch(() => (_self.classesList = []));

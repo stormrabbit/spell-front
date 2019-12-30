@@ -1,9 +1,10 @@
 <!-- -->
 <template lang="pug">
-    div
-        div
-            v-breadcrumbs(:items="items",divider="-")
+    div 
+        //- v-tabs(background-color="deep-purple accent-4",center-active,dark, v-for="(item, index) in items",:key="index" )
+        //-   v-tab {{item.text}}
         v-container( class="fill-height",fluid)
+
         v-row(align="center", justify="center")
             v-col(class="text-center")
             v-btn(color="primary") reload
@@ -32,6 +33,24 @@ export default {
         },
         {
           text: "三环"
+        },
+        {
+          text: "四环"
+        },
+        {
+          text: "五环"
+        },
+        {
+          text: "六环"
+        },
+        {
+          text: "七环"
+        },
+        {
+          text: "八环"
+        },
+        {
+          text: "九环"
         }
       ]
     };

@@ -1,7 +1,17 @@
 <!--  -->
 <template lang="pug">
-    div 可选法术列表
-      //- v-lazy(v-model="isActive", :options="{threshold: .5}", min-height="200", transition="fade-transition")
+    div 
+      v-toolbar(dense)
+        v-btn(icon, class="hidden-xs-only", @click="onBack")
+          v-icon mdi-arrow-left
+        v-toolbar-title
+        v-spacer
+        v-btn(icon)
+          v-icon mdi-magnify
+        v-btn(icon)
+          v-icon mdi-heart
+        v-btn(icon)
+          v-icon mdi-dots-vertical
       v-list(two-line,subheader)
         v-list-item(v-for="lt in list", :key="lt._id", link)
           v-list-item-avatar
@@ -21,14 +31,15 @@
 
 export default {
   props: {
-    list: Array
+    list: Array,
+    onBack: Function
   },
   //import引入的组件需要注入到对象中才能使用
   components: {},
   data() {
     //这里存放数据
     return {
-      isActive: false,
+      isActive: false
     };
   },
   //监听属性 类似于data概念

@@ -3,7 +3,7 @@
     v-list(dense)
         v-list-item(link, v-for="(tp, index) in classeslist", :key="index", @click="onSelect(tp)")
             v-list-item-action
-                v-icon 
+                v-icon(:color="tp.color") mdi-account
             v-list-item-content
                 v-list-item-title {{tp.nickname}}
 </template>
