@@ -2,22 +2,31 @@
 <template lang="pug">
     v-app-bar(app,color="primary",dark)
       v-app-bar-nav-icon(@click="onCallBack") 
-      v-toolbar-title {{title}}
+      v-toolbar-title {{` ${title}`}}
+      v-spacer
+      v-btn(icon)
+        v-icon 
       template(v-slot:extension)
-        v-dialog(v-model="sheet", scrollable, fullscreen, hide-overlay, transition="dialog-bottom-transition")
-          template(v-slot:activator="{ on }")
-            v-btn(fab,color="primary",bottom,right,absolute, dark, v-on="on")
-              v-icon mdi-plus 
-          v-sheet(class="text-center")
-            //- v-btn(class="mt-6", text,color="red", @click="sheet = !sheet") close
-            SpellsCanBePick(:list = "list", :onBack="() => {sheet = !sheet}")
-            //- div The basic usage of v-bottom-sheet. Almost any content can be placed inside this component
+        span 等级 10 - 智力 18 - 剑咏法师
+        //- v-spacer
+        //- FabButton
+        //- v-btn(fab, color="primary") 
+        //-   v-icon mdi-pencil
+        //- BottomSheet(:list="list")
+          //- v-dialog(v-model="sheet", scrollable, fullscreen, hide-overlay, transition="dialog-bottom-transition")
+          //-   template(v-slot:activator="{ on }")
+          //-     v-btn(fab,color="primary",bottom,right,absolute, dark, v-on="on")
+          //-       v-icon mdi-plus 
+          //-   v-sheet(class="text-center")
+          //-     SpellsCanBePick(:list = "list", :onBack="() => {sheet = !sheet}")
 </template>
 
 <script>
 //这里可以导入其他文件（比如：组件，工具js，第三方插件js，json文件，图片文件等等）
 //例如：import 《组件名称》 from '《组件路径》';
 import SpellsCanBePick from "./SpellsCanBePick";
+import BottomSheet from "./BottomSheet";
+import FabButton from './FabButton';
 export default {
   props: {
     title: String,
@@ -26,7 +35,9 @@ export default {
   },
   //import引入的组件需要注入到对象中才能使用
   components: {
-    SpellsCanBePick
+    SpellsCanBePick,
+    BottomSheet,
+    FabButton
   },
   data() {
     //这里存放数据

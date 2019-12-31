@@ -2,16 +2,12 @@
 <template lang="pug">
     div 
       v-toolbar(dense)
-        v-btn(icon, class="hidden-xs-only", @click="onBack")
-          v-icon mdi-arrow-left
-        v-toolbar-title
+        v-btn(icon, @click="onBack")
+          v-icon mdi-cancel
+        v-toolbar-title 可选法术列表
         v-spacer
         v-btn(icon)
           v-icon mdi-magnify
-        v-btn(icon)
-          v-icon mdi-heart
-        v-btn(icon)
-          v-icon mdi-dots-vertical
       v-list(two-line,subheader)
         v-list-item(v-for="lt in list", :key="lt._id", link)
           v-list-item-avatar

@@ -1,56 +1,24 @@
-<!-- -->
+<!--  -->
 <template lang="pug">
-  v-container( class="fill-height",fluid)
-
-    v-row(align="center", justify="center")
-        v-col(class="text-center")
-        v-btn(color="primary") reload
-        v-col(class="text-center")
-    //- FabButton
+    v-dialog(v-model="sheet", scrollable, fullscreen, hide-overlay, transition="dialog-bottom-transition")
+        v-sheet(class="text-center")
+        SpellsCanBePick(:list = "list", :onBack="() => {sheet = !sheet}")
 </template>
 
 <script>
 //这里可以导入其他文件（比如：组件，工具js，第三方插件js，json文件，图片文件等等）
 //例如：import 《组件名称》 from '《组件路径》';
-import FabButton from "./../components/FabButton";
+import SpellsCanBePick from "./SpellsCanBePick";
 export default {
   //import引入的组件需要注入到对象中才能使用
-  components: { FabButton },
+  components: { SpellsCanBePick },
+  props: {
+    list: Array
+  },
   data() {
     //这里存放数据
     return {
-      items: [
-        {
-          text: "全部"
-        },
-        {
-          text: "一环"
-        },
-        {
-          text: "二环"
-        },
-        {
-          text: "三环"
-        },
-        {
-          text: "四环"
-        },
-        {
-          text: "五环"
-        },
-        {
-          text: "六环"
-        },
-        {
-          text: "七环"
-        },
-        {
-          text: "八环"
-        },
-        {
-          text: "九环"
-        }
-      ]
+      sheet: false
     };
   },
   //监听属性 类似于data概念

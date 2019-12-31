@@ -1,12 +1,15 @@
 <template lang="pug">
   v-app(id="inspire")
+
     v-navigation-drawer(v-model="drawer", app)
       ClassesSideList(:classeslist="cClassesList",:oncallback="chooseClass")
     ClassesTitleBar(:title="cTitle", :list="sps",:onCallBack="() => {drawer = !drawer}")
     v-content
       HomePage
+      FabButton
     v-footer(color="primary",dark, app)    
       span(class="white--text") &copy; stormrabbit
+      //- FabButton
 </template>
 
 
@@ -14,6 +17,7 @@
 import ClassesSideList from "./components/ClassesSideList";
 import ClassesTitleBar from "./components/ClassTitleBar";
 import HomePage from "./containers/HomePage";
+import FabButton from "./components/FabButton";
 export default {
   props: {
     source: String
@@ -21,12 +25,14 @@ export default {
   components: {
     ClassesSideList,
     ClassesTitleBar,
-    HomePage
+    HomePage,
+    FabButton
   },
   mounted: function() {
     this.reload();
   },
   data: () => ({
+    fab: false,
     spellsCanBePick: [],
     sheet: false,
     drawer: false,
@@ -72,7 +78,9 @@ export default {
         .then(res => {
           if (res) {
             _self.classesList = res.data;
-            _self.chooseClass(_self.classesList.filter( cl => cl.name === 'wizard')[0]);
+            _self.chooseClass(
+              _self.classesList.filter(cl => cl.name === "wizard")[0]
+            );
           }
         })
         .catch(() => (_self.classesList = []));
