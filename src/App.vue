@@ -1,15 +1,15 @@
 <template lang="pug">
   v-app(id="inspire")
-
     v-navigation-drawer(v-model="drawer", app)
       ClassesSideList(:classeslist="cClassesList",:oncallback="chooseClass")
     ClassesTitleBar(:title="cTitle", :list="sps",:onCallBack="() => {drawer = !drawer}")
+    v-dialog(v-model="sheet", scrollable, fullscreen, hide-overlay, transition="dialog-bottom-transition")
+      SepllsPage(:spells="sps", :onBack="() => {sheet = !sheet}")
     v-content
       HomePage
-      FabButton
+      SpellFunctionBotton(:scribe="() => {sheet = !sheet}")
     v-footer(color="primary",dark, app)    
       span(class="white--text") &copy; stormrabbit
-      //- FabButton
 </template>
 
 
@@ -17,7 +17,8 @@
 import ClassesSideList from "./components/ClassesSideList";
 import ClassesTitleBar from "./components/ClassTitleBar";
 import HomePage from "./containers/HomePage";
-import FabButton from "./components/FabButton";
+import SepllsPage from "./containers/SpellsPage";
+import SpellFunctionBotton from "./components/SpellFunctionBotton";
 export default {
   props: {
     source: String
@@ -26,7 +27,8 @@ export default {
     ClassesSideList,
     ClassesTitleBar,
     HomePage,
-    FabButton
+    SpellFunctionBotton,
+    SepllsPage
   },
   mounted: function() {
     this.reload();

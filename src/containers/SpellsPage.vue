@@ -9,13 +9,13 @@
         v-btn(icon)
           v-icon mdi-magnify
       v-list(two-line,subheader)
-        v-list-item(v-for="lt in list", :key="lt._id", link)
+        v-list-item(v-for="spell in spells", :key="spell._id", link)
           v-list-item-avatar
             v-avatar(color="primary", size="48")
-              span(class="white--text headline") {{lt.school.substring(0,1)}}
+              span(class="white--text headline") {{spell.school.substring(0,1)}}
           v-list-item-content
-            v-list-item-title {{ lt.nickname }}
-            v-list-item-subtitle {{`耗时：${lt.time}\t射程：${lt.range}`}}
+            v-list-item-title {{ spell.nickname }}
+            v-list-item-subtitle {{`耗时：${spell.time}\t射程：${spell.range}`}}
           v-list-item-action
             v-btn(icon)
               v-icon(color="grey lighten-1") mdi-information
@@ -27,7 +27,7 @@
 
 export default {
   props: {
-    list: Array,
+    spells: Array,
     onBack: Function
   },
   //import引入的组件需要注入到对象中才能使用
@@ -43,7 +43,9 @@ export default {
   //监控data中的数据变化
   watch: {},
   //方法集合
-  methods: {},
+  methods: {
+    
+  },
   //生命周期 - 创建完成（可以访问当前this实例）
   created() {},
   //生命周期 - 挂载完成（可以访问DOM元素）

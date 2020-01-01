@@ -8,25 +8,11 @@
         v-icon 
       template(v-slot:extension)
         span 等级 10 - 智力 18 - 剑咏法师
-        //- v-spacer
-        //- FabButton
-        //- v-btn(fab, color="primary") 
-        //-   v-icon mdi-pencil
-        //- BottomSheet(:list="list")
-          //- v-dialog(v-model="sheet", scrollable, fullscreen, hide-overlay, transition="dialog-bottom-transition")
-          //-   template(v-slot:activator="{ on }")
-          //-     v-btn(fab,color="primary",bottom,right,absolute, dark, v-on="on")
-          //-       v-icon mdi-plus 
-          //-   v-sheet(class="text-center")
-          //-     SpellsCanBePick(:list = "list", :onBack="() => {sheet = !sheet}")
 </template>
 
 <script>
 //这里可以导入其他文件（比如：组件，工具js，第三方插件js，json文件，图片文件等等）
 //例如：import 《组件名称》 from '《组件路径》';
-import SpellsCanBePick from "./SpellsCanBePick";
-import BottomSheet from "./BottomSheet";
-import FabButton from './FabButton';
 export default {
   props: {
     title: String,
@@ -34,11 +20,7 @@ export default {
     onCallBack: Function
   },
   //import引入的组件需要注入到对象中才能使用
-  components: {
-    SpellsCanBePick,
-    BottomSheet,
-    FabButton
-  },
+  components: {},
   data() {
     //这里存放数据
     return {
