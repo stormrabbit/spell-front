@@ -4,7 +4,7 @@
       template(v-slot:activator)
         v-btn(v-model="fab",color="primary",dark,fab)
           v-icon(v-if="fab") mdi-close
-          v-icon(v-else) mdi-wrench
+          v-icon(v-else) mdi-cursor-pointer
       v-tooltip(bottom)
         template(v-slot:activator="{ on }")
           v-btn(fab,dark,small,color="primary", @click="myScribe", v-on="on")
