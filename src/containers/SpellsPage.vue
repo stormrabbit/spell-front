@@ -14,11 +14,12 @@
             v-avatar(color="primary", size="48")
               span(class="white--text headline") {{spell.school.substring(0,1)}}
           v-list-item-content
-            v-list-item-title {{ spell.nickname }}
-            v-list-item-subtitle {{`耗时：${spell.time}\t射程：${spell.range}`}}
+            v-list-item-title {{ spell.nickname +'\t'}}
+              //- span(style="font-size: 12px") {{`${spell.school}\t${spell.time}\t${spell.range}`}}
+            v-list-item-subtitle {{`${spell.school}\t${spell.time}\t${spell.range}`}}
           v-list-item-action
             v-btn(icon)
-              v-icon(color="grey lighten-1") mdi-information
+              v-icon(color="grey lighten-1") mdi-script-text
 </template>
 
 <script>

@@ -3,17 +3,20 @@
     v-speed-dial(direction="top", v-model="fab",transition="slide-y-reverse-transition", absolute,bottom,right,)
       template(v-slot:activator)
         v-btn(v-model="fab",color="primary",dark,fab)
-          v-icon(v-if="fab") mdi-close
-          v-icon(v-else) mdi-cursor-pointer
+          v-icon(v-if="fab") mdi-emoticon-cool-outline
+          v-icon(v-else) mdi-emoticon-outline
       v-tooltip(bottom)
         template(v-slot:activator="{ on }")
           v-btn(fab,dark,small,color="primary", @click="myScribe", v-on="on")
-            v-icon mdi-pencil
-        span 选择法术
-      v-btn(fab,dark,small,color="primary")
-        v-icon mdi-plus
-      v-btn(fab,dark,small,color="primary")
-        v-icon mdi-delete
+            v-icon mdi-script-text-outline
+        span 准备法术
+      v-tooltip(bottom)
+        template(v-slot:activator="{on}")
+          v-btn(fab,dark,small,color="primary",v-on="on")
+            v-icon mdi-file-document-edit-outline
+        span 挑选法术
+      //- v-btn(fab,dark,small,color="primary")
+      //-   v-icon mdi-delete
 </template>
 
 <script>
@@ -22,7 +25,7 @@
 
 export default {
   props: {
-    scribe: Function,
+    scribe: Function
   },
   //import引入的组件需要注入到对象中才能使用
   components: {},
@@ -39,7 +42,7 @@ export default {
   //方法集合
   methods: {
     myScribe: function() {
-      if(this.scribe != null) {
+      if (this.scribe != null) {
         this.scribe();
       }
     }
