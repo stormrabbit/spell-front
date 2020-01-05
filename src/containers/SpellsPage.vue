@@ -12,7 +12,7 @@
         v-list-item(v-for="spell in spells", :key="spell._id", link)
           v-list-item-avatar
             v-avatar(color="primary", size="48")
-              span(class="white--text headline") {{spell.school.substring(0,1)}}
+              span(class="white--text headline") {{spell.lvl}}
           v-list-item-content
             v-list-item-title {{ spell.nickname +'\t'}}
               //- span(style="font-size: 12px") {{`${spell.school}\t${spell.time}\t${spell.range}`}}
