@@ -4,12 +4,13 @@
       v-toolbar(dense)
         v-btn(icon, @click="onBack")
           v-icon mdi-cancel
-        v-toolbar-title 可选法术列表
-        v-spacer
-        v-btn(icon)
+        v-toolbar-title(v-if="isActive") 可选法术列表
+        v-spacer(v-if="isActive")
+        v-text-field( v-if="!isActive",hide-details,single-line, v-model="keyword", :loading="isLoading")
+        v-btn(icon, @click="enableSearch")
           v-icon mdi-magnify
       v-list(two-line,subheader)
-        v-list-item(v-for="spell in spells", :key="spell._id", link)
+        v-list-item(v-for="spell in computedSpells", :key="spell._id", link)
           v-list-item-avatar
             v-avatar(color="primary", size="48")
               span(class="white--text headline") {{spell.lvl}}
@@ -25,7 +26,7 @@
 <script>
 //这里可以导入其他文件（比如：组件，工具js，第三方插件js，json文件，图片文件等等）
 //例如：import 《组件名称》 from '《组件路径》';
-
+// const blues = ['#E3F2FD', '#BBDEFB', '#90CAF9', '#64B5F6', '#42A5F5', '#1E88E5', '#1976D2', '#1565C0'];
 export default {
   props: {
     spells: Array,
@@ -36,16 +37,26 @@ export default {
   data() {
     //这里存放数据
     return {
-      isActive: false
+      isActive: true,
+      keyword: '',
+      isLoading: false,
+      search: null,
     };
   },
   //监听属性 类似于data概念
-  computed: {},
+  computed: {
+    computedSpells: function() {
+      return this.keyword ? this.spells.filter( spell => spell.nickname.indexOf(this.keyword) !== -1) : this.spells;
+    }
+  },
   //监控data中的数据变化
-  watch: {},
+  watch: {
+  },
   //方法集合
   methods: {
-    
+    enableSearch: function() {
+      this.isActive = !this.isActive;
+    }
   },
   //生命周期 - 创建完成（可以访问当前this实例）
   created() {},
