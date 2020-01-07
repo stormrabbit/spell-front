@@ -1,16 +1,15 @@
 <!--  -->
 <template lang="pug">
     div 
+      v-snackbar(v-model="snackbar", :timeout="timeout") {{ text }}
       v-toolbar(dense)
+        v-text-field(hide-details,single-line, v-model="keyword", :loading="isLoading", :label="`请输入法术名或法术环数`", persistent-hint)
         v-btn(icon, @click="onBack")
           v-icon mdi-cancel
-        v-toolbar-title(v-if="isActive") 可选法术列表
-        v-spacer(v-if="isActive")
-        v-text-field( v-if="!isActive",hide-details,single-line, v-model="keyword", :loading="isLoading")
-        v-btn(icon, @click="enableSearch")
-          v-icon mdi-magnify
+        //- v-btn(icon, @click="enableSearch")
+        //-   v-icon mdi-magnify
       v-list(two-line,subheader)
-        v-list-item(v-for="spell in computedSpells", :key="spell._id", link)
+        v-list-item(v-for="(spell, index) in computedSpells", :key="index", link)
           v-list-item-avatar
             v-avatar(color="primary", size="48")
               span(class="white--text headline") {{spell.lvl}}
@@ -38,24 +37,39 @@ export default {
     //这里存放数据
     return {
       isActive: true,
-      keyword: '',
+      keyword: "",
       isLoading: false,
       search: null,
+      snackbar: false,
+      text: "测试啦"
     };
   },
   //监听属性 类似于data概念
   computed: {
     computedSpells: function() {
-      return this.keyword ? this.spells.filter( spell => spell.nickname.indexOf(this.keyword) !== -1) : this.spells;
+      const _self = this;
+      if (this.keyword) {
+        if (isNaN(parseInt(this.keyword))) {
+          const top = _self.spells.filter(
+            sp => sp.nickname.indexOf(_self.keyword) !== -1
+          );
+          const bottom = _self.spells.filter(
+            sp => sp.nickname.indexOf(_self.keyword) === -1
+          );
+          return [...top, ...bottom];
+        } else {
+          return _self.spells.filter( sp => (parseInt(sp.lvl) === parseInt(_self.keyword)) );
+        }
+      }
+      return this.spells;
     }
   },
   //监控data中的数据变化
-  watch: {
-  },
+  watch: {},
   //方法集合
   methods: {
     enableSearch: function() {
-      this.isActive = !this.isActive;
+      this.snackbar = true;
     }
   },
   //生命周期 - 创建完成（可以访问当前this实例）
