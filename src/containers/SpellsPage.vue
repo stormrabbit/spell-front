@@ -1,7 +1,7 @@
 <!--  -->
 <template lang="pug">
     div 
-      v-snackbar(v-model="snackbar", :timeout="timeout") {{ text }}
+      v-snackbar(v-model="snackbar", :timeout="timeout") {{ logTips }}
       v-toolbar(dense)
         v-text-field(hide-details,single-line, v-model="keyword", :loading="isLoading", :label="`请输入法术名或法术环数`", persistent-hint)
         v-btn(icon, @click="onBack")
@@ -19,7 +19,7 @@
             v-list-item-subtitle {{`${spell.school}\t${spell.time}\t${spell.range}`}}
           v-list-item-action
             v-btn(icon)
-              v-icon(color="grey lighten-1") mdi-script-text
+              v-icon(color="grey lighten-1", @click="pickSpell(spell)") mdi-script-text
 </template>
 
 <script>
@@ -41,11 +41,16 @@ export default {
       isLoading: false,
       search: null,
       snackbar: false,
-      text: "测试啦"
+      text: "测试啦",
+      timeout: 2000,
+      tips: '',
     };
   },
   //监听属性 类似于data概念
   computed: {
+    logTips: function() {
+      return this.tips;
+    },
     computedSpells: function() {
       const _self = this;
       if (this.keyword) {
@@ -70,6 +75,11 @@ export default {
   methods: {
     enableSearch: function() {
       this.snackbar = true;
+    },
+    pickSpell: function(spell) {
+      this.snackbar = true;
+      this.tips = `已准备 ${spell.lvl} 环法术 ${ spell.nickname}`;
+
     }
   },
   //生命周期 - 创建完成（可以访问当前this实例）
