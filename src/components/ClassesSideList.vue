@@ -1,6 +1,11 @@
 <!--  -->
 <template lang="pug">
     v-list(dense)
+        v-list-item
+          v-list-item-action
+            v-icon mdi-plus
+          v-list-item-content
+            v-list-item-title 新建
         v-list-item(link, v-for="(tp, index) in classeslist", :key="index", @click="onSelect(tp)")
             v-list-item-action
                 v-icon(:color="tp.color") mdi-account
