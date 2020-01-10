@@ -1,7 +1,7 @@
 <!--  -->
 <template lang="pug">
     v-list(dense)
-        v-list-item
+        v-list-item(link, @click="onSelect()")
           v-list-item-action
             v-icon mdi-plus
           v-list-item-content

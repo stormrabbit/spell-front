@@ -63,6 +63,9 @@ export default {
           );
           return [...top, ...bottom];
         } else {
+          if (parseInt(this.keyword) > 9) {
+            return this.spells;
+          }
           return _self.spells.filter( sp => (parseInt(sp.lvl) === parseInt(_self.keyword)) );
         }
       }

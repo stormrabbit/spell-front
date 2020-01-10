@@ -5,6 +5,8 @@
     ClassesTitleBar(:title="cTitle", :list="sps",:onCallBack="() => {drawer = !drawer}")
     v-dialog(v-model="sheet", scrollable, fullscreen, hide-overlay, transition="dialog-bottom-transition")
       SepllsPage(:spells="sps", :onBack="() => {sheet = !sheet}")
+    v-dialog(v-model="dialog", persistent)
+      NewUnitForm
     v-content
       HomePage
       SpellFunctionBotton(:scribe="() => {sheet = !sheet}")
@@ -19,6 +21,7 @@ import ClassesTitleBar from "./components/ClassTitleBar";
 import HomePage from "./containers/HomePage";
 import SepllsPage from "./containers/SpellsPage";
 import SpellFunctionBotton from "./components/SpellFunctionBotton";
+import NewUnitForm from './components/NewUnitForm';
 export default {
   props: {
     source: String
@@ -28,7 +31,8 @@ export default {
     ClassesTitleBar,
     HomePage,
     SpellFunctionBotton,
-    SepllsPage
+    SepllsPage,
+    NewUnitForm,
   },
   mounted: function() {
     this.reload();
@@ -38,6 +42,7 @@ export default {
     spellsCanBePick: [],
     sheet: false,
     drawer: false,
+    dialog: false,
     chosenOne: {
       nickname: "待选择"
     },
@@ -56,8 +61,13 @@ export default {
   },
   methods: {
     chooseClass: function(clsObj) {
-      this.chosenOne = clsObj;
+
       this.drawer = false;
+      if(!clsObj) {
+        this.dialog = true;
+        return ;
+      }
+      this.chosenOne = clsObj;
       this.loadSpells(this.chosenOne.name);
       // Light theme
       this.$vuetify.theme.themes.light.primary = this.chosenOne.color;
