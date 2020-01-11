@@ -6,7 +6,7 @@
     v-dialog(v-model="sheet", scrollable, fullscreen, hide-overlay, transition="dialog-bottom-transition")
       SepllsPage(:spells="sps", :onBack="() => {sheet = !sheet}")
     v-dialog(v-model="dialog", persistent)
-      NewUnitForm
+      NewUnitForm(:clsList="cClassesList", :closeCallBack="() => {this.dialog = false}")
     v-content
       HomePage
       SpellFunctionBotton(:scribe="() => {sheet = !sheet}")

@@ -11,7 +11,7 @@
                     v-col(cols="12", sm="6", md="4")
                         v-select(label="种族", :items="['人类', '精灵', '矮人', '半精灵', '提夫林', '半兽人']")
                     v-col(cols="12", sm="6", md="4")
-                        v-text-field(label="职业", required)
+                        v-select(label="职业", :items="clses")
                     v-col(cols="12", sm="6", md="4")
                         v-text-field(label="等级", required)
                     v-col(cols="12", sm="6", md="4")
@@ -20,7 +20,7 @@
                         v-text-field(label="主属性", required)
         v-card-actions
             v-spacer
-            v-btn(color="primary", text, @click="dialog = false") Close
+            v-btn(color="primary", text, @click="closeCallBack") Close
             v-btn(color="primary", text, @click="dialog = false") Save
 </template>
 
@@ -29,6 +29,10 @@
 //例如：import 《组件名称》 from '《组件路径》';
 
 export default {
+  props: {
+    clsList: Array,
+    closeCallBack: Function,
+  },
   //import引入的组件需要注入到对象中才能使用
   components: {},
   data() {
@@ -38,7 +42,11 @@ export default {
     };
   },
   //监听属性 类似于data概念
-  computed: {},
+  computed: {
+      clses: function() {
+          return (this.clsList && this.clsList.length) ? this.clsList.map( cls => cls.nickname): [];
+      }
+  },
   //监控data中的数据变化
   watch: {},
   //方法集合
