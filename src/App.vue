@@ -2,7 +2,7 @@
   v-app(id="inspire")
     v-navigation-drawer(v-model="drawer", app)
       ClassesSideList(:classeslist="cClassesList",:oncallback="chooseClass")
-    ClassesTitleBar(:title="cTitle", :list="sps",:onCallBack="() => {drawer = !drawer}")
+    ClassesTitleBar(:title="cTitle", :list="sps",:onCallBack="() => {drawer = !drawer}", :resetClass="() => {this.dialog = true}")
     v-dialog(v-model="sheet", scrollable, fullscreen, hide-overlay, transition="dialog-bottom-transition")
       SepllsPage(:spells="sps", :onBack="() => {sheet = !sheet}")
     v-dialog(v-model="dialog", persistent)

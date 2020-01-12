@@ -7,7 +7,14 @@
       v-btn(icon)
         v-icon 
       template(v-slot:extension)
-        span 等级 10 - 智力 18 - 剑咏法师
+        span   
+          v-chip(outlined) 10 级 
+          v-chip(outlined) 人类 
+          v-chip(outlined) 剑咏法师
+          v-chip(outlined) 17 智力
+      
+        v-btn(icon, style="margin: 8px", @click="resetClass")
+          v-icon mdi-cached
 </template>
 
 <script>
@@ -17,7 +24,8 @@ export default {
   props: {
     title: String,
     list: Array,
-    onCallBack: Function
+    onCallBack: Function,
+    resetClass: Function,
   },
   //import引入的组件需要注入到对象中才能使用
   components: {},
