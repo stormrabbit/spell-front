@@ -2,11 +2,13 @@
   v-app(id="inspire")
     v-navigation-drawer(v-model="drawer", app)
       ClassesSideList(:classeslist="cClassesList",:oncallback="chooseClass")
-    ClassesTitleBar(:title="cTitle", :list="sps",:onCallBack="() => {drawer = !drawer}", :resetClass="() => {this.dialog = true}")
+    ClassesTitleBar(:title="cTitle", :list="sps",:onCallBack="() => {drawer = !drawer}", :resetClass="() => {this.updateValue = true}")
     v-dialog(v-model="sheet", scrollable, fullscreen, hide-overlay, transition="dialog-bottom-transition")
       SepllsPage(:spells="sps", :onBack="() => {sheet = !sheet}")
     v-dialog(v-model="dialog", persistent)
-      NewUnitForm(:clsList="cClassesList", :closeCallBack="() => {this.dialog = false}")
+      NewUnitForm(:clsList="cClassesList", :closeCallBack="() => {this.dialog = false}", :title="`新建`")
+    v-dialog(v-model="updateValue", persistent)
+      NewUnitForm(:clsList="cClassesList", :closeCallBack="() => {this.updateValue = false}", :title="`修改`")
     v-content
       HomePage
       SpellFunctionBotton(:scribe="() => {sheet = !sheet}")
@@ -46,7 +48,8 @@ export default {
     chosenOne: {
       nickname: "待选择"
     },
-    classesList: []
+    classesList: [],
+    updateValue: false,
   }),
   computed: {
     cClassesList: function() {

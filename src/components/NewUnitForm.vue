@@ -3,7 +3,7 @@
     v-card
         v-snackbar(v-model="snackbar", :timeout="timeout") {{ logTips }}
         v-card-title
-            span(class="headline") 新建人物
+            span(class="headline") {{title}}
         v-card-text
             v-container
                 v-row
@@ -33,6 +33,7 @@ export default {
   props: {
     clsList: Array,
     closeCallBack: Function,
+    title: String,
   },
   //import引入的组件需要注入到对象中才能使用
   components: {},
