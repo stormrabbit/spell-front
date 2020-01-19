@@ -2,17 +2,16 @@
 <template lang="pug">
     v-app-bar(app,color="primary",dark)
       v-app-bar-nav-icon(@click="onCallBack") 
-      v-toolbar-title {{` ${title}`}}
+      v-toolbar-title {{` ${charactor.cls}`}}
       v-spacer
       v-btn(icon)
         v-icon 
       template(v-slot:extension)
         span   
-          v-chip(outlined) 10 级 
-          v-chip(outlined) 人类 
-          v-chip(outlined) 剑咏法师
-          v-chip(outlined) 17 智力
-      
+          v-chip(outlined) {{charactor.lvl}}
+          v-chip(outlined)  {{charactor.race}}
+          v-chip(outlined) {{`${charactor.school}`}}
+          v-chip(outlined) {{`${charactor.value}`}}      
         v-btn(icon, style="margin: 8px", @click="resetClass")
           v-icon mdi-cached
 </template>
@@ -26,6 +25,7 @@ export default {
     list: Array,
     onCallBack: Function,
     resetClass: Function,
+    charactor: Object,
   },
   //import引入的组件需要注入到对象中才能使用
   components: {},

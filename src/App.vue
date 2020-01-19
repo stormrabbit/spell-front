@@ -2,7 +2,7 @@
   v-app(id="inspire")
     v-navigation-drawer(v-model="drawer", app)
       ClassesSideList(:classeslist="cClassesList",:oncallback="chooseClass")
-    ClassesTitleBar(:title="cTitle", :list="sps",:onCallBack="() => {drawer = !drawer}", :resetClass="() => {this.updateValue = true}")
+    ClassesTitleBar(:charactor="charactorVal", :onCallBack="() => {drawer = !drawer}", :resetClass="() => {this.updateValue = true}")
     v-dialog(v-model="sheet", scrollable, fullscreen, hide-overlay, transition="dialog-bottom-transition")
       SepllsPage(:spells="sps", :onBack="() => {sheet = !sheet}")
     v-dialog(v-model="dialog", persistent)
@@ -23,7 +23,7 @@ import ClassesTitleBar from "./components/ClassTitleBar";
 import HomePage from "./containers/HomePage";
 import SepllsPage from "./containers/SpellsPage";
 import SpellFunctionBotton from "./components/SpellFunctionBotton";
-import NewUnitForm from './components/NewUnitForm';
+import NewUnitForm from "./components/NewUnitForm";
 export default {
   props: {
     source: String
@@ -34,7 +34,7 @@ export default {
     HomePage,
     SpellFunctionBotton,
     SepllsPage,
-    NewUnitForm,
+    NewUnitForm
   },
   mounted: function() {
     this.reload();
@@ -48,8 +48,16 @@ export default {
     chosenOne: {
       nickname: "待选择"
     },
+    charactor: {
+      name: "",
+      lvl: "",
+      race: "",
+      value: "",
+      school: "",
+      cls: ""
+    },
     classesList: [],
-    updateValue: false,
+    updateValue: false
   }),
   computed: {
     cClassesList: function() {
@@ -60,15 +68,17 @@ export default {
     },
     sps: function() {
       return this.spellsCanBePick;
+    },
+    charactorVal: function() {
+      return this.charactor;
     }
   },
   methods: {
     chooseClass: function(clsObj) {
-
       this.drawer = false;
-      if(!clsObj) {
+      if (!clsObj) {
         this.dialog = true;
-        return ;
+        return;
       }
       this.chosenOne = clsObj;
       this.loadSpells(this.chosenOne.name);
@@ -77,6 +87,14 @@ export default {
 
       // Dark theme
       this.$vuetify.theme.themes.dark.primary = this.chosenOne.color;
+    },
+    loadCharactors: function() {
+      const _self = this;
+      this.$axios
+        .get(`http://localhost:3000/charactor/5e1c7f49e46d71e08805cefe`)
+        .then(res => {
+          _self.charactor = res.data;
+        });
     },
     loadSpells: function(cls) {
       this.spellsCanBePick = [];
@@ -96,6 +114,7 @@ export default {
             _self.chooseClass(
               _self.classesList.filter(cl => cl.name === "wizard")[0]
             );
+            _self.loadCharactors();
           }
         })
         .catch(() => (_self.classesList = []));
