@@ -8,7 +8,7 @@
     v-dialog(v-model="dialog", persistent)
       NewUnitForm(:clsList="cClassesList", :closeCallBack="() => {this.dialog = false}", :title="`新建`")
     v-dialog(v-model="updateValue", persistent)
-      NewUnitForm(:clsList="cClassesList", :closeCallBack="() => {this.updateValue = false}", :title="`修改`")
+      NewUnitForm(:clsList="cClassesList", :charactor="charactor", :closeCallBack="() => {this.updateValue = false}", :title="`修改`")
     v-content
       HomePage
       SpellFunctionBotton(:scribe="() => {sheet = !sheet}")

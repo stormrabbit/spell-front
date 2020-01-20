@@ -2,15 +2,15 @@
 <template lang="pug">
     v-app-bar(app,color="primary",dark)
       v-app-bar-nav-icon(@click="onCallBack") 
-      v-toolbar-title {{` ${charactor.cls}`}}
+      v-toolbar-title {{` ${charactor.name}`}}
       v-spacer
       v-btn(icon)
         v-icon 
       template(v-slot:extension)
         span   
-          v-chip(outlined) {{charactor.lvl}}
+          v-chip(outlined) {{`${charactor.lvl}级`}}
           v-chip(outlined)  {{charactor.race}}
-          v-chip(outlined) {{`${charactor.school}`}}
+          v-chip(outlined) {{`${charactor.school}${charactor.cls}`}}
           v-chip(outlined) {{`${charactor.value}`}}      
         v-btn(icon, style="margin: 8px", @click="resetClass")
           v-icon mdi-cached
