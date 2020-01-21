@@ -28,13 +28,13 @@
 <script>
 //这里可以导入其他文件（比如：组件，工具js，第三方插件js，json文件，图片文件等等）
 //例如：import 《组件名称》 from '《组件路径》';
-import qs from 'qs';
+import qs from "qs";
 export default {
   props: {
     clsList: Array,
     closeCallBack: Function,
     title: String,
-    charactor: Object,
+    charactor: Object
   },
   //import引入的组件需要注入到对象中才能使用
   components: {},
@@ -42,32 +42,56 @@ export default {
     //这里存放数据
     return {
       dialog: true,
-      cls: this.charactor? this.charactor: {},
-      logTips: '',
+      cls: this.charactor ? this.charactor : {},
+      logTips: "",
       timeout: 2000,
-      snackbar: false,
+      snackbar: false
     };
   },
   //监听属性 类似于data概念
   computed: {
-      clses: function() {
-          return (this.clsList && this.clsList.length) ? this.clsList.map( cls => cls.nickname): [];
-      }
+    clses: function() {
+      return this.clsList && this.clsList.length
+        ? this.clsList.map(cls => cls.nickname)
+        : [];
+    }
   },
   //监控data中的数据变化
   watch: {},
   //方法集合
   methods: {
-      update: function() {
-        const _self = this;
-        if(_self.closeCallBack) {
-            _self.closeCallBack();
-        }
-        this.$axios.post(`http://localhost:3000/charactor/create`, qs.stringify(_self.cls)).then( res => {
-            _self.snackbar = true;
-            this.logTips = res;
-        });
+    update: function() {
+      const _self = this;
+      if (_self.closeCallBack) {
+        _self.closeCallBack();
       }
+      if (_self.cls && _self.cls._id) {
+        _self.updateCharactor();
+      } else {
+        _self.createCharactor();
+      }
+    },
+    updateCharactor: function() {
+      const _self = this;
+      this.$axios
+        .put(
+          `http://localhost:3000/charactor/update/${_self.cls._id}`,
+          qs.stringify(_self.cls)
+        )
+        .then(res => {
+          _self.snackbar = true;
+          this.logTips = res;
+        });
+    },
+    createCharactor: function() {
+      const _self = this;
+      this.$axios
+        .post(`http://localhost:3000/charactor/create`, qs.stringify(_self.cls))
+        .then(res => {
+          _self.snackbar = true;
+          this.logTips = res;
+        });
+    }
   },
   //生命周期 - 创建完成（可以访问当前this实例）
   created() {},
