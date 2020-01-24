@@ -89,6 +89,7 @@ export default {
         .post(`http://localhost:3000/charactor/create`, qs.stringify(_self.cls))
         .then(res => {
           _self.snackbar = true;
+          _self.cls = {};
           this.logTips = res;
         });
     }
