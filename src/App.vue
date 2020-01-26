@@ -87,11 +87,12 @@ export default {
 
       // Dark theme
       this.$vuetify.theme.themes.dark.primary = this.chosenOne.color;
+      this.loadCharactors();
     },
     loadCharactors: function() {
       const _self = this;
       this.$axios
-        .get(`http://localhost:3000/charactor/5e1c7f49e46d71e08805cefe`)
+        .get(`http://localhost:3000/charactor/${_self.chosenOne.id}`)
         .then(res => {
           _self.charactor = res.data;
         });
@@ -107,14 +108,13 @@ export default {
       this.classesList = [];
       const _self = this;
       this.$axios
-        .get("http://localhost:3000/classes")
+        .get("http://localhost:3000/charactor/list")
         .then(res => {
           if (res) {
             _self.classesList = res.data;
             _self.chooseClass(
-              _self.classesList.filter(cl => cl.name === "wizard")[0]
+              _self.classesList.filter((cl, index) => index === 0)[0]
             );
-            _self.loadCharactors();
           }
         })
         .catch(() => (_self.classesList = []));
