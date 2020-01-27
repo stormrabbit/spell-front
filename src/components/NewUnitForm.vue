@@ -31,8 +31,8 @@
 import qs from "qs";
 export default {
   props: {
-    clsList: Array,
     closeCallBack: Function,
+    doneCallBack: Function,
     title: String,
     charactor: Object
   },
@@ -41,6 +41,7 @@ export default {
   data() {
     //这里存放数据
     return {
+      clsList: [],
       dialog: true,
       cls: this.charactor ? this.charactor : {},
       logTips: "",
@@ -62,8 +63,8 @@ export default {
   methods: {
     update: function() {
       const _self = this;
-      if (_self.closeCallBack) {
-        _self.closeCallBack();
+      if (_self.doneCallBack) {
+        _self.doneCallBack();
       }
       if (_self.cls && _self.cls._id) {
         _self.updateCharactor();
@@ -92,12 +93,19 @@ export default {
           _self.cls = {};
           this.logTips = res;
         });
+    },
+    loadClasses: function() {
+      this.$axios.get(`http://localhost:3000/classes`).then( res => {
+        this.clsList = res.data;
+      })
     }
   },
   //生命周期 - 创建完成（可以访问当前this实例）
   created() {},
   //生命周期 - 挂载完成（可以访问DOM元素）
-  mounted() {},
+  mounted() {
+     this.loadClasses();
+  },
   beforeCreate() {}, //生命周期 - 创建之前
   beforeMount() {}, //生命周期 - 挂载之前
   beforeUpdate() {}, //生命周期 - 更新之前

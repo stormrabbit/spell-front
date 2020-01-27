@@ -6,9 +6,9 @@
     v-dialog(v-model="sheet", scrollable, fullscreen, hide-overlay, transition="dialog-bottom-transition")
       SepllsPage(:spells="sps", :onBack="() => {sheet = !sheet}")
     v-dialog(v-model="dialog", persistent)
-      NewUnitForm(:clsList="cClassesList", :closeCallBack="() => {this.dialog = false}", :title="`新建`")
+      NewUnitForm(:clsList="cClassesList", :doneCallBack="() => this.createCharactor()",:closeCallBack="() => {this.dialog = false}", :title="`新建`")
     v-dialog(v-model="updateValue", persistent)
-      NewUnitForm(:clsList="cClassesList", :charactor="charactor", :closeCallBack="() => {this.updateValue = false}", :title="`修改`")
+      NewUnitForm(:clsList="cClassesList", :charactor="charactor",:doneCallBack="() => this.updateCharactor()", :closeCallBack="() => {this.updateValue = false}", :title="`修改`")
     v-content
       HomePage
       SpellFunctionBotton(:scribe="() => {sheet = !sheet}")
@@ -74,6 +74,14 @@ export default {
     }
   },
   methods: {
+    createCharactor: function() {
+      this.dialog = false;
+      this.reload();
+    },
+    updateCharactor: function() {
+      this.updateValue = false;
+      this.reload();
+    },
     chooseClass: function(clsObj) {
       this.drawer = false;
       if (!clsObj) {
