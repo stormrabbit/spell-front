@@ -8,21 +8,23 @@
             v-container
                 v-row
                     v-col(cols="12", sm="6", md="4")
-                        v-text-field(label="姓名", required, v-model="cls.name")
-                    v-col(cols="12", sm="6", md="4", v-model="cls.name")
-                        v-select(label="种族", :items="['人类', '精灵', '矮人', '半精灵', '提夫林', '半兽人']", v-model="cls.race")
+                        v-text-field(label="姓名", required, v-model="mycharactor.name")
                     v-col(cols="12", sm="6", md="4")
-                        v-select(label="职业", :items="clses", v-model="cls.cls")
+                        v-select(label="种族", :items="['人类', '精灵', '矮人', '半精灵', '提夫林', '半兽人']", v-model="mycharactor.race")
                     v-col(cols="12", sm="6", md="4")
-                        v-text-field(label="等级", required, v-model="cls.lvl")
+                        v-select(label="职业", :items="clses", v-model="mycharactor.cls")
                     v-col(cols="12", sm="6", md="4")
-                        v-text-field(label="学派", required, v-model="cls.school")
+                        v-text-field(label="等级", required, v-model="mycharactor.lvl")
                     v-col(cols="12", sm="6", md="4")
-                        v-text-field(label="主属性", required, v-model="cls.value")
+                        v-text-field(label="学派", required, v-model="mycharactor.school")
+                    v-col(cols="12", sm="6", md="4")
+                        v-text-field(label="主属性", required, v-model="mycharactor.value")
         v-card-actions
             v-spacer
-            v-btn(color="primary", text, @click="closeCallBack") Close
-            v-btn(color="primary", text, @click="update") Save
+            v-btn(v-if="title === `修改`",color="primary", text, @click="update") 删除角色
+            v-btn(color="primary", text, @click="closeCallBack") 关闭
+            v-btn(color="primary", text, @click="update") 保存
+            
 </template>
 
 <script>
@@ -43,7 +45,6 @@ export default {
     return {
       clsList: [],
       dialog: true,
-      cls: this.charactor ? this.charactor : {},
       logTips: "",
       timeout: 2000,
       snackbar: false
@@ -55,6 +56,9 @@ export default {
       return this.clsList && this.clsList.length
         ? this.clsList.map(cls => cls.nickname)
         : [];
+    },
+    mycharactor: function() {
+      return this.charactor ? this.charactor : {};
     }
   },
   //监控data中的数据变化
@@ -66,7 +70,7 @@ export default {
       if (_self.doneCallBack) {
         _self.doneCallBack();
       }
-      if (_self.cls && _self.cls._id) {
+      if (_self.mycharactor && _self.mycharactor._id) {
         _self.updateCharactor();
       } else {
         _self.createCharactor();
@@ -76,8 +80,8 @@ export default {
       const _self = this;
       this.$axios
         .put(
-          `http://localhost:3000/charactor/update/${_self.cls._id}`,
-          qs.stringify(_self.cls)
+          `http://localhost:3000/charactor/update/${_self.mycharactor._id}`,
+          qs.stringify(_self.mycharactor)
         )
         .then(res => {
           _self.snackbar = true;
@@ -87,10 +91,10 @@ export default {
     createCharactor: function() {
       const _self = this;
       this.$axios
-        .post(`http://localhost:3000/charactor/create`, qs.stringify(_self.cls))
+        .post(`http://localhost:3000/charactor/create`, qs.stringify(_self.mycharactor))
         .then(res => {
           _self.snackbar = true;
-          _self.cls = {};
+          _self.mycharactor = {};
           this.logTips = res;
         });
     },
