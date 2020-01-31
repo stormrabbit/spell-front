@@ -21,7 +21,7 @@
                         v-text-field(label="主属性", required, v-model="mycharactor.value")
         v-card-actions
             v-spacer
-            v-btn(v-if="title === `修改`",color="primary", text, @click="update") 删除角色
+            v-btn(v-if="title === `修改`",color="primary", text, @click="removeCharactor") 删除角色
             v-btn(color="primary", text, @click="closeCallBack") 关闭
             v-btn(color="primary", text, @click="update") 保存
             
@@ -65,6 +65,22 @@ export default {
   watch: {},
   //方法集合
   methods: {
+    removeCharactor: function() {
+      const _self = this;
+      if (_self.doneCallBack) {
+        _self.doneCallBack();
+      }
+      if (_self.mycharactor && _self.mycharactor._id) {
+        this.$axios
+          .delete(`http://localhost:3000/charactor/${_self.mycharactor._id}`)
+          .then(res => {
+            const { ok = 1, deletedCount = 0 } = res.data;
+            if (ok === 1 && deletedCount !== 0) {
+              `输出成功`;
+            }
+          });
+      }
+    },
     update: function() {
       const _self = this;
       if (_self.doneCallBack) {
@@ -91,7 +107,10 @@ export default {
     createCharactor: function() {
       const _self = this;
       this.$axios
-        .post(`http://localhost:3000/charactor/create`, qs.stringify(_self.mycharactor))
+        .post(
+          `http://localhost:3000/charactor/create`,
+          qs.stringify(_self.mycharactor)
+        )
         .then(res => {
           _self.snackbar = true;
           _self.mycharactor = {};
@@ -99,16 +118,16 @@ export default {
         });
     },
     loadClasses: function() {
-      this.$axios.get(`http://localhost:3000/classes`).then( res => {
+      this.$axios.get(`http://localhost:3000/classes`).then(res => {
         this.clsList = res.data;
-      })
+      });
     }
   },
   //生命周期 - 创建完成（可以访问当前this实例）
   created() {},
   //生命周期 - 挂载完成（可以访问DOM元素）
   mounted() {
-     this.loadClasses();
+    this.loadClasses();
   },
   beforeCreate() {}, //生命周期 - 创建之前
   beforeMount() {}, //生命周期 - 挂载之前
