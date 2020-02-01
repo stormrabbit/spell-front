@@ -67,9 +67,7 @@ export default {
   methods: {
     removeCharactor: function() {
       const _self = this;
-      if (_self.doneCallBack) {
-        _self.doneCallBack();
-      }
+
       if (_self.mycharactor && _self.mycharactor._id) {
         this.$axios
           .delete(`http://localhost:3000/charactor/${_self.mycharactor._id}`)
@@ -77,6 +75,9 @@ export default {
             const { ok = 1, deletedCount = 0 } = res.data;
             if (ok === 1 && deletedCount !== 0) {
               `输出成功`;
+              if (_self.doneCallBack) {
+                _self.doneCallBack();
+              }
             }
           });
       }
