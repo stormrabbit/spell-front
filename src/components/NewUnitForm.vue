@@ -16,7 +16,7 @@
                     v-col(cols="12", sm="6", md="4")
                         v-text-field(label="等级", required, v-model="mycharactor.lvl")
                     v-col(cols="12", sm="6", md="4")
-                        v-text-field(label="学派", required, v-model="mycharactor.school")
+                         v-select(label="子职", required, v-model="mycharactor.school", :items="clsesSub")
                     v-col(cols="12", sm="6", md="4")
                         v-text-field(label="主属性", required, v-model="mycharactor.value")
         v-card-actions
@@ -56,6 +56,11 @@ export default {
       return this.clsList && this.clsList.length
         ? this.clsList.map(cls => cls.nickname)
         : [];
+    },
+    clsesSub: function() {
+      const _self = this;
+      const temp = _self.clsList.filter( itm => itm.nickname === _self.mycharactor.cls);
+      return (!!temp && temp.length )? temp[0].sub: [];
     },
     mycharactor: function() {
       return this.charactor ? this.charactor : {};
