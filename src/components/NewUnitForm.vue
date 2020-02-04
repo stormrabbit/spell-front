@@ -8,21 +8,21 @@
             v-container
                 v-row
                     v-col(cols="12", sm="6", md="4")
-                        v-text-field(label="姓名", required, v-model="mycharactor.name")
+                        v-text-field(label="姓名", required, v-model="thisName")
                     v-col(cols="12", sm="6", md="4")
                         v-select(label="种族", :items="['人类', '精灵', '矮人', '半精灵', '提夫林', '半兽人']", v-model="mycharactor.race")
                     v-col(cols="12", sm="6", md="4")
-                        v-select(label="职业", :items="clses", v-model="mycharactor.cls")
+                        v-select(label="职业", :items="clses", v-model="mycharactor.cls", @change="onChangeCallBack")
                     v-col(cols="12", sm="6", md="4")
                         v-text-field(label="等级", required, v-model="mycharactor.lvl")
-                    v-col(cols="12", sm="6", md="4")
-                         v-select(label="子职", required, v-model="mycharactor.school", :items="clsesSub")
-                    v-col(cols="12", sm="6", md="4")
-                        v-text-field(label="主属性", required, v-model="mycharactor.value")
+                    v-col(cols="12", sm="6", md="4", type="number")
+                         v-select(label="子职", required, v-model="thisSchool", :items="thisToBePickedSub")
+                    v-col(cols="12", sm="6", md="4", type="number")
+                        v-text-field(:label="thisKeyword", required, v-model="mycharactor.value")
         v-card-actions
             v-spacer
             v-btn(v-if="title === `修改`",color="primary", text, @click="removeCharactor") 删除角色
-            v-btn(color="primary", text, @click="closeCallBack") 关闭
+            v-btn(color="primary", text, @click="cancelFunction") 关闭
             v-btn(color="primary", text, @click="update") 保存
             
 </template>
@@ -47,11 +47,27 @@ export default {
       dialog: true,
       logTips: "",
       timeout: 2000,
-      snackbar: false
+      snackbar: false,
+      name: '',
+      toBePickedSub: [],
+      school: '',
+      keyword: '',
     };
   },
   //监听属性 类似于data概念
   computed: {
+    thisName: function() {
+      return this.name;
+    },
+    thisToBePickedSub: function(){
+      return this.toBePickedSub;
+    },
+    thisSchool : function() {
+      return this.school;
+    },
+    thisKeyword: function() {
+      return this.keyword;
+    },
     clses: function() {
       return this.clsList && this.clsList.length
         ? this.clsList.map(cls => cls.nickname)
@@ -63,16 +79,27 @@ export default {
       return (!!temp && temp.length )? temp[0].sub: [];
     },
     mycharactor: function() {
-      return this.charactor ? this.charactor : {};
+      return this.charactor ? Object.assign({}, this.charactor)  : {};
     }
   },
   //监控data中的数据变化
   watch: {},
   //方法集合
   methods: {
+    onChangeCallBack: function(val) {
+      this.name = val;
+      const filterClass =  this.clsList.filter( itm => itm.nickname === this.mycharactor.cls)[0];
+      this.toBePickedSub  = filterClass.sub;
+      this.school = this.toBePickedSub[0];
+      this.keyword = filterClass.keyword;
+    },
+    cancelFunction: function() {
+      if(this.closeCallBack) {
+        this.closeCallBack();
+      }
+    },
     removeCharactor: function() {
       const _self = this;
-
       if (_self.mycharactor && _self.mycharactor._id) {
         this.$axios
           .delete(`http://localhost:3000/charactor/${_self.mycharactor._id}`)

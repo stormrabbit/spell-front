@@ -8,12 +8,12 @@
         v-icon 
       template(v-slot:extension)
         span   
-          v-chip(outlined) {{`${charactor.lvl}级`}}
-          v-chip(outlined)  {{charactor.race}}
-          v-chip(outlined) {{`${charactor.school}${charactor.cls}`}}
-          v-chip(outlined) {{`${charactor.value}`}}      
-        v-btn(icon, style="margin: 8px", @click="resetClass")
-          v-icon mdi-cached
+          v-chip(outlined, @click="resetClass") {{`${charactor.lvl}级`}}
+          v-chip(outlined, @click="resetClass")  {{charactor.race}}
+          v-chip(outlined, @click="resetClass") {{`${charactor.school}${charactor.cls}`}}
+          v-chip(outlined, @click="resetClass") {{`${charactor.value}`}}      
+        //- v-btn(icon, style="margin: 8px", @click="resetClass")
+        //-   v-icon mdi-cached
 </template>
 
 <script>
