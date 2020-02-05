@@ -10,15 +10,15 @@
                     v-col(cols="12", sm="6", md="4")
                         v-text-field(label="姓名", required, v-model="thisName")
                     v-col(cols="12", sm="6", md="4")
-                        v-select(label="种族", :items="['人类', '精灵', '矮人', '半精灵', '提夫林', '半兽人']", v-model="mycharactor.race")
+                        v-select(label="种族", :items="['人类', '精灵', '矮人', '半精灵', '提夫林', '半兽人']", v-model="thisRace")
                     v-col(cols="12", sm="6", md="4")
-                        v-select(label="职业", :items="clses", v-model="mycharactor.cls", @change="onChangeCallBack")
+                        v-select(label="职业", :items="clses", v-model="thisClazz", @change="onChangeCallBack")
                     v-col(cols="12", sm="6", md="4")
-                        v-text-field(label="等级", required, v-model="mycharactor.lvl")
+                        v-text-field(label="等级", required, v-model="thisLvl")
                     v-col(cols="12", sm="6", md="4", type="number")
                          v-select(label="子职", required, v-model="thisSchool", :items="thisToBePickedSub")
                     v-col(cols="12", sm="6", md="4", type="number")
-                        v-text-field(:label="thisKeyword", required, v-model="mycharactor.value")
+                        v-text-field(:label="thisKeyword", required, v-model="thisVal")
         v-card-actions
             v-spacer
             v-btn(v-if="title === `修改`",color="primary", text, @click="removeCharactor") 删除角色
@@ -48,25 +48,42 @@ export default {
       logTips: "",
       timeout: 2000,
       snackbar: false,
-      name: '',
+      name: this.charactor ? this.charactor.name : "",
       toBePickedSub: [],
       school: '',
+      clazz: this.charactor ? this.charactor.cls : '法师',
       keyword: '',
+      race: this.charactor ? this.charactor.race : '人类',
+      lvl: this.charactor? this.charactor.lvl: 1,
+      value: this.charactor ? this.charactor.value: 10,
     };
   },
   //监听属性 类似于data概念
   computed: {
+    thisLvl: function() {
+      return this.lvl;
+    },
     thisName: function() {
       return this.name;
     },
-    thisToBePickedSub: function(){
+    thisToBePickedSub: function() {
       return this.toBePickedSub;
     },
-    thisSchool : function() {
-      return this.school;
+    thisSchool: function() {
+      const temp = this.school;
+      return temp;
     },
     thisKeyword: function() {
       return this.keyword;
+    },
+    thisRace: function() {
+      return this.race;
+    },
+    thisClazz: function() {
+      return this.clazz;
+    },
+    thisVal :function() {
+      return this.value;
     },
     clses: function() {
       return this.clsList && this.clsList.length
@@ -75,11 +92,13 @@ export default {
     },
     clsesSub: function() {
       const _self = this;
-      const temp = _self.clsList.filter( itm => itm.nickname === _self.mycharactor.cls);
-      return (!!temp && temp.length )? temp[0].sub: [];
+      const temp = _self.clsList.filter(
+        itm => itm.nickname === _self.mycharactor.cls
+      );
+      return !!temp && temp.length ? temp[0].sub : [];
     },
     mycharactor: function() {
-      return this.charactor ? Object.assign({}, this.charactor)  : {};
+      return this.charactor ? Object.assign({}, this.charactor) : {};
     }
   },
   //监控data中的数据变化
@@ -87,14 +106,15 @@ export default {
   //方法集合
   methods: {
     onChangeCallBack: function(val) {
-      this.name = val;
-      const filterClass =  this.clsList.filter( itm => itm.nickname === this.mycharactor.cls)[0];
-      this.toBePickedSub  = filterClass.sub;
+      const filterClass = this.clsList.filter(
+        itm => itm.nickname === val
+      )[0];
+      this.toBePickedSub = filterClass.sub;
       this.school = this.toBePickedSub[0];
       this.keyword = filterClass.keyword;
     },
     cancelFunction: function() {
-      if(this.closeCallBack) {
+      if (this.closeCallBack) {
         this.closeCallBack();
       }
     },
@@ -153,6 +173,13 @@ export default {
     loadClasses: function() {
       this.$axios.get(`http://localhost:3000/classes`).then(res => {
         this.clsList = res.data;
+
+        const temp = this.clsList.filter(itm =>
+          itm.nickname === this.clazz 
+        )[0];
+        this.toBePickedSub = temp.sub;
+        this.school = temp.sub[0];
+        this.keyword = temp.keyword;
       });
     }
   },
