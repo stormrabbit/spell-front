@@ -8,7 +8,7 @@
         v-icon 
       template(v-slot:extension)
         span   
-          v-chip(outlined, @click="resetClass") {{`${charactor.lvl}级`}}
+          v-chip(outlined, @click="resetClass") {{`${charactor.lvl} 级`}}
           v-chip(outlined, @click="resetClass")  {{charactor.race}}
           v-chip(outlined, @click="resetClass") {{`${charactor.school}${charactor.cls}`}}
           v-chip(outlined, @click="resetClass") {{`${charactor.value}`}}      

@@ -8,17 +8,17 @@
             v-container
                 v-row
                     v-col(cols="12", sm="6", md="4")
-                        v-text-field(label="姓名", required, v-model="thisName")
+                        v-text-field(label="姓名", v-model="name")
                     v-col(cols="12", sm="6", md="4")
-                        v-select(label="种族", :items="['人类', '精灵', '矮人', '半精灵', '提夫林', '半兽人']", v-model="thisRace")
+                        v-select(label="种族", :items="['人类', '精灵', '矮人', '半精灵', '提夫林', '半兽人']", v-model="race")
                     v-col(cols="12", sm="6", md="4")
-                        v-select(label="职业", :items="clses", v-model="thisClazz", @change="onChangeCallBack")
+                        v-select(label="职业", :items="clses", v-model="clazz", @change="onChangeCallBack")
                     v-col(cols="12", sm="6", md="4")
-                        v-text-field(label="等级", required, v-model="thisLvl")
+                        v-text-field(label="等级", required, v-model="lvl")
                     v-col(cols="12", sm="6", md="4", type="number")
-                         v-select(label="子职", required, v-model="thisSchool", :items="thisToBePickedSub")
+                         v-select(label="子职", required, v-model="school", :items="thisToBePickedSub")
                     v-col(cols="12", sm="6", md="4", type="number")
-                        v-text-field(:label="thisKeyword", required, v-model="thisVal")
+                        v-text-field(:label="thisKeyword", required, v-model="value")
         v-card-actions
             v-spacer
             v-btn(v-if="title === `修改`",color="primary", text, @click="removeCharactor") 删除角色
@@ -60,31 +60,30 @@ export default {
   },
   //监听属性 类似于data概念
   computed: {
-    thisLvl: function() {
-      return this.lvl;
-    },
-    thisName: function() {
-      return this.name;
-    },
+    // thisLvl: function() {
+    //   return this.lvl;
+    // },
+    // thisName: function() {
+    //   return this.name;
+    // },
     thisToBePickedSub: function() {
       return this.toBePickedSub;
     },
-    thisSchool: function() {
-      const temp = this.school;
-      return temp;
-    },
+    // thisSchool: function() {
+    //   return this.school;
+    // },
     thisKeyword: function() {
       return this.keyword;
     },
-    thisRace: function() {
-      return this.race;
-    },
-    thisClazz: function() {
-      return this.clazz;
-    },
-    thisVal :function() {
-      return this.value;
-    },
+    // thisRace: function() {
+    //   return this.race;
+    // },
+    // thisClazz: function() {
+    //   return this.clazz;
+    // },
+    // thisVal :function() {
+    //   return this.value;
+    // },
     clses: function() {
       return this.clsList && this.clsList.length
         ? this.clsList.map(cls => cls.nickname)
@@ -140,29 +139,44 @@ export default {
         _self.doneCallBack();
       }
       if (_self.mycharactor && _self.mycharactor._id) {
-        _self.updateCharactor();
+        _self.updateCharactor({
+          _id: _self.mycharactor._id,
+          name: _self.name,
+          cls: _self.clazz,
+          value: `${_self.value} ${_self.thisKeyword}` ,
+          school: _self.school,
+          race: _self.race,
+          lvl: _self.lvl,
+        });
       } else {
-        _self.createCharactor();
+        _self.createCharactor({
+          name: _self.name,
+          cls: _self.clazz,
+          value: _self.value,
+          school: _self.school,
+          race: _self.race,
+          lvl: _self.lvl,
+        });
       }
     },
-    updateCharactor: function() {
+    updateCharactor: function(charactor) {
       const _self = this;
       this.$axios
         .put(
-          `http://localhost:3000/charactor/update/${_self.mycharactor._id}`,
-          qs.stringify(_self.mycharactor)
+          `http://localhost:3000/charactor/update/${charactor._id}`,
+          qs.stringify(charactor)
         )
         .then(res => {
           _self.snackbar = true;
           this.logTips = res;
         });
     },
-    createCharactor: function() {
+    createCharactor: function(charactor) {
       const _self = this;
       this.$axios
         .post(
           `http://localhost:3000/charactor/create`,
-          qs.stringify(_self.mycharactor)
+          qs.stringify(charactor)
         )
         .then(res => {
           _self.snackbar = true;
