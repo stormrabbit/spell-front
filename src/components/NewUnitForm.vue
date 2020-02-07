@@ -44,57 +44,39 @@ export default {
     //这里存放数据
     return {
       clsList: [],
-      dialog: true,
-      logTips: "",
+      logTips: '',
       timeout: 2000,
       snackbar: false,
-      name: this.charactor ? this.charactor.name : "",
+      id: this.charactor ? this.charactor._id: '',
+      name: this.charactor ? this.charactor.name : '',
       toBePickedSub: [],
       school: '',
       clazz: this.charactor ? this.charactor.cls : '法师',
       keyword: '',
       race: this.charactor ? this.charactor.race : '人类',
-      lvl: this.charactor? this.charactor.lvl: 1,
-      value: this.charactor ? this.charactor.value: 10,
+      lvl: this.charactor ? this.charactor.lvl : 1,
+      value: this.charactor
+        ? parseInt(
+            this.charactor.value
+              .replace('智力', '')
+              .replace('魅力', '')
+              .replace('感知', '')
+          )
+        : 10
     };
   },
   //监听属性 类似于data概念
   computed: {
-    // thisLvl: function() {
-    //   return this.lvl;
-    // },
-    // thisName: function() {
-    //   return this.name;
-    // },
     thisToBePickedSub: function() {
       return this.toBePickedSub;
     },
-    // thisSchool: function() {
-    //   return this.school;
-    // },
     thisKeyword: function() {
       return this.keyword;
     },
-    // thisRace: function() {
-    //   return this.race;
-    // },
-    // thisClazz: function() {
-    //   return this.clazz;
-    // },
-    // thisVal :function() {
-    //   return this.value;
-    // },
     clses: function() {
       return this.clsList && this.clsList.length
         ? this.clsList.map(cls => cls.nickname)
         : [];
-    },
-    clsesSub: function() {
-      const _self = this;
-      const temp = _self.clsList.filter(
-        itm => itm.nickname === _self.mycharactor.cls
-      );
-      return !!temp && temp.length ? temp[0].sub : [];
     },
     mycharactor: function() {
       return this.charactor ? Object.assign({}, this.charactor) : {};
@@ -105,9 +87,7 @@ export default {
   //方法集合
   methods: {
     onChangeCallBack: function(val) {
-      const filterClass = this.clsList.filter(
-        itm => itm.nickname === val
-      )[0];
+      const filterClass = this.clsList.filter(itm => itm.nickname === val)[0];
       this.toBePickedSub = filterClass.sub;
       this.school = this.toBePickedSub[0];
       this.keyword = filterClass.keyword;
@@ -119,9 +99,9 @@ export default {
     },
     removeCharactor: function() {
       const _self = this;
-      if (_self.mycharactor && _self.mycharactor._id) {
+      if (this.id) {
         this.$axios
-          .delete(`http://localhost:3000/charactor/${_self.mycharactor._id}`)
+          .delete(`http://localhost:3000/charactor/${this.id}`)
           .then(res => {
             const { ok = 1, deletedCount = 0 } = res.data;
             if (ok === 1 && deletedCount !== 0) {
@@ -134,28 +114,28 @@ export default {
       }
     },
     update: function() {
-      const _self = this;
-      if (_self.doneCallBack) {
-        _self.doneCallBack();
+      // const _self = this;
+      if (this.doneCallBack) {
+        this.doneCallBack();
       }
-      if (_self.mycharactor && _self.mycharactor._id) {
-        _self.updateCharactor({
-          _id: _self.mycharactor._id,
-          name: _self.name,
-          cls: _self.clazz,
-          value: `${_self.value} ${_self.thisKeyword}` ,
-          school: _self.school,
-          race: _self.race,
-          lvl: _self.lvl,
+      if (this.id) {
+        this.updateCharactor({
+          _id: this.id,
+          name: this.name,
+          cls: this.clazz,
+          value: `${this.value} ${this.thisKeyword}`,
+          school: this.school,
+          race: this.race,
+          lvl: this.lvl
         });
       } else {
-        _self.createCharactor({
-          name: _self.name,
-          cls: _self.clazz,
-          value: _self.value,
-          school: _self.school,
-          race: _self.race,
-          lvl: _self.lvl,
+        this.createCharactor({
+          name: this.name,
+          cls: this.clazz,
+          value: this.value,
+          school: this.school,
+          race: this.race,
+          lvl: this.lvl
         });
       }
     },
@@ -174,10 +154,7 @@ export default {
     createCharactor: function(charactor) {
       const _self = this;
       this.$axios
-        .post(
-          `http://localhost:3000/charactor/create`,
-          qs.stringify(charactor)
-        )
+        .post(`http://localhost:3000/charactor/create`, qs.stringify(charactor))
         .then(res => {
           _self.snackbar = true;
           _self.mycharactor = {};
@@ -188,9 +165,7 @@ export default {
       this.$axios.get(`http://localhost:3000/classes`).then(res => {
         this.clsList = res.data;
 
-        const temp = this.clsList.filter(itm =>
-          itm.nickname === this.clazz 
-        )[0];
+        const temp = this.clsList.filter(itm => itm.nickname === this.clazz)[0];
         this.toBePickedSub = temp.sub;
         this.school = temp.sub[0];
         this.keyword = temp.keyword;
