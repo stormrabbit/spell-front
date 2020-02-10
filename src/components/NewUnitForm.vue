@@ -50,7 +50,7 @@ export default {
       id: this.charactor ? this.charactor._id: '',
       name: this.charactor ? this.charactor.name : '',
       toBePickedSub: [],
-      school: '',
+      school: this.charactor ? this.charactor.sub : '',
       clazz: this.charactor ? this.charactor.cls : '法师',
       keyword: '',
       race: this.charactor ? this.charactor.race : '人类',
@@ -96,6 +96,23 @@ export default {
       if (this.closeCallBack) {
         this.closeCallBack();
       }
+      this.reset();
+    },
+    reset: function() {
+      this.id = this.charactor ? this.charactor._id: '',
+      this.name =  this.charactor ? this.charactor.name : '',   
+      this.school = this.charactor ? this.charactor.school : '',
+      this.clazz = this.charactor ? this.charactor.cls : '法师',
+      this.race = this.charactor ? this.charactor.race : '人类',
+      this.lvl = this.charactor ? this.charactor.lvl : 1,
+      this.value = this.charactor
+        ? parseInt(
+            this.charactor.value
+              .replace('智力', '')
+              .replace('魅力', '')
+              .replace('感知', '')
+          )
+        : 10
     },
     removeCharactor: function() {
       const _self = this;
