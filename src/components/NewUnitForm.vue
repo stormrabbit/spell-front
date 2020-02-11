@@ -44,23 +44,23 @@ export default {
     //这里存放数据
     return {
       clsList: [],
-      logTips: '',
+      logTips: "",
       timeout: 2000,
       snackbar: false,
-      id: this.charactor ? this.charactor._id: '',
-      name: this.charactor ? this.charactor.name : '',
+      id: this.charactor ? this.charactor._id : "",
+      name: this.charactor ? this.charactor.name : "",
       toBePickedSub: [],
-      school: this.charactor ? this.charactor.sub : '',
-      clazz: this.charactor ? this.charactor.cls : '法师',
-      keyword: '',
-      race: this.charactor ? this.charactor.race : '人类',
+      school: this.charactor ? this.charactor.sub : "",
+      clazz: this.charactor ? this.charactor.cls : "法师",
+      keyword: "",
+      race: this.charactor ? this.charactor.race : "人类",
       lvl: this.charactor ? this.charactor.lvl : 1,
       value: this.charactor
         ? parseInt(
             this.charactor.value
-              .replace('智力', '')
-              .replace('魅力', '')
-              .replace('感知', '')
+              .replace("智力", "")
+              .replace("魅力", "")
+              .replace("感知", "")
           )
         : 10
     };
@@ -99,20 +99,20 @@ export default {
       this.reset();
     },
     reset: function() {
-      this.id = this.charactor ? this.charactor._id: '',
-      this.name =  this.charactor ? this.charactor.name : '',   
-      this.school = this.charactor ? this.charactor.school : '',
-      this.clazz = this.charactor ? this.charactor.cls : '法师',
-      this.race = this.charactor ? this.charactor.race : '人类',
-      this.lvl = this.charactor ? this.charactor.lvl : 1,
-      this.value = this.charactor
-        ? parseInt(
-            this.charactor.value
-              .replace('智力', '')
-              .replace('魅力', '')
-              .replace('感知', '')
-          )
-        : 10
+      (this.id = this.charactor ? this.charactor._id : ""),
+        (this.name = this.charactor ? this.charactor.name : ""),
+        (this.school = this.charactor ? this.charactor.school : ""),
+        (this.clazz = this.charactor ? this.charactor.cls : "法师"),
+        (this.race = this.charactor ? this.charactor.race : "人类"),
+        (this.lvl = this.charactor ? this.charactor.lvl : 1),
+        (this.value = this.charactor
+          ? parseInt(
+              this.charactor.value
+                .replace("智力", "")
+                .replace("魅力", "")
+                .replace("感知", "")
+            )
+          : 10);
     },
     removeCharactor: function() {
       const _self = this;
@@ -132,9 +132,9 @@ export default {
     },
     update: function() {
       // const _self = this;
-      if (this.doneCallBack) {
-        this.doneCallBack();
-      }
+      // if (this.doneCallBack) {
+      //   this.doneCallBack();
+      // }
       if (this.id) {
         this.updateCharactor({
           _id: this.id,
@@ -165,7 +165,10 @@ export default {
         )
         .then(res => {
           _self.snackbar = true;
-          this.logTips = res;
+          _self.logTips = res;
+          if (_self.doneCallBack) {
+            _self.doneCallBack();
+          }
         });
     },
     createCharactor: function(charactor) {
@@ -175,7 +178,10 @@ export default {
         .then(res => {
           _self.snackbar = true;
           _self.mycharactor = {};
-          this.logTips = res;
+          _self.logTips = res;
+          if (_self.doneCallBack) {
+            _self.doneCallBack();
+          }
         });
     },
     loadClasses: function() {
