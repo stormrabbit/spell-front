@@ -131,10 +131,6 @@ export default {
       }
     },
     update: function() {
-      // const _self = this;
-      // if (this.doneCallBack) {
-      //   this.doneCallBack();
-      // }
       if (this.id) {
         this.updateCharactor({
           _id: this.id,
@@ -149,7 +145,7 @@ export default {
         this.createCharactor({
           name: this.name,
           cls: this.clazz,
-          value: this.value,
+          value: `${this.value} ${this.thisKeyword}`,
           school: this.school,
           race: this.race,
           lvl: this.lvl
@@ -187,7 +183,6 @@ export default {
     loadClasses: function() {
       this.$axios.get(`http://localhost:3000/classes`).then(res => {
         this.clsList = res.data;
-
         const temp = this.clsList.filter(itm => itm.nickname === this.clazz)[0];
         this.toBePickedSub = temp.sub;
         this.school = temp.sub[0];
