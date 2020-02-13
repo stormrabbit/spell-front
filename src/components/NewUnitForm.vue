@@ -162,6 +162,7 @@ export default {
         .then(res => {
           _self.snackbar = true;
           _self.logTips = res;
+          this.reset();
           if (_self.doneCallBack) {
             _self.doneCallBack();
           }
@@ -172,6 +173,7 @@ export default {
       this.$axios
         .post(`http://localhost:3000/charactor/create`, qs.stringify(charactor))
         .then(res => {
+          this.reset();
           _self.snackbar = true;
           _self.mycharactor = {};
           _self.logTips = res;
