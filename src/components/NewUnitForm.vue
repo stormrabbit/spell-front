@@ -6,19 +6,20 @@
             span(class="headline") {{title}}
         v-card-text
             v-container
-                v-row
-                    v-col(cols="12", sm="6", md="4")
-                        v-text-field(label="姓名", v-model="name")
-                    v-col(cols="12", sm="6", md="4")
-                        v-select(label="种族", :items="['人类', '精灵', '矮人', '半精灵', '提夫林', '半兽人']", v-model="race")
-                    v-col(cols="12", sm="6", md="4")
-                        v-select(label="职业", :items="clses", v-model="clazz", @change="onChangeCallBack")
-                    v-col(cols="12", sm="6", md="4")
-                        v-text-field(label="等级", required, v-model="lvl")
-                    v-col(cols="12", sm="6", md="4", type="number")
-                         v-select(label="子职", required, v-model="school", :items="thisToBePickedSub")
-                    v-col(cols="12", sm="6", md="4", type="number")
-                        v-text-field(:label="thisKeyword", required, v-model="value")
+                v-form(ref="form")
+                  v-row
+                      v-col(cols="12", sm="6", md="4")
+                          v-text-field(label="姓名", v-model="name")
+                      v-col(cols="12", sm="6", md="4")
+                          v-select(label="种族", :items="['人类', '精灵', '矮人', '半精灵', '提夫林', '半兽人']", v-model="race")
+                      v-col(cols="12", sm="6", md="4")
+                          v-select(label="职业", :items="clses", v-model="clazz", @change="onChangeCallBack")
+                      v-col(cols="12", sm="6", md="4")
+                          v-text-field(label="等级", required, v-model="lvl")
+                      v-col(cols="12", sm="6", md="4", type="number")
+                          v-select(label="子职", required, v-model="school", :items="thisToBePickedSub")
+                      v-col(cols="12", sm="6", md="4", type="number")
+                          v-text-field(:label="thisKeyword", required, v-model="value")
         v-card-actions
             v-spacer
             v-btn(v-if="title === `修改`",color="primary", text, @click="removeCharactor") 删除角色

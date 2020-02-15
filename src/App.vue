@@ -79,8 +79,9 @@ export default {
       this.reload();
     },
     loadCurrentCharactor: function() {
+
       this.drawer = !this.drawer;
-      
+
     },
     updateCharactor: function() {
       this.updateValue = false;
