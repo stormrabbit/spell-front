@@ -5,9 +5,9 @@
     ClassesTitleBar(:charactor="charactorVal", :onCallBack="() => {this.loadCurrentCharactor()}", :resetClass="() => {this.updateValue = true}")
     v-dialog(v-model="sheet", scrollable, fullscreen, hide-overlay, transition="dialog-bottom-transition")
       SepllsPage(:spells="sps", :onBack="() => {sheet = !sheet}")
-    v-dialog(v-model="dialog", persistent)
+    v-dialog(v-model="dialog", persistent, v-if="dialog")
       NewUnitForm(:clsList="cClassesList", :doneCallBack="() => this.createCharactor()",:closeCallBack="() => {this.dialog = false}", :title="`新建`")
-    v-dialog(v-model="updateValue", persistent)
+    v-dialog(v-model="updateValue", persistent, v-if="updateValue")
       NewUnitForm(:clsList="cClassesList", :charactor="charactorVal",:doneCallBack="() => this.updateCharactor()", :closeCallBack="() => {this.updateValue = false}", :title="`修改`")
     v-content
       HomePage
@@ -79,9 +79,7 @@ export default {
       this.reload();
     },
     loadCurrentCharactor: function() {
-
-      this.drawer = !this.drawer;
-
+      this.drawer = !this.drawer
     },
     updateCharactor: function() {
       this.updateValue = false;
