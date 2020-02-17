@@ -2,7 +2,7 @@
   v-app(id="inspire")
     v-navigation-drawer(v-model="drawer", app)
       ClassesSideList(:classeslist="cClassesList",:oncallback="chooseClass")
-    ClassesTitleBar(:charactor="charactorVal", :onCallBack="() => {this.loadCurrentCharactor()}", :resetClass="() => {this.updateValue = true}")
+    ClassesTitleBar(:charactor="charactorVal", :onCallBack="() => {drawer = !drawer}", :resetClass="() => {this.updateValue = true}")
     v-dialog(v-model="sheet", scrollable, fullscreen, hide-overlay, transition="dialog-bottom-transition")
       SepllsPage(:spells="sps", :onBack="() => {sheet = !sheet}")
     v-dialog(v-model="dialog", persistent, v-if="dialog")
@@ -77,9 +77,6 @@ export default {
     createCharactor: function() {
       this.dialog = false;
       this.reload();
-    },
-    loadCurrentCharactor: function() {
-      this.drawer = !this.drawer
     },
     updateCharactor: function() {
       this.updateValue = false;
