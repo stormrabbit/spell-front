@@ -115,13 +115,20 @@ export default {
     reload: function() {
       this.classesList = [];
       const _self = this;
+      
       this.$axios
         .get("http://localhost:3000/charactor/list")
         .then(res => {
           if (res) {
             _self.classesList = res.data;
+            const temps =  _self.classesList.filter((cl, index) =>{
+              if(_self.charactor._id) {
+                return cl.id === _self.charactor._id;
+              }
+              return index === 0;
+            })[0];
             _self.chooseClass(
-              _self.classesList.filter((cl, index) => index === 0)[0]
+             temps
             );
           }
         })
