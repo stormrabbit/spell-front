@@ -6,7 +6,7 @@
             span(class="headline") {{title}}
         v-card-text
             v-container
-                v-form(ref="form")
+                v-form(ref="form", v-model="valid")
                   v-row
                       v-col(cols="12", sm="6", md="4")
                           v-text-field(label="姓名", v-model="name")
@@ -15,16 +15,16 @@
                       v-col(cols="12", sm="6", md="4")
                           v-select(label="职业", :items="clses", v-model="clazz", @change="onChangeCallBack")
                       v-col(cols="12", sm="6", md="4")
-                          v-text-field(label="等级", required, v-model="lvl")
+                          v-text-field(label="等级", required, v-model="lvl", :rules="lvlrules")
                       v-col(cols="12", sm="6", md="4", type="number")
                           v-select(label="子职", required, v-model="school", :items="thisToBePickedSub")
                       v-col(cols="12", sm="6", md="4", type="number")
-                          v-text-field(:label="thisKeyword", required, v-model="value")
+                          v-text-field(:label="thisKeyword", required, v-model="value", :rules="rules")
         v-card-actions
             v-spacer
             v-btn(v-if="title === `修改`",color="primary", text, @click="removeCharactor") 删除角色
             v-btn(color="primary", text, @click="cancelFunction") 关闭
-            v-btn(color="primary", text, @click="update") 保存
+            v-btn(color="primary", text, @click="update", :disabled="!valid") 保存
             
 </template>
 
@@ -44,6 +44,21 @@ export default {
   data() {
     //这里存放数据
     return {
+      valid:true,
+      rules: [
+        value => !!value || '请输入主属性',
+        value => {
+          const pattern = /^[0-9]*$/
+          return pattern.test(value) || '请输入数字'
+        },
+      ],
+      lvlrules: [
+        value => !!value || '请输入等级',
+        value => {
+          const pattern = /^[0-9]*$/
+          return pattern.test(value) || '请输入数字'
+        },
+      ],
       clsList: [],
       logTips: "",
       timeout: 2000,
