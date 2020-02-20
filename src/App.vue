@@ -121,15 +121,8 @@ export default {
         .then(res => {
           if (res) {
             _self.classesList = res.data;
-            const temps =  _self.classesList.filter((cl, index) =>{
-              if(_self.charactor._id) {
-                return cl.id === _self.charactor._id;
-              }
-              return index === 0;
-            })[0];
-            _self.chooseClass(
-             temps
-            );
+            const temps =  _self.classesList.filter(cl => cl.id === _self.charactor._id);  
+            _self.chooseClass(temps.length ? temps[0]: _self.classesList[0]);
           }
         })
         .catch(() => (_self.classesList = []));

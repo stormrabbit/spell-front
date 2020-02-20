@@ -9,7 +9,7 @@
                 v-form(ref="form", v-model="valid")
                   v-row
                       v-col(cols="12", sm="6", md="4")
-                          v-text-field(label="姓名", v-model="name")
+                          v-text-field(label="姓名", v-model="name", :rules="namerules")
                       v-col(cols="12", sm="6", md="4")
                           v-select(label="种族", :items="['人类', '精灵', '矮人', '半精灵', '提夫林', '半兽人']", v-model="race")
                       v-col(cols="12", sm="6", md="4")
@@ -45,6 +45,9 @@ export default {
     //这里存放数据
     return {
       valid:true,
+      namerules: [
+         value => !!value || '请输入名字',
+      ],
       rules: [
         value => !!value || '请输入主属性',
         value => {
