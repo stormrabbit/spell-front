@@ -76,6 +76,7 @@ export default {
   methods: {
     createCharactor: function() {
       this.dialog = false;
+      this.charactor._id = undefined;
       this.reload();
     },
     updateCharactor: function() {

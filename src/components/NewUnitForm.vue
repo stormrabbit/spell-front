@@ -96,9 +96,6 @@ export default {
       return this.clsList && this.clsList.length
         ? this.clsList.map(cls => cls.nickname)
         : [];
-    },
-    mycharactor: function() {
-      return this.charactor ? Object.assign({}, this.charactor) : {};
     }
   },
   //监控data中的数据变化
@@ -194,7 +191,7 @@ export default {
         .then(res => {
           this.reset();
           _self.snackbar = true;
-          _self.mycharactor = {};
+          _self.charactor  = {};
           _self.logTips = res;
           if (_self.doneCallBack) {
             _self.doneCallBack();
