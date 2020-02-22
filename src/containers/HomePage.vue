@@ -1,11 +1,15 @@
 <!-- -->
 <template lang="pug">
   v-container( class="fill-height",fluid)
-
-    v-row(align="center", justify="center")
-        v-col(class="text-center")
-        v-btn(color="primary", @click="() => {!!test? test():''}") test
-        v-col(class="text-center")
+    v-card( dark,style="width: 100%", color="primary")
+      v-card-title(class="headline") Unlimited music now
+      v-card-subtitle Listen to your favorite artists and albums whenever and wherever, online and offline.</v-card-subtitle>
+      v-card-actions
+        v-btn(text) Listen Now
+    //- v-row(align="center", justify="center")
+    //-     v-col(class="text-center")
+    //-     v-btn(color="primary", @click="() => {!!test? test():''}") test
+    //-     v-col(class="text-center")
 </template>
 
 <script>
