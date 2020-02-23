@@ -11,8 +11,8 @@
       NewUnitForm(:clsList="cClassesList", :charactor="charactorVal",:doneCallBack="() => this.updateCharactor()", :closeCallBack="() => {this.updateValue = false}", :title="`修改`")
     v-content
       HomePage
-      SpellFunctionBotton(:scribe="() => {sheet = !sheet}")
-    v-footer(color="primary",dark, app)    
+    v-footer(color="primary",dark, app)
+      SpellFunctionBotton(:scribe="() => {sheet = !sheet}")    
       span(class="white--text") &copy; stormrabbit
 </template>
 
