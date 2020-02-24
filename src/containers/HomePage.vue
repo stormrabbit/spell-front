@@ -1,7 +1,7 @@
 <!-- -->
 <template lang="pug">
   v-container(class="fill-height",fluid)
-    v-card( dark,style="width: 100%;margin-top: 12px;", color="primary", v-for="(spell, index) in spells", :key="index")
+    v-card( dark,style="width: 100%;margin-top: 12px;", color="primary", v-for="(spell, index) in curSpells", :key="index")
       v-card-title(class="headline") {{spell.nickname}}
       v-card-subtitle {{spell.describe}}
       v-card-actions
@@ -118,7 +118,11 @@ export default {
     };
   },
   //监听属性 类似于data概念
-  computed: {},
+  computed: {
+    curSpells: function(){
+      return this.spells;
+    }
+  },
   //监控data中的数据变化
   watch: {},
   //方法集合

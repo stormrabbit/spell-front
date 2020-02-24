@@ -82,7 +82,6 @@ export default {
     pickSpell: function(spell) {
       this.snackbar = true;
       this.tips = `已准备 ${spell.lvl} 环法术 ${ spell.nickname}`;
-
     }
   },
   //生命周期 - 创建完成（可以访问当前this实例）
