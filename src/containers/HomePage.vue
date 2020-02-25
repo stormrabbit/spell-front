@@ -1,15 +1,11 @@
 <!-- -->
 <template lang="pug">
   v-container(class="fill-height",fluid)
-    v-card( dark,style="width: 100%;margin-top: 12px;", color="primary", v-for="(spell, index) in curSpells", :key="index")
+    v-card( dark,style="width: 100%;margin-top: 12px;", color="primary", v-for="(spell, index) in curSpells", :key="index", @click="onClick")
       v-card-title(class="headline") {{spell.nickname}}
       v-card-subtitle {{spell.describe}}
-      v-card-actions
-        v-btn(text) 释放
-    //- v-row(align="center", justify="center")
-    //-     v-col(class="text-center")
-    //-     v-btn(color="primary", @click="() => {!!test? test():''}") test
-    //-     v-col(class="text-center")
+      //- v-card-actions
+      //-   v-btn(text) 释放
 </template>
 
 <script>
@@ -126,7 +122,11 @@ export default {
   //监控data中的数据变化
   watch: {},
   //方法集合
-  methods: {},
+  methods: {
+    onClick: function() {
+      this.spells = this.spells.filter( (sp, index) => index !== 0);
+    }
+  },
   //生命周期 - 创建完成（可以访问当前this实例）
   created() {},
   //生命周期 - 挂载完成（可以访问DOM元素）
