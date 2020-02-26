@@ -4,8 +4,6 @@
     v-card( dark,style="width: 100%;margin-top: 12px;", color="primary", v-for="(spell, index) in curSpells", :key="index", @click="onClick")
       v-card-title(class="headline") {{spell.nickname}}
       v-card-subtitle {{spell.describe}}
-      //- v-card-actions
-      //-   v-btn(text) 释放
 </template>
 
 <script>
