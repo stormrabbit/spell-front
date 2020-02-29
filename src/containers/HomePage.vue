@@ -1,7 +1,7 @@
 <!-- -->
 <template lang="pug">
   v-container(class="fill-height",fluid)
-    v-card( dark,style="width: 100%;margin-top: 12px;", color="primary", v-for="(spell, index) in curSpells", :key="index", @click="onClick")
+    v-card( dark,style="width: 100%;margin-top: 12px;", color="primary", v-for="(spell, index) in curSpells", :key="index", @click="() => {this.onClick(index)}")
       v-card-title(class="headline") {{spell.nickname}}
       v-card-subtitle {{spell.describe}}
 </template>
@@ -115,14 +115,17 @@ export default {
   computed: {
     curSpells: function(){
       return this.spells;
+    },
+    usedSpells: function() {
+      return '';
     }
   },
   //监控data中的数据变化
   watch: {},
   //方法集合
   methods: {
-    onClick: function() {
-      this.spells = this.spells.filter( (sp, index) => index !== 0);
+    onClick: function(index) {
+      return index;
     }
   },
   //生命周期 - 创建完成（可以访问当前this实例）
