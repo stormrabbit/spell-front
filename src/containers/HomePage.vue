@@ -21,6 +21,7 @@ export default {
       spells: [
         /* 1 */
 {
+    "status" : "1",
     "lvl" : "2",
     "nickname" : "援助术",
     "name" : "aid",
@@ -33,6 +34,7 @@ export default {
 },
 /* 2 */
 {
+      "status" : "1",
     "lvl" : "0",
     "nickname" : "酸液飞溅",
     "name" : "acid_splash",
@@ -46,6 +48,7 @@ export default {
 
 /* 3 */
 {
+      "status" : "1",
     "lvl" : "2",
     "nickname" : "变身术",
     "name" : "alter_self",
@@ -59,6 +62,7 @@ export default {
 
 /* 4 */
 {
+      "status" : "1",
     "lvl" : "1",
     "nickname" : "警报术",
     "name" : "alarm",
@@ -72,6 +76,7 @@ export default {
 
 /* 5 */
 {
+      "status" : "1",
     "lvl" : "1",
     "nickname" : "化兽为友",
     "name" : "animal_friendship",
@@ -85,6 +90,7 @@ export default {
 
 /* 6 */
 {
+      "status" : "1",
     "lvl" : "2",
     "nickname" : "动物信使",
     "name" : "animal_messager",
@@ -98,6 +104,7 @@ export default {
 
 /* 7 */
 {
+      "status" : "1",
     "lvl" : "8",
     "nickname" : "动物形态",
     "name" : "animal_shape",
