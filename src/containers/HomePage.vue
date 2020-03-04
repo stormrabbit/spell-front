@@ -2,7 +2,7 @@
 <template lang="pug">
   v-container(class="fill-height",fluid)
     v-card(dark,style="width: 100%;margin-top: 12px;", color="primary", v-for="(spell, index) in curSpells", :key="index", @click="() => {onClick(index)}" :disabled="!parseInt(spell.status)" )
-      v-card-title(class="headline") {{spell.nickname}}
+      v-card-title(class="headline") {{`${spell.nickname}${!!parseInt(spell.status)? ``:`已使用`}`}} 
       v-card-subtitle {{spell.describe}}
 </template>
 
