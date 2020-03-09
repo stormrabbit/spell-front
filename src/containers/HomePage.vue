@@ -1,14 +1,11 @@
 <!-- -->
 <template lang="pug">
   div(class="fill-height",fluid)
-    v-chip(class="ma-2" v-for="(spell, index) in curSpells", :key="index" close @click="() => {onClick(index)}") 
-      span(v-if="parseInt(spell.status)") {{`${spell.nickname}`}} 
-      s(v-else) {{spell.nickname}}
-    //- v-card(dark,style="width: 100%;margin-top: 12px;", color="primary", v-for="(spell, index) in curSpells", :key="index", @click="() => {onClick(index)}" :disabled="!parseInt(spell.status)" )
-    //-   v-card-title(class="headline") 
-    //-     span(v-if="parseInt(spell.status)") {{`${spell.nickname}`}} 
-    //-     s(v-else) {{spell.nickname}}
-    //-   v-card-subtitle {{spell.describe}}
+    v-list
+      v-list-item(v-for="(spell, index) in curSpells", :key="index")
+        v-chip(class="ma-2" close @click="() => {onClick(index)}") 
+          span(v-if="parseInt(spell.status)") {{`${spell.nickname}`}} 
+          s(v-else) {{spell.nickname}}
 </template>
 
 <script>
