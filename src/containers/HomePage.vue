@@ -3,9 +3,13 @@
   div(class="fill-height",fluid)
     v-list
       v-list-item(v-for="(spell, index) in curSpells", :key="index")
-        v-chip(class="ma-2" close @click="() => {onClick(index)}") 
-          span(v-if="parseInt(spell.status)") {{`${spell.nickname}`}} 
-          s(v-else) {{spell.nickname}}
+        v-list-content
+          v-chip(class="ma-2" close @click="() => {onClick(index)}") 
+            span(v-if="parseInt(spell.status)") {{`${spell.nickname}`}} 
+            s(v-else) {{spell.nickname}}
+      v-divider(inset)
+        
+      
 </template>
 
 <script>
