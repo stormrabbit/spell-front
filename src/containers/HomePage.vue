@@ -1,13 +1,15 @@
 <!-- -->
 <template lang="pug">
   div(class="fill-height",fluid)
-    v-list
-      v-list-item(v-for="(spell, index) in curSpells", :key="index")
-        v-list-content
-          v-chip(class="ma-2" close @click="() => {onClick(index)}") 
-            span(v-if="parseInt(spell.status)") {{`${spell.nickname}`}} 
-            s(v-else) {{spell.nickname}}
-      v-divider(inset)
+    v-card(v-for="(spell, index) in curSpells", :key="index")
+      v-list
+        v-list-item
+          v-list-content
+            v-chip(class="ma-2" close @click="() => {onClick(index)}") 
+              span(v-if="parseInt(spell.status)") {{`${spell.nickname}`}} 
+              s(v-else) {{spell.nickname}}
+      v-divider
+
         
       
 </template>
