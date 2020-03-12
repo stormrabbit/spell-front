@@ -1,8 +1,10 @@
 <!-- -->
 <template lang="pug">
   div(class="fill-height",fluid)
-    v-card(v-for="(spell, index) in curSpells", :key="index")
-      v-list
+    v-list
+      v-list-group(v-for="(spell, index) in curSpells", :key="index")
+        template(v-slot:activator)
+          v-list-item-title {{`${index}环法术`}}
         v-list-item
           v-list-content
             v-chip(class="ma-2" close @click="() => {onClick(index)}") 
