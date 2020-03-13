@@ -6,10 +6,11 @@
         template(v-slot:activator)
           v-list-item-title {{`${index}环法术`}}
         v-list-item
-          v-list-content
-            v-chip(class="ma-2" close @click="() => {onClick(index)}") 
-              span(v-if="parseInt(spell.status)") {{`${spell.nickname}`}} 
-              s(v-else) {{spell.nickname}}
+          v-list-item-content
+            span {{spell.nickname}}
+            //- div(class="ma-2" close @click="() => {onClick(index)}") 
+            //-   span(v-if="parseInt(spell.status)") {{`${spell.nickname}`}} 
+            //-   s(v-else) {{spell.nickname}}
       v-divider
 
         
