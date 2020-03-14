@@ -1,17 +1,15 @@
 <!-- -->
 <template lang="pug">
-  div(class="fill-height",fluid)
+  v-card(class="fill-height",fluid)
     v-list
-      v-list-group(v-for="(spell, index) in curSpells", :key="index")
-        template(v-slot:activator)
-          v-list-item-title {{`${index}环法术`}}
-        v-list-item
-          v-list-item-content
-            span {{spell.nickname}}
-            //- div(class="ma-2" close @click="() => {onClick(index)}") 
-            //-   span(v-if="parseInt(spell.status)") {{`${spell.nickname}`}} 
-            //-   s(v-else) {{spell.nickname}}
-      v-divider
+      div(v-for="(spell, index) in curSpells", :key="index")
+        v-list-group
+          template(v-slot:activator)
+            v-list-item-title {{`${index}环法术`}}
+          v-list-item
+            v-list-item-content
+              span {{spell.nickname}}
+        v-divider
 
         
       
