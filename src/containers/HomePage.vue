@@ -2,14 +2,11 @@
 <template lang="pug">
   v-card(class="fill-height",fluid)
     v-list
-      div(v-for="(spell, index) in curSpells", :key="index")
-        v-list-group
-          template(v-slot:activator)
-            v-list-item-title {{`${index}环法术`}}
-          v-list-item
-            v-list-item-content
-              span {{spell.nickname}}
-        v-divider
+      v-list-item(v-for="(spell, index) in curSpells", :key="index")
+        v-card
+          v-card-title(class="headline") {{`${index}环法术`}}
+          v-card-text 
+            v-chip {{spell.nickname}}
 
         
       
@@ -27,6 +24,7 @@ export default {
   data() {
     //这里存放数据
     return {
+      act:true,
       spells: [
         /* 1 */
 {
