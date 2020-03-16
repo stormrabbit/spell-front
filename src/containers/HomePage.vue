@@ -3,10 +3,12 @@
   v-card(class="fill-height",fluid)
     v-list
       v-list-item(v-for="(spell, index) in curSpells", :key="index")
-        v-card
-          v-card-title(class="headline") {{`${index}环法术`}}
-          v-card-text 
-            v-chip {{spell.nickname}}
+        v-row(dense)
+          v-col(cols="12")
+            v-card(color="primary" dark)
+              v-card-title(class="headline") {{`${index}环法术`}}
+              v-card-text 
+                v-btn {{spell.nickname}}
 
         
       
