@@ -6,7 +6,9 @@
         v-row(dense)
           v-col(cols="12")
             v-card(color="primary" dark)
-              v-card-title(class="headline") {{`${index}环法术`}}
+              v-card-title(class="headline") 
+                span {{`${index}环法术`}}
+                span {{`剩余法术位置${index}`}}
               v-card-text 
                 v-btn {{spell.nickname}}
 
