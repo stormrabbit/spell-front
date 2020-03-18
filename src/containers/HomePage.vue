@@ -5,12 +5,11 @@
       v-list-item(v-for="(spell, index) in curSpells", :key="index")
         v-row(dense)
           v-col(cols="12")
-            v-card(color="primary" dark)
+            v-card(color="primary")
               v-card-title(class="headline") 
-                span {{`${index}环法术`}}
-                span {{`剩余法术位置${index}`}}
+                span {{`${index}环法术\t/\t剩余法术位${index}`}}
               v-card-text 
-                v-btn {{spell.nickname}}
+                v-btn(dark color="primary") {{spell.nickname}}
 
         
       
