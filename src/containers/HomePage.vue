@@ -7,7 +7,7 @@
           v-col(cols="12")
             v-card(color="primary")
               v-card-title(class="headline") 
-                span(style="color: white;") {{`${index}环法术\t/\t剩余法术位${index}`}}
+                span(style="color: white;") {{`${index}环法术\t/\t剩余法术位${index + plus}`}}
               v-card-text 
                 v-btn(dark color="primary") {{spell.nickname}}
 
@@ -20,13 +20,15 @@
 //例如：import 《组件名称》 from '《组件路径》';
 export default {
   props: {
-    test: Function
+    test: Function,
+    charactor: Object,
   },
   //import引入的组件需要注入到对象中才能使用
   components: {  },
   data() {
     //这里存放数据
     return {
+      plus: parseInt(this.charactor.value.replace('感知', '').replace('魅力', '').replace('智力',''))/2,
       act:true,
       spells: [
         /* 1 */
