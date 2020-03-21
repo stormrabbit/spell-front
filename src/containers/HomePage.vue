@@ -7,7 +7,7 @@
           v-col(cols="12")
             v-card(color="primary")
               v-card-title(class="headline") 
-                span(style="color: white;") {{`${index}环法术\t/\t剩余法术位${index + plus}`}}
+                span(style="color: white;") {{`${index}环法术\t/\t剩余法术位${index + parseValue}`}}
               v-card-text 
                 v-btn(dark color="primary") {{spell.nickname}}
 
@@ -28,7 +28,7 @@ export default {
   data() {
     //这里存放数据
     return {
-      plus: parseInt(this.charactor.value.replace('感知', '').replace('魅力', '').replace('智力',''))/2,
+      // plus: ,
       act:true,
       spells: [
         /* 1 */
@@ -137,6 +137,11 @@ export default {
     },
     usedSpells: function() {
       return this.spells.length;
+    },
+    parseValue: function() {
+      const temp = this.charactor.value? `${parseInt(this.charactor.value) - 10 }`:'0';
+      const value =Math.floor(parseInt(temp.replace('感知', '').replace('魅力', '').replace('智力',''))/2);
+      return value;
     }
   },
   //监控data中的数据变化

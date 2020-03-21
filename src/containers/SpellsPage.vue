@@ -6,8 +6,6 @@
         v-text-field(hide-details,single-line, v-model="keyword", :loading="isLoading", :label="`请输入法术名或法术环数`", persistent-hint)
         v-btn(icon, @click="onBack")
           v-icon mdi-cancel
-        //- v-btn(icon, @click="enableSearch")
-        //-   v-icon mdi-magnify
       v-list(two-line,subheader)
         v-list-item(v-for="(spell, index) in computedSpells", :key="index", link)
           v-list-item-avatar
