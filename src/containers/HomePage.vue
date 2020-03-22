@@ -140,8 +140,7 @@ export default {
     },
     parseValue: function() {
       const temp = this.charactor.value? `${parseInt(this.charactor.value) - 10 }`:'0';
-      const value =Math.floor(parseInt(temp.replace('感知', '').replace('魅力', '').replace('智力',''))/2);
-      return value;
+      return Math.floor(parseInt(temp.replace('感知', '').replace('魅力', '').replace('智力',''))/2);
     }
   },
   //监控data中的数据变化
