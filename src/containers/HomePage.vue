@@ -7,12 +7,9 @@
           v-col(cols="12")
             v-card(color="primary")
               v-card-title(class="headline") 
-                span(style="color: white;") {{`${index}环法术\t/\t剩余法术位${index + parseValue}`}}
+                span(style="color: white;") {{`${index}环法术\t/\t剩余${index + parseValue}`}}
               v-card-text 
                 v-btn(dark color="primary") {{spell.nickname}}
-
-        
-      
 </template>
 
 <script>
