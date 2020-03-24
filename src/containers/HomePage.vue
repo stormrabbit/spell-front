@@ -7,7 +7,7 @@
           v-col(cols="12")
             v-card(color="primary")
               v-card-title(class="headline") 
-                span(style="color: white;") {{`${index}环法术\t/\t剩余${index + parseValue}`}}
+                span(style="color: white;") {{`${index}环法术\t/\t剩余${spellSlots[index] + parseValue}`}}
               v-card-text 
                 v-btn(dark color="primary") {{spell.nickname}}
 </template>
@@ -26,6 +26,9 @@ export default {
     //这里存放数据
     return {
       // plus: ,
+      spellSlots: [
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+      ],
       act:true,
       spells: [
         /* 1 */
