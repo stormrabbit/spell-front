@@ -7,7 +7,7 @@
           v-col(cols="12")
             v-card(color="primary")
               v-card-title(class="headline") 
-                span(style="color: white;") {{`${index}环法术\t/\t剩余${spellSlots[index] + parseValue}`}}
+                span(style="color: white;") {{`${index}环法术\t/\t剩余${circle1}`}}
               v-card-text 
                 v-btn(dark color="primary" @click="() => castSpell(index)") {{spell.nickname}}
 </template>
@@ -141,6 +141,9 @@ export default {
     parseValue: function() {
       const temp = this.charactor.value? `${parseInt(this.charactor.value) - 10 }`:'0';
       return Math.floor(parseInt(temp.replace('感知', '').replace('魅力', '').replace('智力',''))/2);
+    },
+    circle1: function() {
+      return this.spellSlots[0] + this.parseValue;
     }
   },
   //监控data中的数据变化
@@ -148,6 +151,7 @@ export default {
   //方法集合
   methods: {
     castSpell: function(index) {
+      this.spellSlots[0] = this.spellSlots[0] - 1;
       return index;
     },
     onClick: function(index) {
