@@ -7,7 +7,7 @@
           v-col(cols="12")
             v-card(color="primary")
               v-card-title(class="headline") 
-                span(style="color: white;") {{`${index}环法术\t/\t剩余${circle1}`}}
+                span(style="color: white;") {{`${index}环法术\t/\t剩余${getCircle(index)}`}}
               v-card-text 
                 v-btn(dark color="primary" @click="() => castSpell(index)") {{spell.nickname}}
 </template>
@@ -29,6 +29,16 @@ export default {
       spellSlots: [
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0
       ],
+      circle0: 0,
+      circle1: 0,
+      circle2: 0,
+      circle3: 0,
+      circle4: 0,
+      circle5: 0,
+      circle6: 0,
+      circle7: 0,
+      circle8: 0,
+      circle9: 0,
       act:true,
       spells: [
         /* 1 */
@@ -142,17 +152,46 @@ export default {
       const temp = this.charactor.value? `${parseInt(this.charactor.value) - 10 }`:'0';
       return Math.floor(parseInt(temp.replace('感知', '').replace('魅力', '').replace('智力',''))/2);
     },
-    circle1: function() {
-      return this.spellSlots[0] + this.parseValue;
+    finalCircle0: function() {
+      return this.circle0 + this.parseValue;
+    },
+    finalCircle1: function() {
+      return this.circle1 + this.parseValue;
+    },
+    finalCircle2: function() {
+      return this.circle2 + this.parseValue;
+    },
+    finalCircle3: function() {
+      return this.circle3 + this.parseValue;
+    },
+    finalCircle4: function() {
+      return this.circle4 + this.parseValue;
+    },
+    finalCircle5: function() {
+      return this.circle5 + this.parseValue;
+    },
+    finalCircle6: function() {
+      return this.circle6 + this.parseValue;
+    },
+    finalCircle7: function() {
+      return this.circle7 + this.parseValue;
+    },
+    finalCircle8: function() {
+      return this.circle8 + this.parseValue;
+    },
+    finalCircle9: function() {
+      return this.circle9 + this.parseValue;
     }
   },
   //监控data中的数据变化
   watch: {},
   //方法集合
   methods: {
+    getCircle(index) {
+      return this[`finalCircle${index}`];
+    },
     castSpell: function(index) {
-      this.spellSlots[0] = this.spellSlots[0] - 1;
-      return index;
+       this[`circle${index}`] = this[`circle${index}`] - 1;
     },
     onClick: function(index) {
       const temps =  this.spells.map( (spl, idx) =>  {
