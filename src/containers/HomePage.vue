@@ -10,6 +10,7 @@
                 span(style="color: white;") {{`${index}环法术\t/\t剩余${getCircle(index)}`}}
               v-card-text 
                 v-btn(dark :disabled="getCircle(index) === 0" color="primary" @click="() => castSpell(index)") {{spell.nickname}}
+                v-btn(@click="resetSpell") 重置法术
 </template>
 
 <script>
@@ -26,9 +27,7 @@ export default {
     //这里存放数据
     return {
       // plus: ,
-      spellSlots: [
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0
-      ],
+      
       circle0: 0,
       circle1: 0,
       circle2: 0,
@@ -187,6 +186,12 @@ export default {
   watch: {},
   //方法集合
   methods: {
+    resetSpell() {
+      let index = 0;
+      for(; index< 10 ;index++) {
+        this[`circle${index}`] = 0;
+      }
+    },
     getCircle(index) {
       return this[`finalCircle${index}`];
     },
