@@ -1,16 +1,18 @@
 <!-- -->
 <template lang="pug">
   v-card(class="fill-height",fluid)
-    v-list
-      v-list-item(v-for="(spell, index) in curSpells", :key="index")
-        v-row(dense)
-          v-col(cols="12")
-            v-card(color="primary")
-              v-card-title(class="headline") 
-                span(style="color: white;") {{`${index}环法术\t/\t剩余${getCircle(index)}`}}
-              v-card-text 
-                v-btn(dark :disabled="getCircle(index) === 0" color="primary" @click="() => castSpell(index)") {{spell.nickname}}
-                v-btn(@click="resetSpell") 重置法术
+    v-card-title 
+        v-btn(color="primary" @click="resetSpell") 重置法术
+    v-card-text
+      v-list
+        v-list-item(v-for="(spell, index) in curSpells", :key="index")
+          v-row(dense)
+            v-col(cols="12")
+              v-card(color="primary")
+                v-card-title(class="headline") 
+                  span(style="color: white;") {{`${index}环法术\t/\t剩余${getCircle(index)}`}}
+                v-card-text 
+                  v-btn(dark :disabled="getCircle(index) === 0" color="primary" @click="() => castSpell(index)") {{spell.nickname}}
 </template>
 
 <script>
