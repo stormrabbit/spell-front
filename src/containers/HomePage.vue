@@ -2,7 +2,8 @@
 <template lang="pug">
   v-card(class="fill-height",fluid)
     v-card-title 
-        v-btn(color="primary" @click="resetSpell") 重置法术
+        v-btn(color="primary" @click="resetSpell") 休息
+          v-icon mdi-cached
     v-card-text
       v-list
         v-list-item(v-for="(spell, index) in curSpells", :key="index")
