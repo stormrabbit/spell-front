@@ -5,7 +5,7 @@
         v-btn(color="primary" @click="resetSpell") 休息
           v-icon mdi-cached
     v-card-text
-      v-list
+      v-list(v-if="spells.length")
         v-list-item(v-for="(spell, index) in curSpells", :key="index")
           v-row(dense)
             v-col(cols="12")
@@ -14,6 +14,7 @@
                   span(style="color: white;") {{`${index}环法术\t/\t剩余${getCircle(index)}`}}
                 v-card-text 
                   v-btn(dark :disabled="getCircle(index) === 0" color="primary" @click="() => castSpell(index)") {{spell.nickname}}
+      span(v-if="!spells.length") 尚未准备法术/神术
 </template>
 
 <script>
