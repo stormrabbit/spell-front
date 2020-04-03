@@ -14,7 +14,7 @@
                   span(style="color: white;") {{`${index}环法术\t/\t剩余${getCircle(index)}`}}
                 v-card-text 
                   v-btn(dark :disabled="getCircle(index) === 0" color="primary" @click="() => castSpell(index)") {{spell.nickname}}
-      span(v-if="!spells.length") 尚未准备法术/神术
+      span(v-if="!spells.length") 尚未准备法术
 </template>
 
 <script>
