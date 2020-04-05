@@ -4,7 +4,7 @@
     v-card-title 
         v-btn(color="primary" @click="resetSpell" v-if="spells.length") 休息
           v-icon mdi-cached
-        v-btn(v-if="!spells.length" color="primary") 准备法术/神术
+        v-btn(v-if="!spells.length" color="primary" @click="scribe") 准备法术/神术
           v-icon mdi-script-text-outline
     v-card-text
       v-list(v-if="spells.length")
@@ -26,14 +26,13 @@ export default {
   props: {
     test: Function,
     charactor: Object,
+    scribe: Function,
   },
   //import引入的组件需要注入到对象中才能使用
   components: {  },
   data() {
     //这里存放数据
     return {
-      // plus: ,
-      
       circle0: 0,
       circle1: 0,
       circle2: 0,

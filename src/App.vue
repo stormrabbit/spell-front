@@ -10,7 +10,7 @@
     v-dialog(v-model="updateValue", persistent, v-if="updateValue")
       NewUnitForm(:clsList="cClassesList", :charactor="charactorVal",:doneCallBack="() => this.updateCharactor()", :closeCallBack="() => {this.updateValue = false}", :title="`修改`")
     v-content
-      HomePage(:charactor="charactorVal")
+      HomePage(:charactor="charactorVal" :scribe="() => {sheet = !sheet}")
     v-footer(color="primary",dark, app)
       SpellFunctionBotton(:scribe="() => {sheet = !sheet}")    
       span(class="white--text") &copy; stormrabbit
