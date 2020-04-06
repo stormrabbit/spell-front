@@ -4,7 +4,7 @@
     v-card-title 
         v-btn(color="primary" @click="resetSpell" v-if="spells.length") 休息
           v-icon mdi-cached
-        v-btn(v-if="!spells.length" color="primary" @click="scribe") 准备法术/神术
+        v-btn(v-if="!spells.length" color="primary" @click="scribe") {{`准备${parsedSpellType}`}}
           v-icon mdi-script-text-outline
     v-card-text
       v-list(v-if="spells.length")
@@ -49,6 +49,19 @@ export default {
   },
   //监听属性 类似于data概念
   computed: {
+    parsedSpellType: function() {
+      const dividers = ['吟游诗人', '牧师', '游侠', '德鲁伊', '圣骑士'];
+      const spells = ['术士','法师'];
+      const cls = this.charactor.cls;
+      if(dividers.findIndex( dv => dv ===cls) !== -1) {
+        return '神术';
+      } else if(spells.findIndex(sl => sl === cls) !== -1) {
+        return '法术';
+      } else {
+        return '邪术';
+      }
+      
+    },
     curSpells: function(){
       return this.spells;
     },
