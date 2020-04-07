@@ -13,7 +13,6 @@
               span(class="white--text headline") {{spell.lvl}}
           v-list-item-content
             v-list-item-title {{ spell.nickname +'\t'}}
-              //- span(style="font-size: 12px") {{`${spell.school}\t${spell.time}\t${spell.range}`}}
             v-list-item-subtitle {{`${spell.school}\t${spell.time}\t${spell.range}`}}
           v-list-item-action
             v-btn(icon)
