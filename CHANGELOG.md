@@ -6,3 +6,7 @@
 
 1. 引入 vuex
 2. 引入 commitizen （失败）
+
+### 2020 - 4 - 8
+
+1. 引入 commitizen 成功
