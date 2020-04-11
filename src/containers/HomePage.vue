@@ -2,10 +2,11 @@
 <template lang="pug">
   v-card(class="fill-height",fluid)
     v-card-title 
-        v-btn(color="primary" @click="resetSpell" v-if="spells.length") 休息
-          v-icon mdi-cached
-        v-btn(v-if="!spells.length" color="primary" @click="scribe") {{`准备${parsedSpellType}`}}
-          v-icon mdi-script-text-outline
+      span {{test}}
+      v-btn(color="primary" @click="resetSpell" v-if="spells.length") 休息
+        v-icon mdi-cached
+      v-btn(v-if="!spells.length" color="primary" @click="scribe") {{`准备${parsedSpellType}`}}
+        v-icon mdi-script-text-outline
     v-card-text
       v-list(v-if="spells.length")
         v-list-item(v-for="(spell, index) in curSpells", :key="index")
@@ -22,9 +23,10 @@
 <script>
 //这里可以导入其他文件（比如：组件，工具js，第三方插件js，json文件，图片文件等等）
 //例如：import 《组件名称》 from '《组件路径》';
+import {mapGetters} from 'vuex';
 export default {
   props: {
-    test: Function,
+    // test: Function,
     charactor: Object,
     scribe: Function,
   },
@@ -49,6 +51,7 @@ export default {
   },
   //监听属性 类似于data概念
   computed: {
+    ...mapGetters('homepage', ['test']),
     parsedSpellType: function() {
       const dividers = ['吟游诗人', '牧师', '游侠', '德鲁伊', '圣骑士'];
       const spells = ['术士','法师'];
