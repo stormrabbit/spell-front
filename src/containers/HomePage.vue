@@ -2,7 +2,6 @@
 <template lang="pug">
   v-card(class="fill-height",fluid)
     v-card-title 
-      span {{test}}
       v-btn(color="primary" @click="resetSpell" v-if="spells.length") 休息
         v-icon mdi-cached
       v-btn(v-if="!spells.length" color="primary" @click="scribe") {{`准备${parsedSpellType}`}}
@@ -23,7 +22,7 @@
 <script>
 //这里可以导入其他文件（比如：组件，工具js，第三方插件js，json文件，图片文件等等）
 //例如：import 《组件名称》 from '《组件路径》';
-import {mapGetters} from 'vuex';
+import {mapGetters, mapActions} from 'vuex';
 export default {
   props: {
     // test: Function,
@@ -46,12 +45,11 @@ export default {
       circle8: 0,
       circle9: 0,
       act:true,
-      spells: [],
     };
   },
   //监听属性 类似于data概念
   computed: {
-    ...mapGetters('homepage', ['test']),
+    ...mapGetters('homepage', ['spells']),
     parsedSpellType: function() {
       const dividers = ['吟游诗人', '牧师', '游侠', '德鲁伊', '圣骑士'];
       const spells = ['术士','法师'];
@@ -110,6 +108,7 @@ export default {
   watch: {},
   //方法集合
   methods: {
+    ...mapActions('homepage', ['retrevePersonalSpells']),
     resetSpell() {
       let index = 0;
       for(; index< 10 ;index++) {
@@ -135,7 +134,9 @@ export default {
   //生命周期 - 创建完成（可以访问当前this实例）
   created() {},
   //生命周期 - 挂载完成（可以访问DOM元素）
-  mounted() {},
+  mounted() {
+    this.retrevePersonalSpells();
+  },
   beforeCreate() {}, //生命周期 - 创建之前
   beforeMount() {}, //生命周期 - 挂载之前
   beforeUpdate() {}, //生命周期 - 更新之前
