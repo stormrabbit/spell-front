@@ -8,14 +8,16 @@
         v-icon mdi-script-text-outline
     v-card-text
       v-list(v-if="spells.length")
-        v-list-item(v-for="(spell, index) in curSpells", :key="index")
+        v-list-item(v-for="(spell, index) in curSpells", :key="index" v-if="spell.length")
           v-row(dense)
             v-col(cols="12")
               v-card(color="primary")
                 v-card-title(class="headline") 
                   span(style="color: white;") {{`${index}环法术\t/\t剩余${getCircle(index)}`}}
                 v-card-text 
-                  v-btn(dark :disabled="getCircle(index) === 0" color="primary" @click="() => castSpell(index)") {{spell.nickname}}
+                  v-row
+                    v-col(cols="2" v-for="(sp, idx) in spell" :key="idx")
+                      v-btn(block style="margin-right: 8px;" dark :disabled="getCircle(index) === 0" color="primary" @click="() => castSpell(index)") {{sp.nickname}}
       
 </template>
 
@@ -64,7 +66,11 @@ export default {
       
     },
     curSpells: function(){
-      return this.spells;
+      return this.spells.reduce( (pre, cur) => {
+        const lvl = cur.lvl;
+        pre[lvl].push(cur);
+        return pre;
+      }, [[], [], [] , [] , [], [] , [] , [] , [] , []]);
     },
     usedSpells: function() {
       return this.spells.length;
