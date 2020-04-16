@@ -16,7 +16,7 @@
                   span(style="color: white;") {{`${index}环法术\t/\t剩余${getCircle(index)}`}}
                 v-card-text 
                   v-row
-                    v-col(cols="2" v-for="(sp, idx) in spell" :key="idx")
+                    v-col(:cols="thisCol" v-for="(sp, idx) in spell" :key="idx")
                       v-btn(block style="margin-right: 8px;" dark :disabled="getCircle(index) === 0" color="primary" @click="() => castSpell(index)") {{sp.nickname}}
       
 </template>
@@ -36,6 +36,7 @@ export default {
   data() {
     //这里存放数据
     return {
+      cols: 0,
       circle0: 0,
       circle1: 0,
       circle2: 0,
@@ -52,6 +53,9 @@ export default {
   //监听属性 类似于data概念
   computed: {
     ...mapGetters('homepage', ['spells']),
+    thisCol() {
+      return this.cols;
+    },
     parsedSpellType: function() {
       const dividers = ['吟游诗人', '牧师', '游侠', '德鲁伊', '圣骑士'];
       const spells = ['术士','法师'];
@@ -115,6 +119,10 @@ export default {
   //方法集合
   methods: {
     ...mapActions('homepage', ['retrevePersonalSpells']),
+    isMobile() {
+      let flag = navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i);
+      return flag;
+    },
     resetSpell() {
       let index = 0;
       for(; index< 10 ;index++) {
@@ -142,6 +150,11 @@ export default {
   //生命周期 - 挂载完成（可以访问DOM元素）
   mounted() {
     this.retrevePersonalSpells();
+    if(this.isMobile()) {
+      this.cols = 6;
+    }else {
+      this.cols = 2;
+    }
   },
   beforeCreate() {}, //生命周期 - 创建之前
   beforeMount() {}, //生命周期 - 挂载之前
