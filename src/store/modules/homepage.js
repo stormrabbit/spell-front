@@ -21,9 +21,11 @@ export default {
     actions: {
         async retrevePersonalSpells({
             commit
+        }, {
+            cls
         }) {
             const result = await requestGet('http://localhost:3000/spells', {
-                cls: 'ranger'
+                cls
             });
             commit('putSpells', result);
         }

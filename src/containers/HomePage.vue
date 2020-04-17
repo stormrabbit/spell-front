@@ -149,7 +149,7 @@ export default {
   created() {},
   //生命周期 - 挂载完成（可以访问DOM元素）
   mounted() {
-    this.retrevePersonalSpells();
+    this.retrevePersonalSpells({cls: this.charactor.cls});
     if(this.isMobile()) {
       this.cols = 6;
     }else {
