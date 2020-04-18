@@ -11,13 +11,13 @@
         v-list-item(v-for="(spell, index) in curSpells", :key="index" v-if="spell.length")
           v-row(dense)
             v-col(cols="12")
-              v-card(color="primary")
+              v-card
                 v-card-title(class="headline") 
-                  span(style="color: white;") {{`${index}环法术\t/\t剩余${getCircle(index)}`}}
+                  span(style="color: primary;") {{`${index}环法术\t/\t剩余${getCircle(index)}`}}
                 v-card-text 
                   v-row
                     v-col(:cols="thisCol" v-for="(sp, idx) in spell" :key="idx")
-                      v-btn(block style="margin-right: 8px;" dark :disabled="getCircle(index) === 0" color="primary" @click="() => castSpell(index)") {{sp.nickname}}
+                      v-btn(outlined block style="margin-right: 8px;" dark :disabled="getCircle(index) === 0" color="primary" @click="() => castSpell(index)") {{sp.nickname}}
       
 </template>
 
@@ -75,9 +75,6 @@ export default {
         pre[lvl].push(cur);
         return pre;
       }, [[], [], [] , [] , [], [] , [] , [] , [] , []]);
-    },
-    usedSpells: function() {
-      return this.spells.length;
     },
     parseValue: function() {
       const temp = this.charactor.value? `${parseInt(this.charactor.value) - 10 }`:'0';
