@@ -112,7 +112,41 @@ export default {
     }
   },
   //监控data中的数据变化
-  watch: {},
+  watch: {
+    'charactor.cls':{
+      handler(newVal){
+        let cls = '';
+        switch(newVal){
+          case '邪术师':
+            cls = 'warlock';
+            break;
+            case '法师':
+            cls ='wizard';
+            break;
+            case '牧师':
+              cls = 'cleric';
+              break;
+              case '圣骑士':
+                cls = 'paladin';
+                break;
+                case '游侠':
+                  cls = 'ranger';
+                  break;
+                  case '吟游诗人':
+                    cls = 'band';
+                    break;
+                 case '德鲁伊':
+                    cls = 'druid';
+                    break;
+                    default:
+                      cls ='sorcerer';
+
+        }
+        this.retrevePersonalSpells({cls});
+      },
+      deep: true,
+    }
+  },
   //方法集合
   methods: {
     ...mapActions('homepage', ['retrevePersonalSpells']),
@@ -146,7 +180,7 @@ export default {
   created() {},
   //生命周期 - 挂载完成（可以访问DOM元素）
   mounted() {
-    this.retrevePersonalSpells({cls: this.charactor.cls});
+    // this.retrevePersonalSpells({cls: this.charactor.cls});
     if(this.isMobile()) {
       this.cols = 6;
     }else {
