@@ -17,7 +17,10 @@
                 v-card-text 
                   v-row
                     v-col(:cols="thisCol" v-for="(sp, idx) in spell" :key="idx")
-                      v-btn(outlined block style="margin-right: 8px;" dark :disabled="getCircle(index) === 0" color="primary" @click="() => castSpell(index)") {{sp.nickname}}
+                      v-tooltip(top)
+                        template(v-slot:activator="{ on }")
+                          v-btn(outlined block style="margin-right: 8px;"   v-on="on" dark :disabled="getCircle(index) === 0" color="primary" @click="() => castSpell(index)") {{sp.nickname}}
+                        span {{sp.describe}}
       
 </template>
 
