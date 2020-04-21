@@ -14,7 +14,7 @@
               v-card
                 v-card-title(class="headline") 
                   span(style="color: primary;") {{`${index}环法术\t/\t剩余${getCircle(index)}`}}
-                v-card-text 
+                v-card-text(v-if="!(getCircle(index) === 0)") 
                   v-row
                     v-col(:cols="thisCol" v-for="(sp, idx) in spell" :key="idx")
                       v-tooltip(top)
