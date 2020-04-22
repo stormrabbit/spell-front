@@ -17,7 +17,7 @@
                 v-card-text(v-if="!(getCircle(index) === 0)") 
                   v-row
                     v-col(:cols="thisCol" v-for="(sp, idx) in spell" :key="idx")
-                      v-tooltip(top)
+                      v-tooltip(bottom max-width='300')
                         template(v-slot:activator="{ on }")
                           v-btn(outlined block style="margin-right: 8px;"   v-on="on" dark :disabled="getCircle(index) === 0" color="primary" @click="() => castSpell(index)") {{sp.nickname}}
                         span {{sp.describe}}
