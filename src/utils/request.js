@@ -45,7 +45,7 @@ export const requestPut = (url, query = {}, params = {}, final = () => {}) => ne
     request(`${url}?${Object.keys(query).reduce( (pre,cur) => `${pre}&${cur}=${query[cur]}`, '').substring(1)}`, {
             method: 'put',
             credentials: 'include',
-            body: JSON.stringify(params),
+            body: params,
             headers: {
                 'Content-Type': 'application/json'
             }

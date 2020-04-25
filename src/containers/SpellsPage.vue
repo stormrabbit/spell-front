@@ -20,13 +20,15 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
 //这里可以导入其他文件（比如：组件，工具js，第三方插件js，json文件，图片文件等等）
 //例如：import 《组件名称》 from '《组件路径》';
 // const blues = ['#E3F2FD', '#BBDEFB', '#90CAF9', '#64B5F6', '#42A5F5', '#1E88E5', '#1976D2', '#1565C0'];
 export default {
   props: {
     spells: Array,
-    onBack: Function
+    onBack: Function,
+    charactor: Object,
   },
   //import引入的组件需要注入到对象中才能使用
   components: {},
@@ -46,6 +48,7 @@ export default {
   //监听属性 类似于data概念
   computed: {
     logTips: function() {
+   
       return this.tips;
     },
     computedSpells: function() {
@@ -73,12 +76,14 @@ export default {
   watch: {},
   //方法集合
   methods: {
+    ...mapActions('spellspage',['updateSpell']),
     enableSearch: function() {
       this.snackbar = true;
     },
     pickSpell: function(spell) {
       this.snackbar = true;
       this.tips = `已准备 ${spell.lvl} 环法术 ${ spell.nickname}`;
+      this.updateSpell({id:this.charactor._id, spell});
     }
   },
   //生命周期 - 创建完成（可以访问当前this实例）

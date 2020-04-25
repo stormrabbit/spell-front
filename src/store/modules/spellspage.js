@@ -1,5 +1,5 @@
 import {
-    requestGet
+    requestPut
 } from '../../utils/request';
 export default {
     namespaced: true,
@@ -19,13 +19,14 @@ export default {
         }
     },
     actions: {
-        async retrevePersonalSpells({
+        async updateSpell({
             commit
         }, {
-            cls
+            id,
+            spell,
         }) {
-            const result = await requestGet('http://localhost:3000/spells', {
-                cls
+            const result = await requestPut(`http://localhost:3000/personal/${id}`, {}, {
+                spell
             });
             commit('putSpells', result);
         }
