@@ -1,6 +1,7 @@
 import {
     request
 } from 'axios';
+import qs from 'qs';
 export const requestGet = (url, query = {}, final = () => {}) => new Promise((reslove, reject) => {
     request(`${url}?${Object.keys(query).reduce( (pre,cur) => `${pre}&${cur}=${query[cur]}`, '').substring(1)}`, {
             method: 'get',
@@ -45,7 +46,7 @@ export const requestPut = (url, query = {}, params = {}, final = () => {}) => ne
     request(`${url}?${Object.keys(query).reduce( (pre,cur) => `${pre}&${cur}=${query[cur]}`, '').substring(1)}`, {
             method: 'put',
             credentials: 'include',
-            body: params,
+            body: qs.stringify(params),
             headers: {
                 'Content-Type': 'application/json'
             }

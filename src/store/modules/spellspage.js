@@ -1,6 +1,10 @@
 import {
-    requestPut
+    // requestPut,
+    // requestPost
 } from '../../utils/request';
+import {
+    put
+} from 'axios';
 export default {
     namespaced: true,
     state: {
@@ -25,9 +29,9 @@ export default {
             id,
             spell,
         }) {
-            const result = await requestPut(`http://localhost:3000/personal/${id}`, {}, {
-                spell
-            });
+            const result = await put(`http://localhost:3000/personal/${id}`, spell);
+            // await requestPost(`http://localhost:3000/personal`, spell);
+            // const result = await requestPut(`http://localhost:3000/personal/${id}`, {}, spell);
             commit('putSpells', result);
         }
     }
