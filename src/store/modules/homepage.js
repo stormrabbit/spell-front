@@ -4,18 +4,23 @@ import {
 export default {
     namespaced: true,
     state: {
-        spells: []
+        spells: [],
+        overlay: false,
     },
     getters: {
         spells: state => {
             return state.spells
         },
+        overlay: state => state.overlay,
     },
     mutations: {
         putSpells(state, spells) {
             state.spells = [
                 ...spells,
             ]
+        },
+        putLoading(state, loading) {
+            state.overlay = loading;
         }
     },
     actions: {

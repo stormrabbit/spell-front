@@ -1,5 +1,7 @@
 <template lang="pug">
   v-app(id="inspire")
+    v-overlay(:value="overlay")
+      v-progress-circular(indeterminate size="64")
     v-navigation-drawer(v-model="drawer", app)
       ClassesSideList(:classeslist="cClassesList",:oncallback="chooseClass")
     ClassesTitleBar(:charactor="charactorVal", :onCallBack="() => {drawer = !drawer}", :resetClass="() => {this.updateValue = true}")
@@ -24,6 +26,7 @@ import HomePage from "./containers/HomePage";
 import SepllsPage from "./containers/SpellsPage";
 import SpellFunctionBotton from "./components/SpellFunctionBotton";
 import NewUnitForm from "./components/NewUnitForm";
+import { mapGetters, mapMutations } from 'vuex';
 export default {
   props: {
     source: String
@@ -38,6 +41,13 @@ export default {
   },
   mounted: function() {
     this.reload();
+  },
+  watch:{
+    overlay(val) {
+      val && setTimeout(() => {
+          this.putLoading(false);
+        }, 3000)
+    }
   },
   data: () => ({
     fab: false,
@@ -60,6 +70,7 @@ export default {
     updateValue: false
   }),
   computed: {
+    ...mapGetters('homepage', ['overlay']),
     cClassesList: function() {
       return this.classesList;
     },
@@ -74,6 +85,7 @@ export default {
     }
   },
   methods: {
+    ...mapMutations('homepage', ['putLoading']),
     createCharactor: function() {
       this.dialog = false;
       this.charactor._id = undefined;

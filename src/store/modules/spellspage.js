@@ -30,8 +30,6 @@ export default {
             spell,
         }) {
             const result = await put(`http://localhost:3000/personal/${id}`, spell);
-            // await requestPost(`http://localhost:3000/personal`, spell);
-            // const result = await requestPut(`http://localhost:3000/personal/${id}`, {}, spell);
             commit('putSpells', result);
         }
     }

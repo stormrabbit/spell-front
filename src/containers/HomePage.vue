@@ -25,7 +25,7 @@
 <script>
 //这里可以导入其他文件（比如：组件，工具js，第三方插件js，json文件，图片文件等等）
 //例如：import 《组件名称》 from '《组件路径》';
-import {mapGetters, mapActions} from 'vuex';
+import {mapGetters, mapActions, mapMutations} from 'vuex';
 export default {
   props: {
     // test: Function,
@@ -151,6 +151,7 @@ export default {
   //方法集合
   methods: {
     ...mapActions('homepage', ['retrevePersonalSpells']),
+    ...mapMutations('homepage', ['putLoading']),
     isMobile() {
       let flag = navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i);
       return flag;
@@ -160,6 +161,7 @@ export default {
       for(; index< 10 ;index++) {
         this[`circle${index}`] = 0;
       }
+      this.putLoading(true);
     },
     getCircle(index) {
       return this[`finalCircle${index}`];
