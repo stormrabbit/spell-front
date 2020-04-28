@@ -1,7 +1,10 @@
 <!--  -->
 <template lang="pug">
     div 
-      v-snackbar(v-model="snackbar", :timeout="timeout") {{ logTips }}
+      v-snackbar(v-model="snackbar" top :timeout="timeout" color="success")
+        v-icon(color="white" class="mr-3")  mdi-bell-plus
+        div logTips
+        v-icon(color="white" size="16" @click="snackbar = false") mdi-close-circle
       v-toolbar(dense)
         v-text-field(hide-details,single-line, v-model="keyword", :loading="isLoading", :label="`请输入法术名或法术环数`", persistent-hint)
         v-btn(icon, @click="onBack")

@@ -1,7 +1,8 @@
 <!--  -->
 <template lang="pug">
     v-card
-        v-snackbar(v-model="snackbar", :timeout="timeout") {{ logTips }}
+        v-snackbar(v-model="snackbar" :timeout="timeout") {{ logTips }}
+          span test
         v-card-title
             span(class="headline") {{title}}
         v-card-text
