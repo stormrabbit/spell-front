@@ -12,7 +12,7 @@
       v-list(two-line,subheader)
         v-list-item(v-for="(spell, index) in computedSpells", :key="index", link)
           v-list-item-avatar
-            v-avatar(color="primary", size="48")
+            v-avatar(color="primary" size="48")
               span(class="white--text headline") {{spell.lvl}}
           v-list-item-content
             v-list-item-title {{ spell.nickname +'\t'}}
