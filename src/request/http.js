@@ -5,7 +5,7 @@ import store from './../store/index';
 const instance = axios.create({
     timeout: 15 * 1000, // 15 秒超时
     baseURL: process.env.VUE_APP_ADMIN_API_HOST, // 设置域名
-    withCredentials: true, // 携带 cookie
+    // withCredentials: true, // 携带 cookie
     headers: {
         'Content-Type': 'application/x-www-form-urlencoded'
     }
@@ -24,13 +24,8 @@ instance.interceptors.response.use(response => {
     store.commit('global/putLoadingState', false);
     try {
         const {
-            code = 40000, message = '网络连接异常', data = {},
-        } = response.data || {};
-        store.commit('global/putMessage', message);
-
-        if (code !== 20000) {
-            return Promise.resolve({});
-        }
+            data
+        } = response || {};
         return Promise.resolve(data);
     } catch (ex) {
         store.commit('global/putMessage', ex);

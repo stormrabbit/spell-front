@@ -1,6 +1,10 @@
+// import {
+//     requestGet
+// } from '../../utils/request';
+
 import {
-    requestGet
-} from '../../utils/request';
+    get
+} from './../../request/http';
 export default {
     namespaced: true,
     state: {
@@ -29,9 +33,13 @@ export default {
         }, {
             cls
         }) {
-            const result = await requestGet('http://localhost:3000/spells', {
+
+            const result = await get('http://localhost:3000/spells', {
                 cls
             });
+            // const result = await requestGet('http://localhost:3000/spells', {
+            //     cls
+            // });
             commit('putSpells', result);
         }
     }
