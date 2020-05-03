@@ -1,8 +1,4 @@
 import {
-    // requestPut,
-    // requestPost
-} from '../../utils/request';
-import {
     put
 } from 'axios';
 export default {

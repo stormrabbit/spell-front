@@ -1,7 +1,3 @@
-// import {
-//     requestGet
-// } from '../../utils/request';
-
 import {
     get
 } from './../../request/http';
@@ -37,9 +33,6 @@ export default {
             const result = await get('http://localhost:3000/spells', {
                 cls
             });
-            // const result = await requestGet('http://localhost:3000/spells', {
-            //     cls
-            // });
             commit('putSpells', result);
         }
     }
