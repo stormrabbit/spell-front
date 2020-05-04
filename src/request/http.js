@@ -33,12 +33,54 @@ instance.interceptors.response.use(response => {
     }
 });
 
-export const get = (url, query = {}, config = {}) => new Promise((res, rej) => {
-    instance({
-            method: 'get',
-            url,
-            params: query,
-            ...config
-        }).then(result => res(result))
-        .catch(err => rej(err));
-})
+const request = function (url, params, config, method) {
+    return new Promise((resolve, reject) => {
+        instance[method](url, params, Object.assign({}, config)).then(response => {
+            resolve(response)
+        }, err => {
+            if (err.Cancel) {
+                window.alert(err);
+            } else {
+                reject(err)
+            }
+        }).catch(err => {
+            reject(err)
+        })
+    })
+}
+
+const post = (url, params = {}, config = {}) => {
+    return request(url, params, config, 'post')
+}
+
+const get = (url, query = {}, params, config = {}) => {
+    const _url = `${url}?${parseQuery(query)}`
+    return request(_url, params, config, 'get')
+}
+
+const put = (url, query = {}, params, config = {}) => {
+    const _url = `${url}?${parseQuery(query)}`
+    return request(_url, params, config, 'put')
+}
+
+const del = (url, query = {}, config = {}) => {
+    const _url = `${url}?${parseQuery(query)}`
+    return request(_url, {}, config, 'put')
+}
+
+const parseQuery = (query = {}) => {
+    return Object.keys(query).reduce((pre, cur) => {
+        if ((typeof (query[cur]) === 'object') && !query[cur].length) {
+            return pre;
+        }
+        const temp = (query[cur] && query[cur].length && typeof (query[cur]) === 'object') ? query[cur].map(qr => `${cur}=${qr}`).join('&') : `${cur}=${query[cur]}`
+        return `${pre}&${temp}`;
+    }, '').substring(1)
+}
+
+export {
+    post,
+    get,
+    put,
+    del
+}
