@@ -1,6 +1,6 @@
 import {
     put
-} from 'axios';
+} from '../../request/http';
 export default {
     namespaced: true,
     state: {
@@ -25,7 +25,7 @@ export default {
             id,
             spell,
         }) {
-            const result = await put(`http://localhost:3000/personal/${id}`, spell);
+            const result = await put(`http://localhost:3000/personal/${id}`, {}, spell);
             commit('putSpells', result);
         }
     }
