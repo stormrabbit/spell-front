@@ -1,5 +1,6 @@
 import axios from 'axios';
 import store from './../store/index';
+import qs from 'qs';
 // let loadingInstance = null;
 
 const instance = axios.create({
@@ -14,7 +15,7 @@ const instance = axios.create({
 // 设置 post 请求头
 
 // instance.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
-
+// instance.defaults.headers.put['Content-Type'] = 'application/x-www-form-urlencoded';
 instance.interceptors.request.use(config => {
     store.commit('global/putLoadingState', true);
     return config;
@@ -35,7 +36,7 @@ instance.interceptors.response.use(response => {
 
 const request = function (url, params, config, method) {
     return new Promise((resolve, reject) => {
-        instance[method](url, params, Object.assign({}, config)).then(response => {
+        instance[method](url, qs.stringify(params), Object.assign({}, config)).then(response => {
             resolve(response)
         }, err => {
             if (err.Cancel) {

@@ -116,33 +116,6 @@ export default {
   watch: {
     'charactor.cls':{
       handler(newVal){
-        // let cls = '';
-        // switch(newVal){
-        //   case '邪术师':
-        //     cls = 'warlock';
-        //     break;
-        //     case '法师':
-        //     cls ='wizard';
-        //     break;
-        //     case '牧师':
-        //       cls = 'cleric';
-        //       break;
-        //       case '圣骑士':
-        //         cls = 'paladin';
-        //         break;
-        //         case '游侠':
-        //           cls = 'ranger';
-        //           break;
-        //           case '吟游诗人':
-        //             cls = 'band';
-        //             break;
-        //          case '德鲁伊':
-        //             cls = 'druid';
-        //             break;
-        //             default:
-        //               cls ='sorcerer';
-
-        // }
         this.retrevePersonalSpells({cls:this.parseCls(newVal)});
       },
       deep: true,
@@ -154,28 +127,23 @@ export default {
     ...mapMutations('homepage', ['putLoading']),
     parseCls(cls) {
       switch(cls){
-                case '邪术师':
-                  return 'warlock';
-                  case '法师':
-                  return 'wizard';
-                  case '牧师':
-                   return 'cleric';
-                    case '圣骑士':
-                     return 'paladin';
-                      
-                      case '游侠':
-                        return 'ranger';
-                       
-                        case '吟游诗人':
-                          return 'band';
-                         
-                      case '德鲁伊':
-                          return 'druid';
-                         
-                          default:
-                          return 'sorcerer';
-
-              }
+        case '邪术师':
+          return 'warlock';
+        case '法师':
+          return 'wizard';
+        case '牧师':
+          return 'cleric';
+        case '圣骑士':
+          return 'paladin';
+        case '游侠':
+          return 'ranger';
+        case '吟游诗人':
+          return 'band';
+        case '德鲁伊':
+          return 'druid';
+        default:
+          return 'sorcerer';
+      }
     },
     isMobile() {
       let flag = navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i);

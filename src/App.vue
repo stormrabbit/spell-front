@@ -102,10 +102,9 @@ export default {
         return;
       }
       this.chosenOne = clsObj;
-      this.loadSpells(this.chosenOne.name);
+      this.loadSpells(this.chosenOne.name ? this.chosenOne.name:this.parseCls( this.chosenOne.clsName));
       // Light theme
       this.$vuetify.theme.themes.light.primary = this.chosenOne.color;
-
       // Dark theme
       this.$vuetify.theme.themes.dark.primary = this.chosenOne.color;
       this.loadCharactors();
@@ -125,10 +124,29 @@ export default {
         _self.spellsCanBePick = res.data;
       });
     },
+    parseCls(cls) {
+      switch(cls){
+        case '邪术师':
+          return 'warlock';
+        case '法师':
+          return 'wizard';
+        case '牧师':
+          return 'cleric';
+        case '圣骑士':
+          return 'paladin';
+        case '游侠':
+          return 'ranger';
+        case '吟游诗人':
+          return 'band';
+        case '德鲁伊':
+          return 'druid';
+        default:
+          return 'sorcerer';
+      }
+    },
     reload: function() {
       this.classesList = [];
       const _self = this;
-      
       this.$axios
         .get("http://localhost:3000/charactor/list")
         .then(res => {

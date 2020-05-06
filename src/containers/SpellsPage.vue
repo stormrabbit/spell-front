@@ -39,11 +39,10 @@ export default {
     //这里存放数据
     return {
       isActive: true,
-      keyword: "",
+      keyword: '',
       isLoading: false,
       search: null,
       snackbar: false,
-      text: "测试啦",
       timeout: 2000,
       tips: '',
     };
@@ -51,7 +50,6 @@ export default {
   //监听属性 类似于data概念
   computed: {
     logTips: function() {
-   
       return this.tips;
     },
     computedSpells: function() {
