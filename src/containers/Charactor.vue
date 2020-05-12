@@ -1,6 +1,14 @@
 <!--  -->
 <template lang="pug">
-    div 角色页面
+    div 
+        span 角色页面
+        v-row
+            v-col(cols="6")
+                v-card
+                    v-card-title(v-text="`基本数值`")
+            v-col(cols="6")
+                v-card
+                    v-card-title(v-text="`豁免`")
 </template>
 
 <script>
