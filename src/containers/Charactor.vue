@@ -1,14 +1,44 @@
 <!--  -->
 <template lang="pug">
-    div 
-        span 角色页面
+    div(style="padding: 12px;") 
+        v-card
+            v-card-title(v-text="`角色`")
+            v-card-text
+                v-row
+                    v-col(cols="2")
+                        v-btn(label block outlined disabled) 角色名稱：测试
+                    v-col(cols="2")
+                        v-btn(label block outlined) 等级：7
+                    v-col(cols="2")
+                        v-btn(label block outlined) 种族：半精灵
+                    v-col(cols="2")
+                        v-btn(label block outlined) 性别：男
+                    v-col(cols="2")
+                        v-btn(label block outlined) 阵营：中立善良
+                    v-col(cols="2")
+                        v-btn(label block outlined) 信仰诸神：梅凯丽
+                    v-col(cols="2")
+                        v-btn(label block outlined) 体型：中体型
+                    v-col(cols="2")
+                        v-btn(label block outlined) 发色：黑色
+                    v-col(cols="2")
+                        v-btn(label block outlined) 眼睛：黑色
+                    v-col(cols="2")
+                        v-btn(label block outlined) 身高：5.9 ft
+                    v-col(cols="2")
+                        v-btn(label block outlined) 体重：150 lb
+                    v-col(cols="2")
+                        v-btn(label block outlined) 背景：士兵
         v-row
-            v-col(cols="6")
+            v-col(cols="3")
                 v-card
                     v-card-title(v-text="`基本数值`")
-            v-col(cols="6")
+            v-col(cols="3")
                 v-card
                     v-card-title(v-text="`豁免`")
+            v-col(cols="6")
+                v-card
+                    v-card-title(v-text="`职业`")
 </template>
 
 <script>
