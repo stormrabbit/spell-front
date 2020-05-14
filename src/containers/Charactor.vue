@@ -1,6 +1,49 @@
 <!--  -->
 <template lang="pug">
-    div(style="padding: 12px;") 
+    div(style="padding: 12px;")
+        //- v-card 
+        //-     v-card-title(v-text="`基本`")
+        //-     v-card-text
+        //-         v-data-table(v-model="select" item-key="name" show-select :headers="headers" :items="items" hide-default-footer)
+        //- v-row
+        //-     v-col(cols="3")
+        //-         v-card
+        //-             v-card-title(v-text="`基本数值`")
+        //-             v-card-text
+        //-                 v-data-table(:headers="baseHeaders" :items="baseItems" hide-default-footer)
+        //-     v-col(cols="9")
+        //-         v-card
+        //-             v-card-title(v-text="`职业`")
+        v-row(align="center")
+            v-col(cols="3")
+                v-card
+                    v-card-title(v-text="`攻防`")
+                    v-card-text
+                        v-data-table(hide-default-header item-key="attr" :headers="saveHeaders" :items="baseItems" hide-default-footer)
+            v-col(cols="9")
+                v-card
+                    v-card-title(v-text="`职业`")
+                    v-card-text
+                        v-data-table(hide-default-header item-key="attr" :headers="skillHeaders" :items="skillItems1" hide-default-footer)
+        v-row(align="center")
+            v-col(cols="3")
+                v-card
+                    v-card-title(v-text="`豁免 & 鉴定`")
+                    v-card-text
+                        v-row
+                            v-col(cols="12")
+                                v-data-table(item-key="attr" :headers="saveHeaders" :items="baseItems" hide-default-footer)
+            v-col(cols="9")
+                v-card
+                    v-card-title(v-text="`技能鉴定 & 对抗`")
+                    v-card-text
+                        v-row
+                            v-col(cols="4")
+                                v-data-table(item-key="attr" :headers="skillHeaders" :items="skillItems1" hide-default-footer)
+                            v-col(cols="4")
+                                v-data-table(item-key="attr" :headers="skillHeaders" :items="skillItems2" hide-default-footer)
+                            v-col(cols="4")
+                                v-data-table(item-key="attr" :headers="skillHeaders" :items="skillItems3" hide-default-footer)
         v-card
             v-card-title(v-text="`角色`")
             v-card-text
@@ -29,33 +72,89 @@
                         v-btn(label block outlined) 体重：150 lb
                     v-col(cols="2")
                         v-btn(label block outlined) 背景：士兵
-        v-row
-            v-col(cols="3")
-                v-card
-                    v-card-title(v-text="`基本数值`")
-            v-col(cols="3")
-                v-card
-                    v-card-title(v-text="`豁免`")
-            v-col(cols="6")
-                v-card
-                    v-card-title(v-text="`职业`")
 </template>
 
 <script>
 //这里可以导入其他文件（比如：组件，工具js，第三方插件js，json文件，图片文件等等）
 //例如：import 《组件名称》 from '《组件路径》';
-
+import {skills, keyAttrEn2Cn} from './../data/const';
 export default {
 //import引入的组件需要注入到对象中才能使用
 components: {},
 data() {
 //这里存放数据
 return {
-
+    baseHeaders : [{
+        text: '属性',
+        value: 'attr',
+        sortable: false,
+    }, {
+        sortable: false,
+        text: '值',
+        value: 'value',
+    }, {
+        sortable: false,
+        text: '加值',
+        value: 'bonus'
+    }],
+    innerBaseItems: {
+        str: 10,
+        dex: 15,
+        con: 13,
+        int: 15,
+        wis: 10,
+        cha: 8
+    },
+    saveHeaders: [
+        {
+            text: '属性',
+            value: 'attr',
+            sortable: false,
+        },{
+            sortable: false,
+            text: '加权值',
+            value: 'bonus'
+        }
+    ],
+    skillHeaders: [
+        {
+            text: '技能',
+            value: 'attr',
+            sortable: false,
+        },
+        // {
+        //     width: 70,
+        //     sortable: false,
+        //     text: '额外',
+        //     value: 'extra'
+        // },
+        {
+            sortable: false,
+            text: '值',
+            value: 'bonus'
+        },
+    ]
 };
 },
 //监听属性 类似于data概念
-computed: {},
+computed: {
+    baseItems () {
+        return Object.keys( this.innerBaseItems).map(key => ({attr: key, value: this.innerBaseItems[key],bonus: (Math.floor((this.innerBaseItems[key] - 10)/2) > 0 ? '+':'') +  Math.floor((this.innerBaseItems[key] - 10)/2)  }))
+    },
+    skillItems () {
+        return  skills.map(key => ({attr: `${keyAttrEn2Cn(key.key_attr)}(${key.name_cn})` , extra:'', bonus: ''}));
+    },
+    skillItems1 () {
+        return this.skillItems.filter((_, index) => index < 6);
+    },
+    skillItems2() {
+        return this.skillItems.filter((_, index) => index >= 6 && index < 12);
+    },
+    skillItems3() {
+        return this.skillItems.filter((_, index) => index >= 12 && index <18);
+    }
+
+},
 //监控data中的数据变化
 watch: {},
 //方法集合
