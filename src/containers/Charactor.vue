@@ -97,6 +97,13 @@ return {
         text: '加值',
         value: 'bonus'
     }],
+    innerBaseItems2: {
+        HP: 10,
+        AC: 15,
+        AB: 13,
+        DC: 15,
+        cha: 8
+    },
     innerBaseItems: {
         str: 10,
         dex: 15,
