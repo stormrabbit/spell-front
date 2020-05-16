@@ -98,11 +98,12 @@ return {
         value: 'bonus'
     }],
     innerBaseItems2: {
-        HP: 10,
-        AC: 15,
-        AB: 13,
-        DC: 15,
-        cha: 8
+        血量: 10,
+        攻击: 13,
+        防御: 15,
+        法术攻击: 15,
+        法术豁免:14,
+        被动观察: 16
     },
     innerBaseItems: {
         str: 10,
