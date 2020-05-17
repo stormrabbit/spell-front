@@ -1,39 +1,22 @@
 <!--  -->
 <template lang="pug">
     div(style="padding: 12px;")
-        //- v-card 
-        //-     v-card-title(v-text="`基本`")
-        //-     v-card-text
-        //-         v-data-table(v-model="select" item-key="name" show-select :headers="headers" :items="items" hide-default-footer)
-        //- v-row
-        //-     v-col(cols="3")
-        //-         v-card
-        //-             v-card-title(v-text="`基本数值`")
-        //-             v-card-text
-        //-                 v-data-table(:headers="baseHeaders" :items="baseItems" hide-default-footer)
-        //-     v-col(cols="9")
-        //-         v-card
-        //-             v-card-title(v-text="`职业`")
         v-row(align="center")
-            v-col(cols="3")
+            v-col(cols="2")
                 v-card
                     v-card-title(v-text="`攻防`")
                     v-card-text
-                        v-data-table(hide-default-header item-key="attr" :headers="saveHeaders" :items="baseItems" hide-default-footer)
-            v-col(cols="9")
-                v-card
-                    v-card-title(v-text="`职业`")
-                    v-card-text
-                        v-data-table(hide-default-header item-key="attr" :headers="skillHeaders" :items="skillItems1" hide-default-footer)
-        v-row(align="center")
-            v-col(cols="3")
+                        v-row
+                            v-col(cols="12")
+                                v-data-table(item-key="attr" :headers="saveHeaders" :items="parseObj2Arr( innerBaseItems2)" hide-default-footer)
+            v-col(cols="2")
                 v-card
                     v-card-title(v-text="`豁免 & 鉴定`")
                     v-card-text
                         v-row
                             v-col(cols="12")
                                 v-data-table(item-key="attr" :headers="saveHeaders" :items="baseItems" hide-default-footer)
-            v-col(cols="9")
+            v-col(cols="8")
                 v-card
                     v-card-title(v-text="`技能鉴定 & 对抗`")
                     v-card-text
@@ -44,6 +27,13 @@
                                 v-data-table(item-key="attr" :headers="skillHeaders" :items="skillItems2" hide-default-footer)
                             v-col(cols="4")
                                 v-data-table(item-key="attr" :headers="skillHeaders" :items="skillItems3" hide-default-footer)
+            v-col(cols="9")
+                v-card
+                    v-card-title(v-text="`职业`")
+                    v-card-text
+                        v-data-table(hide-default-header item-key="attr" :headers="skillHeaders" :items="skillItems1" hide-default-footer)
+        v-row(align="center")
+ 
         v-card
             v-card-title(v-text="`角色`")
             v-card-text
@@ -167,7 +157,9 @@ computed: {
 watch: {},
 //方法集合
 methods: {
-
+    parseObj2Arr(obj ={}) {
+        return Object.keys(obj).map(val => ({attr: val,bonus: obj[val]}))
+    }
 },
 //生命周期 - 创建完成（可以访问当前this实例）
 created() {
