@@ -27,11 +27,16 @@
                                 v-data-table(item-key="attr" :headers="skillHeaders" :items="skillItems2" hide-default-footer)
                             v-col(cols="4")
                                 v-data-table(item-key="attr" :headers="skillHeaders" :items="skillItems3" hide-default-footer)
-            v-col(cols="9")
+            v-col(cols="3")
                 v-card
                     v-card-title(v-text="`职业`")
                     v-card-text
-                        v-data-table(hide-default-header item-key="attr" :headers="skillHeaders" :items="skillItems1" hide-default-footer)
+                        v-data-table( item-key="attr" :headers="classHeader" :items="skillItems1" hide-default-footer)
+            v-col(cols="12")
+                v-card
+                    v-card-title(v-text="`专长`")
+                    v-card-text
+                        v-data-table( item-key="attr" :headers="featsHeader" :items="skillItems1" hide-default-footer)
         v-row(align="center")
  
         v-card
@@ -74,6 +79,39 @@ components: {},
 data() {
 //这里存放数据
 return {
+    featsHeader:[
+             {
+            text: '专长',
+            value:'lvl',
+            sortable: false
+        },
+        {
+            text: '来源',
+            value:'clazz',
+            sortable: false
+        },  {
+            text: '描述',
+            value:'clazz',
+            sortable: false
+        }
+    ],
+    classHeader :[
+        {
+            text: '等级',
+            value:'lvl',
+            sortable: false
+        },
+        {
+            text: '职业',
+            value:'clazz',
+            sortable: false
+        },
+        {
+            text: '生命骰',
+            value:'clazz',
+            sortable: false
+        }
+    ],
     baseHeaders : [{
         text: '属性',
         value: 'attr',
