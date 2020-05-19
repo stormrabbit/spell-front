@@ -8,7 +8,7 @@
                     v-card-text
                         v-row
                             v-col(cols="12")
-                                v-data-table(item-key="attr" :headers="saveHeaders" :items="parseObj2Arr( innerBaseItems2)" hide-default-footer)
+                                v-data-table(item-key="attr" :headers="baseHeaders" :items="parseObj2Arr( innerBaseItems2)" hide-default-footer)
             v-col(cols="2")
                 v-card
                     v-card-title(v-text="`豁免 & 鉴定`")
@@ -119,10 +119,6 @@ return {
     }, {
         sortable: false,
         text: '值',
-        value: 'value',
-    }, {
-        sortable: false,
-        text: '加值',
         value: 'bonus'
     }],
     innerBaseItems2: {
@@ -148,7 +144,11 @@ return {
             sortable: false,
         },{
             sortable: false,
-            text: '加权值',
+            text: '值',
+            value: 'value'
+        },{
+            sortable: false,
+            text: '调整值',
             value: 'bonus'
         }
     ],
