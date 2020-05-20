@@ -8,7 +8,7 @@
                     v-card-text
                         v-row
                             v-col(cols="12")
-                                v-data-table(item-key="attr" :headers="baseHeaders" :items="parseObj2Arr( innerBaseItems2)" hide-default-footer)
+                                v-data-table(item-key="attr" :headers="baseHeaders" :items="parseObj2Arr( preBaseItems)" hide-default-footer)
             v-col(cols="2")
                 v-card
                     v-card-title(v-text="`豁免 & 鉴定`")
@@ -121,7 +121,7 @@ return {
         text: '值',
         value: 'bonus'
     }],
-    innerBaseItems2: {
+    preBaseItems: {
         血量: 10,
         攻击: 13,
         防御: 15,
@@ -129,7 +129,7 @@ return {
         法术豁免:14,
         被动观察: 16
     },
-    innerBaseItems: {
+    preSaveItems: {
         str: 10,
         dex: 15,
         con: 13,
@@ -159,7 +159,6 @@ return {
             sortable: false,
         },
         // {
-        //     width: 70,
         //     sortable: false,
         //     text: '额外',
         //     value: 'extra'
@@ -175,10 +174,14 @@ return {
 //监听属性 类似于data概念
 computed: {
     baseItems () {
-        return Object.keys( this.innerBaseItems).map(key => ({attr: key, value: this.innerBaseItems[key],bonus: (Math.floor((this.innerBaseItems[key] - 10)/2) > 0 ? '+':'') +  Math.floor((this.innerBaseItems[key] - 10)/2)  }))
+        return Object.keys( this.preSaveItems).map(key => ({attr: key, value: this.preSaveItems[key],bonus: (Math.floor((this.preSaveItems[key] - 10)/2) > 0 ? '+':'') +  Math.floor((this.preSaveItems[key] - 10)/2)  }))
     },
     skillItems () {
-        return  skills.map(key => ({attr: `${keyAttrEn2Cn(key.key_attr)}(${key.name_cn})` , extra:'', bonus: ''}));
+        const _self = this;
+        return  skills.map(key => {
+            const val = _self.baseItems.find( val => val.attr === key.key_attr);
+            return {attr: `${key.name_cn}(${keyAttrEn2Cn(key.key_attr)})` , extra:'', bonus: parseInt( val.bonus)};
+        });
     },
     skillItems1 () {
         return this.skillItems.filter((_, index) => index < 6);
