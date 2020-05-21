@@ -79,6 +79,16 @@ components: {},
 data() {
 //这里存放数据
 return {
+    selectSkills: [
+        'athletics',
+        'arcana',
+        'investigation',
+        'insight',
+        'perception',
+        'performance',
+        'intimidation'      
+    ],
+
     featsHeader:[
              {
             text: '专长',
@@ -173,6 +183,9 @@ return {
 },
 //监听属性 类似于data概念
 computed: {
+    prortry() {
+        return 2;
+    },
     baseItems () {
         return Object.keys( this.preSaveItems).map(key => ({attr: key, value: this.preSaveItems[key],bonus: (Math.floor((this.preSaveItems[key] - 10)/2) > 0 ? '+':'') +  Math.floor((this.preSaveItems[key] - 10)/2)  }))
     },
@@ -180,7 +193,8 @@ computed: {
         const _self = this;
         return  skills.map(key => {
             const val = _self.baseItems.find( val => val.attr === key.key_attr);
-            return {attr: `${key.name_cn}(${keyAttrEn2Cn(key.key_attr)})` , extra:'', bonus: parseInt( val.bonus)};
+            const isSelect = _self.selectSkills.find(val => val === key.name_en);
+            return {attr: `${key.name_cn}(${keyAttrEn2Cn(key.key_attr)})` , extra:'', bonus: ((isSelect ? _self.prortry:0) + parseInt( val.bonus))};
         });
     },
     skillItems1 () {
