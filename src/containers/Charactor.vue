@@ -8,7 +8,7 @@
                     v-card-text
                         v-row
                             v-col(cols="12")
-                                v-data-table(item-key="attr" :headers="baseHeaders" :items="parseObj2Arr( preBaseItems)" hide-default-footer)
+                                v-data-table(item-key="attr" :headers="baseHeaders" :items="czTest" hide-default-footer)
             v-col(cols="2")
                 v-card
                     v-card-title(v-text="`豁免 & 鉴定`")
@@ -31,7 +31,7 @@
                 v-card
                     v-card-title(v-text="`职业`")
                     v-card-text
-                        v-data-table( item-key="attr" :headers="classHeader" :items="skillItems1" hide-default-footer)
+                        v-data-table( item-key="attr" :headers="clazzHeader" :items="clazzItems" hide-default-footer)
             v-col(cols="12")
                 v-card
                     v-card-title(v-text="`专长`")
@@ -46,7 +46,7 @@
                     v-col(cols="2")
                         v-btn(label block outlined disabled) 角色名稱：测试
                     v-col(cols="2")
-                        v-btn(label block outlined) 等级：7
+                        v-btn(label block outlined) 等级：{{lvl}}
                     v-col(cols="2")
                         v-btn(label block outlined) 种族：半精灵
                     v-col(cols="2")
@@ -105,7 +105,7 @@ return {
             sortable: false
         }
     ],
-    classHeader :[
+    clazzHeader :[
         {
             text: '等级',
             value:'lvl',
@@ -118,8 +118,20 @@ return {
         },
         {
             text: '生命骰',
-            value:'clazz',
+            value:'hd',
             sortable: false
+        }
+    ],
+    clazzItems: [
+        {
+            lvl: 1,
+            clazz: '战士',
+            hd: 10
+        },
+        {
+            lvl: 6,
+            clazz: '法师',
+            hd: 6
         }
     ],
     baseHeaders : [{
@@ -132,7 +144,7 @@ return {
         value: 'bonus'
     }],
     preBaseItems: {
-        血量: 10,
+        血量: this.hp,
         攻击: 13,
         防御: 15,
         法术攻击: 15,
@@ -141,11 +153,11 @@ return {
     },
     preSaveItems: {
         str: 10,
-        dex: 15,
-        con: 13,
-        int: 15,
+        dex: 16,
+        con: 14,
+        int: 16,
         wis: 10,
-        cha: 8
+        cha: 10
     },
     saveHeaders: [
         {
@@ -183,8 +195,40 @@ return {
 },
 //监听属性 类似于data概念
 computed: {
+    czTest() {
+        const _self = this;
+        const cTest =  {
+            血量: _self.hp,
+            攻击: 13,
+            防御: 15,
+            法术攻击: 15,
+            法术豁免:14,
+            被动观察: 16
+        }
+        return this.parseObj2Arr(cTest);
+    },
+    hp() {
+        const conExtra = parseInt(this.baseItems[2].bonus) * this.lvl;
+        const clzHp = this.clazzItems.map( (clz, index) =>  index === 0 ? clz.hd : (clz.hd/2 + 1)*clz.lvl ).reduce( (pre, cur)=> (pre + cur), 0);
+        return conExtra + clzHp;
+    },
+    lvl() {
+        return this.clazzItems.map(clz => clz.lvl).reduce( (pre, cur)=> (pre + cur), 0);
+    },
     prortry() {
-        return 2;
+        const lvl = this.lvl;
+        if(lvl < 5) {
+            return 2;
+        } else if(lvl < 9) {
+            return 3;
+        } else if(lvl < 13) {
+            return 4;
+        } else if(lvl < 17) {
+            return 5;
+        } else {
+            return 6;
+        }
+      
     },
     baseItems () {
         return Object.keys( this.preSaveItems).map(key => ({attr: key, value: this.preSaveItems[key],bonus: (Math.floor((this.preSaveItems[key] - 10)/2) > 0 ? '+':'') +  Math.floor((this.preSaveItems[key] - 10)/2)  }))
@@ -213,7 +257,7 @@ watch: {},
 //方法集合
 methods: {
     parseObj2Arr(obj ={}) {
-        return Object.keys(obj).map(val => ({attr: val,bonus: obj[val]}))
+        return Object.keys(obj).map(val => ({attr: val,bonus: obj[val]}));
     }
 },
 //生命周期 - 创建完成（可以访问当前this实例）
