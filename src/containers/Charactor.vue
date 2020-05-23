@@ -16,6 +16,8 @@
                         v-row
                             v-col(cols="12")
                                 v-data-table(item-key="attr" :headers="saveHeaders" :items="baseItems" hide-default-footer)
+                                    template( v-slot:item.attr="{ item }")
+                                        span {{keyAttrEn2Cn(item.attr)}}
             v-col(cols="8")
                 v-card
                     v-card-title(v-text="`技能鉴定 & 对抗`")
@@ -215,7 +217,7 @@ computed: {
     lvl() {
         return this.clazzItems.map(clz => clz.lvl).reduce( (pre, cur)=> (pre + cur), 0);
     },
-    prortry() {
+    prortry() { 
         const lvl = this.lvl;
         if(lvl < 5) {
             return 2;
@@ -258,6 +260,9 @@ watch: {},
 methods: {
     parseObj2Arr(obj ={}) {
         return Object.keys(obj).map(val => ({attr: val,bonus: obj[val]}));
+    },
+    keyAttrEn2Cn(val) {
+        return keyAttrEn2Cn(val);
     }
 },
 //生命周期 - 创建完成（可以访问当前this实例）
