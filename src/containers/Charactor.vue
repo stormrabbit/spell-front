@@ -24,11 +24,20 @@
                     v-card-text
                         v-row
                             v-col(cols="4")
-                                v-data-table(item-key="attr" :headers="skillHeaders" :items="skillItems1" hide-default-footer)
+                                v-data-table(item-key="index" :headers="skillHeaders" :items="skillItems1" hide-default-footer)
+                                    template( v-slot:item.attr="{ item }")
+                                        span {{selectSkills.find(skill => skill === item.attr.name_en) ? '':`${item.attr.name_cn}(${keyAttrEn2Cn(item.attr.key_attr)})`}}
+                                            strong {{selectSkills.find(skill => skill === item.attr.name_en) ?`${item.attr.name_cn}(${keyAttrEn2Cn(item.attr.key_attr)})`:''}}
                             v-col(cols="4")
-                                v-data-table(item-key="attr" :headers="skillHeaders" :items="skillItems2" hide-default-footer)
+                                v-data-table(item-key="index" :headers="skillHeaders" :items="skillItems2" hide-default-footer)
+                                    template( v-slot:item.attr="{ item }")
+                                        span {{selectSkills.find(skill => skill === item.attr.name_en) ? '':`${item.attr.name_cn}(${keyAttrEn2Cn(item.attr.key_attr)})`}}
+                                            strong {{selectSkills.find(skill => skill === item.attr.name_en) ?`${item.attr.name_cn}(${keyAttrEn2Cn(item.attr.key_attr)})`:''}}
                             v-col(cols="4")
-                                v-data-table(item-key="attr" :headers="skillHeaders" :items="skillItems3" hide-default-footer)
+                                v-data-table(item-key="index" :headers="skillHeaders" :items="skillItems3" hide-default-footer)
+                                    template( v-slot:item.attr="{ item }")
+                                        span {{selectSkills.find(skill => skill === item.attr.name_en) ? '':`${item.attr.name_cn}(${keyAttrEn2Cn(item.attr.key_attr)})`}}
+                                            strong {{selectSkills.find(skill => skill === item.attr.name_en) ?`${item.attr.name_cn}(${keyAttrEn2Cn(item.attr.key_attr)})`:''}}
             v-col(cols="3")
                 v-card
                     v-card-title(v-text="`职业`")
@@ -38,7 +47,7 @@
                 v-card
                     v-card-title(v-text="`专长`")
                     v-card-text
-                        v-data-table( item-key="attr" :headers="featsHeader" :items="skillItems1" hide-default-footer)
+                        v-data-table( item-key="index" :headers="featsHeader" :items="skillItems1" hide-default-footer)
         v-row(align="center")
  
         v-card
@@ -182,11 +191,11 @@ return {
             value: 'attr',
             sortable: false,
         },
-        // {
-        //     sortable: false,
-        //     text: '额外',
-        //     value: 'extra'
-        // },
+        {
+            sortable: false,
+            text: 'index',
+            value: 'index'
+        },
         {
             sortable: false,
             text: '值',
@@ -237,10 +246,11 @@ computed: {
     },
     skillItems () {
         const _self = this;
-        return  skills.map(key => {
+        return  skills.map((key, index) => {
+            // `${key.name_cn}(${keyAttrEn2Cn(key.key_attr)})`
             const val = _self.baseItems.find( val => val.attr === key.key_attr);
             const isSelect = _self.selectSkills.find(val => val === key.name_en);
-            return {attr: `${key.name_cn}(${keyAttrEn2Cn(key.key_attr)})` , extra:'', bonus: ((isSelect ? _self.prortry:0) + parseInt( val.bonus))};
+            return {index, attr: key , extra:'', bonus: ((isSelect ? _self.prortry:0) + parseInt( val.bonus))};
         });
     },
     skillItems1 () {
