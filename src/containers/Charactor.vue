@@ -9,7 +9,7 @@
                         v-row
                             v-col(cols="12")
                                 v-data-table(item-key="attr" :headers="baseHeaders" :items="czTest" hide-default-footer)
-            v-col(cols="2")
+            v-col(cols="3")
                 v-card
                     v-card-title(v-text="`豁免 & 鉴定`")
                     v-card-text
@@ -18,7 +18,10 @@
                                 v-data-table(item-key="attr" :headers="saveHeaders" :items="baseItems" hide-default-footer)
                                     template( v-slot:item.attr="{ item }")
                                         span {{keyAttrEn2Cn(item.attr)}}
-            v-col(cols="8")
+                                    template( v-slot:item.saving="{ item }")
+                                        span {{`${isFirstSaving(item.attr) ? '':parseInt(item.bonus)}`}}
+                                            strong {{ isFirstSaving(item.attr) ?  `${parseInt(item.bonus) + parseInt(prortry)}` :''}}
+            v-col(cols="7")
                 v-card
                     v-card-title(v-text="`技能鉴定 & 对抗`")
                     v-card-text
@@ -183,6 +186,10 @@ return {
             sortable: false,
             text: '调整值',
             value: 'bonus'
+        }, {
+            sortable: false,
+            text: '豁免值',
+            value: 'saving'
         }
     ],
     skillHeaders: [
@@ -206,6 +213,16 @@ return {
 },
 //监听属性 类似于data概念
 computed: {
+    betterSaving() {
+        const clz = this.clazzItems[0].clazz;
+        switch (clz) {
+            case '战士':
+                return ['con'];
+            default: 
+                return ['int'];
+        }
+     
+    },
     czTest() {
         const _self = this;
         const cTest =  {
@@ -268,6 +285,9 @@ computed: {
 watch: {},
 //方法集合
 methods: {
+    isFirstSaving(saveAttr) {
+        return this.betterSaving.find(save => save === saveAttr);
+    },
     parseObj2Arr(obj ={}) {
         return Object.keys(obj).map(val => ({attr: val,bonus: obj[val]}));
     },
