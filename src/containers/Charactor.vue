@@ -227,11 +227,11 @@ computed: {
         const _self = this;
         const cTest =  {
             血量: _self.hp,
-            攻击: 13,
+            攻击: _self.attck,
             防御: 15,
-            法术攻击: 15,
-            法术豁免:14,
-            被动观察: 16
+            法术攻击: _self.spellAttack,
+            法术豁免:_self.spellDC,
+            先攻: _self.initiative
         }
         return this.parseObj2Arr(cTest);
     },
@@ -278,6 +278,18 @@ computed: {
     },
     skillItems3() {
         return this.skillItems.filter((_, index) => index >= 12 && index <18);
+    },
+    spellDC() {
+        return 8 + parseInt( this.baseItems[3].bonus) + this.prortry;
+    },
+    spellAttack() {
+        return this.spellDC - 8;
+    },
+    initiative() {
+        return parseInt(this.baseItems[1].bonus);
+    },
+    attck() {
+        return parseInt(this.baseItems[1].bonus ) + this.prortry; 
     }
 
 },
