@@ -17,7 +17,8 @@
                             v-col(cols="12")
                                 v-data-table(item-key="attr" :headers="saveHeaders" :items="baseItems" hide-default-footer)
                                     template( v-slot:item.attr="{ item }")
-                                        span {{keyAttrEn2Cn(item.attr)}}
+                                        span {{!isFirstSaving(item.attr) ? keyAttrEn2Cn(item.attr): ''}}
+                                            strong {{isFirstSaving(item.attr) ? keyAttrEn2Cn(item.attr): ''}}
                                     template( v-slot:item.saving="{ item }")
                                         span {{`${isFirstSaving(item.attr) ? '':parseInt(item.bonus)}`}}
                                             strong {{ isFirstSaving(item.attr) ?  `${parseInt(item.bonus) + parseInt(prortry)}` :''}}
