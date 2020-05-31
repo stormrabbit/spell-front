@@ -53,7 +53,7 @@
                     v-card-text
                         v-data-table( item-key="index" :headers="featsHeader" :items="skillItems1" hide-default-footer)
         v-row(align="center")
- 
+        span {{charactors}}
         v-card
             v-card-title(v-text="`角色`")
             v-card-text
@@ -88,6 +88,7 @@
 //这里可以导入其他文件（比如：组件，工具js，第三方插件js，json文件，图片文件等等）
 //例如：import 《组件名称》 from '《组件路径》';
 import {skills, keyAttrEn2Cn} from './../data/const';
+import CHARACTORS from './../data/charactors';
 export default {
 //import引入的组件需要注入到对象中才能使用
 components: {},
@@ -158,14 +159,6 @@ return {
         text: '值',
         value: 'bonus'
     }],
-    preBaseItems: {
-        血量: this.hp,
-        攻击: 13,
-        防御: 15,
-        法术攻击: 15,
-        法术豁免:14,
-        被动观察: 16
-    },
     preSaveItems: {
         str: 10,
         dex: 16,
@@ -214,6 +207,12 @@ return {
 },
 //监听属性 类似于data概念
 computed: {
+    charactors() {
+        return CHARACTORS;
+    },
+    defeace() {
+        return 10 +  parseInt(this.baseItems[1].bonus);
+    },
     betterSaving() {
         const clz = this.clazzItems[0].clazz;
         switch (clz) {
@@ -229,7 +228,7 @@ computed: {
         const cTest =  {
             血量: _self.hp,
             攻击: _self.attck,
-            防御: 15,
+            防御: _self.defeace,
             法术攻击: _self.spellAttack,
             法术豁免:_self.spellDC,
             先攻: _self.initiative
@@ -260,7 +259,8 @@ computed: {
       
     },
     baseItems () {
-        return Object.keys( this.preSaveItems).map(key => ({attr: key, value: this.preSaveItems[key],bonus: (Math.floor((this.preSaveItems[key] - 10)/2) > 0 ? '+':'') +  Math.floor((this.preSaveItems[key] - 10)/2)  }))
+        const _baseItems = this.preSaveItems;
+        return Object.keys( _baseItems).map(key => ({attr: key, value: _baseItems[key],bonus: (Math.floor((_baseItems[key] - 10)/2) > 0 ? '+':'') +  Math.floor((_baseItems[key] - 10)/2)  }))
     },
     skillItems () {
         const _self = this;
