@@ -17,6 +17,37 @@ export default {
             'perception',
             'performance',
             'intimidation'
-        ]
+        ],
+        clazzItems: [{
+                lvl: 1,
+                clazz: '战士',
+                hd: 10
+            },
+            {
+                lvl: 1,
+                clazz: '法师',
+                hd: 6
+            },
+            {
+                lvl: 1,
+                clazz: '法师',
+                hd: 6
+            },
+            {
+                lvl: 1,
+                clazz: '法师',
+                hd: 6
+            },
+            {
+                lvl: 1,
+                clazz: '法师',
+                hd: 6
+            },
+            {
+                lvl: 1,
+                clazz: '法师',
+                hd: 6
+            }
+        ],
     }]
 }

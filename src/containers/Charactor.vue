@@ -53,7 +53,7 @@
                     v-card-text
                         v-data-table( item-key="index" :headers="featsHeader" :items="skillItems1" hide-default-footer)
         v-row(align="center")
-        span {{charactors}}
+        span {{charactor}}
         v-card
             v-card-title(v-text="`角色`")
             v-card-text
@@ -145,7 +145,27 @@ return {
             hd: 10
         },
         {
-            lvl: 6,
+            lvl: 1,
+            clazz: '法师',
+            hd: 6
+        },
+        {
+            lvl: 1,
+            clazz: '法师',
+            hd: 6
+        },
+        {
+            lvl: 1,
+            clazz: '法师',
+            hd: 6
+        },
+        {
+            lvl: 1,
+            clazz: '法师',
+            hd: 6
+        },
+        {
+            lvl: 1,
             clazz: '法师',
             hd: 6
         }
@@ -207,8 +227,8 @@ return {
 },
 //监听属性 类似于data概念
 computed: {
-    charactors() {
-        return CHARACTORS;
+    charactor() {
+        return CHARACTORS.team[0];
     },
     defeace() {
         return 10 +  parseInt(this.baseItems[1].bonus);
