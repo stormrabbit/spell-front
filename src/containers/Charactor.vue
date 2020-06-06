@@ -65,7 +65,7 @@
                             template( v-slot:item.description="{ item }")
                                 div(style="text-align: left;") {{item.description}}
         v-row(align="center")
-        span {{charactor}}
+        //- span {{charactor}}
         v-card
             v-card-title(v-text="`角色`")
             v-card-text

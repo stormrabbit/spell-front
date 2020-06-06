@@ -50,11 +50,27 @@ export default {
             }
         ],
         featItems: [{
-                feat_en: 'ability_score_increase',
+                feat_en: 'ability_score_increase_con',
                 feat_cn: '属性值加成',
                 source: '半精灵',
-                description: '你的魅力加 2。再选择 其他两项属性值各加 1。'
+                description: '你的耐力加 1。'
+            }, {
+                feat_en: 'ability_score_increase_dex',
+                feat_cn: '属性值加成',
+                source: '半精灵',
+                description: '你的敏捷加 1。'
+            }, {
+                feat_en: 'ability_score_increase_cha_2',
+                feat_cn: '属性值加成',
+                source: '半精灵',
+                description: '你的魅力加 2。'
             },
+            // {
+            //     feat_en: 'ability_score_increase',
+            //     feat_cn: '属性值加成',
+            //     source: '半精灵',
+            //     description: '你的魅力加 2。再选择 其他两项属性值各加 1。'
+            // },
             {
                 feat_en: 'skill_versatility',
                 feat_cn: '多才多艺',
@@ -71,11 +87,17 @@ export default {
                 source: '半精灵',
                 description: '你进行对抗魅惑的豁免时具有优势， 并且不会因魔法效应而陷入睡眠。'
             }, {
-                feat_en: 'observant',
+                feat_en: 'observant_int',
                 feat_cn: '观察力',
                 source: '法师 4 级',
-                description: '你能够迅速把握周遭环境的要点，并获得下列增益:\n• 你的智力或感知加 1，上限为 20。\n• 某生物在讲话时，若你可以看见目标的嘴且你可以理解其语\n言，则你就可以依靠读唇来解读目标正在讲什么。\n• 你的被动感知(察觉)和智力(调查)检定具有+5 加值。'
+                description: '你能够迅速把握周遭环境的要点，并获得下列增益:\n• 你的智力加 1，上限为 20。\n• 某生物在讲话时，若你可以看见目标的嘴且你可以理解其语\n言，则你就可以依靠读唇来解读目标正在讲什么。\n• 你的被动感知(察觉)和智力(调查)检定具有+5 加值。'
             }
+            // , {
+            //     feat_en: 'observant',
+            //     feat_cn: '观察力',
+            //     source: '法师 4 级',
+            //     description: '你能够迅速把握周遭环境的要点，并获得下列增益:\n• 你的智力或感知加 1，上限为 20。\n• 某生物在讲话时，若你可以看见目标的嘴且你可以理解其语\n言，则你就可以依靠读唇来解读目标正在讲什么。\n• 你的被动感知(察觉)和智力(调查)检定具有+5 加值。'
+            // }
         ]
     }],
 
