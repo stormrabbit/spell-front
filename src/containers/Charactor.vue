@@ -46,7 +46,9 @@
                 v-card
                     v-card-title(v-text="`职业`")
                     v-card-text
-                        v-data-table( item-key="attr" :headers="clazzHeader" :items="clazzItems" hide-default-footer)
+                        v-data-table( item-key="attr" :headers="clazzHeader" :items="classInfoItems" hide-default-footer)
+                            //- template( v-slot:item.lvlTotal="{ item }")
+                            //-     span {{item.clazz}}
             v-col(cols="12")
                 v-card
                     v-card-title(v-text="`专长`")
@@ -65,7 +67,7 @@
                             template( v-slot:item.description="{ item }")
                                 div(style="text-align: left;") {{item.description}}
         v-row(align="center")
-        //- span {{charactor}}
+        span {{classInfoItems}}
         v-card
             v-card-title(v-text="`角色`")
             v-card-text
@@ -127,20 +129,25 @@ return {
     ],
     clazzHeader :[
         {
-            text: '等级',
-            value:'lvl',
-            sortable: false
-        },
-        {
             text: '职业',
-            value:'clazz',
+            value: 'lvlTotal',
             sortable: false
         },
-        {
-            text: '生命骰',
-            value:'hd',
-            sortable: false
-        }
+        // {
+        //     text: '等级',
+        //     value:'lvl',
+        //     sortable: false
+        // },
+        // {
+        //     text: '职业',
+        //     value:'clazz',
+        //     sortable: false
+        // },
+        // {
+        //     text: '生命骰',
+        //     value:'hd',
+        //     sortable: false
+        // }
     ],
     baseHeaders : [{
         text: '属性',
@@ -196,6 +203,36 @@ computed: {
     },
     clazzItems() {
         return this.charactor.clazzItems;
+    },
+    classInfoItems() {
+        const temp = this.clazzItems.reduce( (pre, cur, index) => {
+           
+            const temp2 = (index === 0) ? []:[...pre[index - 1]];
+            temp2.push(cur);
+            pre.push(temp2);
+            //  pre.push(`${index + 1}\t${cur.clazz}` );
+             return pre;
+        }, [])
+        const temp4 = (arr) => {
+            const temp5 = {};
+            arr.map(ar => {
+                if(temp5[ar.clazz]) {
+                    temp5[ar.clazz] += 1;
+                } else {
+                    temp5[ar.clazz] = 1
+                }
+            })
+            return temp5;
+        }
+        const temp3 = temp.map( tp => {
+            return temp4(tp);
+        });
+        const temp6 = temp3.map( tp => {
+            return Object.keys(tp).reduce( (pre, cur, index) => {
+                return `${pre}${index === 0 ? '': '/'}${tp[cur]}  ${cur}`
+            }, '')
+        })
+        return temp6.map(tp => ({lvlTotal: tp}));
     },
     preSaveItems() {
         return this.charactor.ability_scores;
