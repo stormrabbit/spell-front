@@ -47,8 +47,6 @@
                     v-card-title(v-text="`职业`")
                     v-card-text
                         v-data-table( item-key="attr" :headers="clazzHeader" :items="classInfoItems" hide-default-footer)
-                            //- template( v-slot:item.lvlTotal="{ item }")
-                            //-     span {{item.clazz}}
             v-col(cols="12")
                 v-card
                     v-card-title(v-text="`专长`")
@@ -67,7 +65,7 @@
                             template( v-slot:item.description="{ item }")
                                 div(style="text-align: left;") {{item.description}}
         v-row(align="center")
-        span {{classInfoItems}}
+        //- span {{classInfoItems}}
         v-card
             v-card-title(v-text="`角色`")
             v-card-text
@@ -129,15 +127,16 @@ return {
     ],
     clazzHeader :[
         {
+            text: '等级',
+            value:'lvl',
+            sortable: false
+   
+        },
+        {
             text: '职业',
             value: 'lvlTotal',
             sortable: false
         },
-        // {
-        //     text: '等级',
-        //     value:'lvl',
-        //     sortable: false
-        // },
         // {
         //     text: '职业',
         //     value:'clazz',
@@ -205,6 +204,14 @@ computed: {
         return this.charactor.clazzItems;
     },
     classInfoItems() {
+        /**
+         * 处理思路：
+         * 1. 原数组是 [1,2,2,2,2...] 的形式，转换为 [[1], [1,2], [1,2,2] ...] 的形式 => temp
+         * 2. 写一个函数，循环遍历数组并统计每个元素出现的次数。使用对象作为结果值，对象属性为数组元素，属性值为元素个数（变种木桶排序）=> temp4
+         * 3. 遍历 temp，将 temp 的每个元素从数组转换为对象 => temp3
+         * 4. 遍历 temp3，将每个对象拆成需要的字符串 => temp6
+         * 5. 把 temp6 格式化为需要的结果，输出 => 返回值
+         */
         const temp = this.clazzItems.reduce( (pre, cur, index) => {
            
             const temp2 = (index === 0) ? []:[...pre[index - 1]];
@@ -232,7 +239,7 @@ computed: {
                 return `${pre}${index === 0 ? '': '/'}${tp[cur]}  ${cur}`
             }, '')
         })
-        return temp6.map(tp => ({lvlTotal: tp}));
+        return temp6.map((tp ,index)=> ({lvl:(index +1), lvlTotal: tp}));
     },
     preSaveItems() {
         return this.charactor.ability_scores;
