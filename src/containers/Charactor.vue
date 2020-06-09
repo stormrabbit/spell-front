@@ -9,19 +9,23 @@
                         v-row
                             v-col(cols="12")
                                 v-data-table(item-key="attr" :headers="baseHeaders" :items="czTest" hide-default-footer)
+                                    template( v-slot:item.actions="{ item }")
+                                        v-btn d20
             v-col(cols="3")
                 v-card
                     v-card-title(v-text="`豁免 & 鉴定`")
                     v-card-text
                         v-row
                             v-col(cols="12")
-                                v-data-table(item-key="attr" :headers="saveHeaders" :items="baseItems" hide-default-footer)
+                                v-data-table( show-expand item-key="attr" :headers="saveHeaders" :items="baseItems" hide-default-footer)
                                     template( v-slot:item.attr="{ item }")
                                         span {{!isFirstSaving(item.attr) ? keyAttrEn2Cn(item.attr): ''}}
                                             strong {{isFirstSaving(item.attr) ? keyAttrEn2Cn(item.attr): ''}}
                                     template( v-slot:item.saving="{ item }")
                                         span {{`${isFirstSaving(item.attr) ? '':parseInt(item.bonus)}`}}
                                             strong {{ isFirstSaving(item.attr) ?  `${parseInt(item.bonus) + parseInt(prortry)}` :''}}
+                                    template(v-slot:expanded-item="{ headers, item }")
+                                        td(:colspan="headers.length") {{item.attr}} 
             v-col(cols="7")
                 v-card
                     v-card-title(v-text="`技能鉴定 & 对抗`")
@@ -156,6 +160,10 @@ return {
         sortable: false,
         text: '值',
         value: 'bonus'
+    },{
+         sortable: false,
+        text: '',
+        value: 'actions'
     }],
     saveHeaders: [
         {
@@ -174,7 +182,7 @@ return {
             sortable: false,
             text: '豁免值',
             value: 'saving'
-        }
+        },{ text: '', value: 'data-table-expand' },
     ],
     skillHeaders: [
         {
