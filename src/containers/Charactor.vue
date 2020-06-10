@@ -1,6 +1,10 @@
 <!--  -->
 <template lang="pug">
     div(style="padding: 12px;")
+        v-snackbar(v-model="snackbar" top style="text-align:center")
+            v-row
+                v-col(cols="12")
+                    span {{dice}}
         v-row(align="center")
             v-col(cols="2")
                 v-card
@@ -9,23 +13,23 @@
                         v-row
                             v-col(cols="12")
                                 v-data-table(item-key="attr" :headers="baseHeaders" :items="czTest" hide-default-footer)
-                                    template( v-slot:item.actions="{ item }")
-                                        v-btn d20
+                                    template( v-slot:item.bonus="{ item }")
+                                        span(v-if="isRoll(item.attr)") {{item.bonus}}
+                                        v-btn(v-else text @click="rollDice(item.bonus, item.attr)") {{item.bonus}}
+                                        
             v-col(cols="3")
                 v-card
                     v-card-title(v-text="`豁免 & 鉴定`")
                     v-card-text
                         v-row
                             v-col(cols="12")
-                                v-data-table( show-expand item-key="attr" :headers="saveHeaders" :items="baseItems" hide-default-footer)
+                                v-data-table(item-key="attr" :headers="saveHeaders" :items="baseItems" hide-default-footer)
                                     template( v-slot:item.attr="{ item }")
                                         span {{!isFirstSaving(item.attr) ? keyAttrEn2Cn(item.attr): ''}}
                                             strong {{isFirstSaving(item.attr) ? keyAttrEn2Cn(item.attr): ''}}
                                     template( v-slot:item.saving="{ item }")
                                         span {{`${isFirstSaving(item.attr) ? '':parseInt(item.bonus)}`}}
                                             strong {{ isFirstSaving(item.attr) ?  `${parseInt(item.bonus) + parseInt(prortry)}` :''}}
-                                    template(v-slot:expanded-item="{ headers, item }")
-                                        td(:colspan="headers.length") {{item.attr}} 
             v-col(cols="7")
                 v-card
                     v-card-title(v-text="`技能鉴定 & 对抗`")
@@ -111,6 +115,8 @@ components: {},
 data() {
 //这里存放数据
 return {
+    snackbar: false,
+    dice: 0,
     featsHeader:[
              {
             text: '专长',
@@ -156,14 +162,11 @@ return {
         text: '属性',
         value: 'attr',
         sortable: false,
+        width: 100
     }, {
         sortable: false,
         text: '值',
         value: 'bonus'
-    },{
-         sortable: false,
-        text: '',
-        value: 'actions'
     }],
     saveHeaders: [
         {
@@ -182,7 +185,7 @@ return {
             sortable: false,
             text: '豁免值',
             value: 'saving'
-        },{ text: '', value: 'data-table-expand' },
+        }
     ],
     skillHeaders: [
         {
@@ -190,11 +193,11 @@ return {
             value: 'attr',
             sortable: false,
         },
-        {
-            sortable: false,
-            text: 'index',
-            value: 'index'
-        },
+        // {
+        //     sortable: false,
+        //     text: 'index',
+        //     value: 'index'
+        // },
         {
             sortable: false,
             text: '值',
@@ -265,7 +268,7 @@ computed: {
         const clz = this.clazzItems[0].clazz;
         switch (clz) {
             case '战士':
-                return ['con'];
+                return ['con', 'str'];
             default: 
                 return ['int'];
         }
@@ -343,9 +346,28 @@ computed: {
 
 },
 //监控data中的数据变化
-watch: {},
+watch: {
+    snackbar(newVal){
+        newVal || this.close()
+    }
+},
 //方法集合
 methods: {
+    isRoll(attr) {
+        const disabled = ['血量', '防御', '法术豁免'];
+        return disabled.find( dis => dis === attr);
+    },  
+    close() {
+        this.snackbar = false;
+    },
+    rollDice(dice, attr) {
+        const disabled = ['血量', '防御', '法术豁免'];
+        if(!disabled.find( dis => dis === attr)){
+            this.dice=`${attr}:${parseInt(dice) + (Math.floor( Math.random() * 20) +1)}` ;
+            this.snackbar = true;
+        }
+
+    },
     isFirstSaving(saveAttr) {
         return this.betterSaving.find(save => save === saveAttr);
     },
