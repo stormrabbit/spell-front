@@ -28,8 +28,8 @@
                                         span {{!isFirstSaving(item.attr) ? keyAttrEn2Cn(item.attr): ''}}
                                             strong {{isFirstSaving(item.attr) ? keyAttrEn2Cn(item.attr): ''}}
                                     template( v-slot:item.saving="{ item }")
-                                        span {{`${isFirstSaving(item.attr) ? '':parseInt(item.bonus)}`}}
-                                            strong {{ isFirstSaving(item.attr) ?  `${parseInt(item.bonus) + parseInt(prortry)}` :''}}
+                                        span(@click="rollDice(item.bonus, `${keyAttrEn2Cn(item.attr)}豁免 & 鉴定`)") {{`${isFirstSaving(item.attr) ? '':parseInt(item.bonus)}`}}
+                                        strong(@click="rollDice(`${parseInt(item.bonus) + parseInt(prortry)}`, `${keyAttrEn2Cn(item.attr)}豁免 & 鉴定`)") {{ isFirstSaving(item.attr) ?  `${parseInt(item.bonus) + parseInt(prortry)}` :''}}
             v-col(cols="7")
                 v-card
                     v-card-title(v-text="`技能鉴定 & 对抗`")
@@ -363,7 +363,9 @@ methods: {
     rollDice(dice, attr) {
         const disabled = ['血量', '防御', '法术豁免'];
         if(!disabled.find( dis => dis === attr)){
-            this.dice=`${attr}:${parseInt(dice) + (Math.floor( Math.random() * 20) +1)}` ;
+            const val1 = parseInt(dice);
+            const val2 =(Math.floor( Math.random() * 20) +1);
+            this.dice=`${attr} ==> ${val1} + ${val2} = ${val1 + val2}` ;
             this.snackbar = true;
         }
 
