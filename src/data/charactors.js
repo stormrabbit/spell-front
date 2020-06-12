@@ -65,12 +65,6 @@ export default {
                 source: '半精灵',
                 description: '你的魅力加 2。'
             },
-            // {
-            //     feat_en: 'ability_score_increase',
-            //     feat_cn: '属性值加成',
-            //     source: '半精灵',
-            //     description: '你的魅力加 2。再选择 其他两项属性值各加 1。'
-            // },
             {
                 feat_en: 'skill_versatility',
                 feat_cn: '多才多艺',
@@ -87,17 +81,22 @@ export default {
                 source: '半精灵',
                 description: '你进行对抗魅惑的豁免时具有优势， 并且不会因魔法效应而陷入睡眠。'
             }, {
+                feat_en: 'fighting_style_defense',
+                feat_cn: '战斗风格：防御',
+                source: '战士 1 级',
+                description: '着装护甲时，你的 AC 获得 +1 加值。'
+            }, {
+                feat_en: 'second_wind',
+                feat_cn: '回气',
+                source: '战士 1 级',
+                description: '你拥有少量精力储备可用来保护自己免受伤害。你可以在自己回合内用一个附赠动作恢复生命值，其总值为 1d10+你的 战士职业等级。你必须完成一次短休或长休才能再次使用该特性。'
+            }, {
                 feat_en: 'observant_int',
                 feat_cn: '观察力',
                 source: '法师 4 级',
                 description: '你能够迅速把握周遭环境的要点，并获得下列增益:\n• 你的智力加 1，上限为 20。\n• 某生物在讲话时，若你可以看见目标的嘴且你可以理解其语\n言，则你就可以依靠读唇来解读目标正在讲什么。\n• 你的被动感知(察觉)和智力(调查)检定具有+5 加值。'
             }
-            // , {
-            //     feat_en: 'observant',
-            //     feat_cn: '观察力',
-            //     source: '法师 4 级',
-            //     description: '你能够迅速把握周遭环境的要点，并获得下列增益:\n• 你的智力或感知加 1，上限为 20。\n• 某生物在讲话时，若你可以看见目标的嘴且你可以理解其语\n言，则你就可以依靠读唇来解读目标正在讲什么。\n• 你的被动感知(察觉)和智力(调查)检定具有+5 加值。'
-            // }
+
         ]
     }],
 

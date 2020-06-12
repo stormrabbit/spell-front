@@ -25,11 +25,10 @@
                             v-col(cols="12")
                                 v-data-table(item-key="attr" :headers="saveHeaders" :items="baseItems" hide-default-footer)
                                     template( v-slot:item.attr="{ item }")
-                                        span {{!isFirstSaving(item.attr) ? keyAttrEn2Cn(item.attr): ''}}
-                                            strong {{isFirstSaving(item.attr) ? keyAttrEn2Cn(item.attr): ''}}
+                                        span(v-if="!isFirstSaving(item.attr)") {{ keyAttrEn2Cn(item.attr)}}
+                                        strong(v-else) {{keyAttrEn2Cn(item.attr)}}
                                     template( v-slot:item.saving="{ item }")
-                                        span(@click="rollDice(item.bonus, `${keyAttrEn2Cn(item.attr)}豁免 & 鉴定`)") {{`${isFirstSaving(item.attr) ? '':parseInt(item.bonus)}`}}
-                                        strong(@click="rollDice(`${parseInt(item.bonus) + parseInt(prortry)}`, `${keyAttrEn2Cn(item.attr)}豁免 & 鉴定`)") {{ isFirstSaving(item.attr) ?  `${parseInt(item.bonus) + parseInt(prortry)}` :''}}
+                                        v-btn(text @click="rollDice(`${parseInt(item.bonus) +(isFirstSaving(item.attr) ? parseInt(prortry):0)}`, `${keyAttrEn2Cn(item.attr)}豁免 & 鉴定`)") {{`${parseInt(item.bonus) +(isFirstSaving(item.attr) ? parseInt(prortry):0)}`}}
             v-col(cols="7")
                 v-card
                     v-card-title(v-text="`技能鉴定 & 对抗`")
@@ -38,18 +37,24 @@
                             v-col(cols="4")
                                 v-data-table(item-key="index" :headers="skillHeaders" :items="skillItems1" hide-default-footer)
                                     template( v-slot:item.attr="{ item }")
-                                        span {{selectSkills.find(skill => skill === item.attr.name_en) ? '':`${item.attr.name_cn}(${keyAttrEn2Cn(item.attr.key_attr)})`}}
-                                            strong {{selectSkills.find(skill => skill === item.attr.name_en) ?`${item.attr.name_cn}(${keyAttrEn2Cn(item.attr.key_attr)})`:''}}
+                                        span(v-if="!selectSkills.find(skill => skill === item.attr.name_en)") {{ `${item.attr.name_cn}(${keyAttrEn2Cn(item.attr.key_attr)})`}}
+                                        strong(v-else) {{`${item.attr.name_cn}(${keyAttrEn2Cn(item.attr.key_attr)})`}}
+                                    template( v-slot:item.bonus="{ item }")
+                                      v-btn(text @click="rollDice(item.bonus, `${item.attr.name_cn}(${keyAttrEn2Cn(item.attr.key_attr)})`)") {{item.bonus}}
                             v-col(cols="4")
                                 v-data-table(item-key="index" :headers="skillHeaders" :items="skillItems2" hide-default-footer)
                                     template( v-slot:item.attr="{ item }")
-                                        span {{selectSkills.find(skill => skill === item.attr.name_en) ? '':`${item.attr.name_cn}(${keyAttrEn2Cn(item.attr.key_attr)})`}}
-                                            strong {{selectSkills.find(skill => skill === item.attr.name_en) ?`${item.attr.name_cn}(${keyAttrEn2Cn(item.attr.key_attr)})`:''}}
+                                        span(v-if="!selectSkills.find(skill => skill === item.attr.name_en)") {{ `${item.attr.name_cn}(${keyAttrEn2Cn(item.attr.key_attr)})`}}
+                                        strong(v-else) {{`${item.attr.name_cn}(${keyAttrEn2Cn(item.attr.key_attr)})`}}
+                                    template( v-slot:item.bonus="{ item }")
+                                      v-btn(text @click="rollDice(item.bonus, `${item.attr.name_cn}(${keyAttrEn2Cn(item.attr.key_attr)})`)") {{item.bonus}}
                             v-col(cols="4")
                                 v-data-table(item-key="index" :headers="skillHeaders" :items="skillItems3" hide-default-footer)
                                     template( v-slot:item.attr="{ item }")
-                                        span {{selectSkills.find(skill => skill === item.attr.name_en) ? '':`${item.attr.name_cn}(${keyAttrEn2Cn(item.attr.key_attr)})`}}
-                                            strong {{selectSkills.find(skill => skill === item.attr.name_en) ?`${item.attr.name_cn}(${keyAttrEn2Cn(item.attr.key_attr)})`:''}}
+                                        span(v-if="!selectSkills.find(skill => skill === item.attr.name_en)") {{ `${item.attr.name_cn}(${keyAttrEn2Cn(item.attr.key_attr)})`}}
+                                        strong(v-else) {{`${item.attr.name_cn}(${keyAttrEn2Cn(item.attr.key_attr)})`}}
+                                    template( v-slot:item.bonus="{ item }")
+                                      v-btn(text @click="rollDice(item.bonus, `${item.attr.name_cn}(${keyAttrEn2Cn(item.attr.key_attr)})`)") {{item.bonus}}
             v-col(cols="3")
                 v-card
                     v-card-title(v-text="`职业`")
@@ -73,7 +78,6 @@
                             template( v-slot:item.description="{ item }")
                                 div(style="text-align: left;") {{item.description}}
         v-row(align="center")
-        //- span {{classInfoItems}}
         v-card
             v-card-title(v-text="`角色`")
             v-card-text
@@ -262,7 +266,7 @@ computed: {
         return CHARACTORS.team[0];
     },
     defeace() {
-        return 10 +  parseInt(this.baseItems[1].bonus);
+        return 10 +  parseInt(this.baseItems[1].bonus) + (this.featItems.find(feat => feat.feat_en.includes('fighting_style_defense')) ? 1:0);
     },
     betterSaving() {
         const clz = this.clazzItems[0].clazz;
@@ -316,10 +320,12 @@ computed: {
     skillItems () {
         const _self = this;
         return  skills.map((key, index) => {
-            // `${key.name_cn}(${keyAttrEn2Cn(key.key_attr)})`
             const val = _self.baseItems.find( val => val.attr === key.key_attr);
             const isSelect = _self.selectSkills.find(val => val === key.name_en);
-            return {index, attr: key , extra:'', bonus: ((isSelect ? _self.prortry:0) + parseInt( val.bonus))};
+            const extra = (this.featItems.find(
+                feat => feat.feat_en.includes('observant')
+            )  && (key.name_en === 'investigation' || key.name_en==='perception'))? 5:0;
+            return {index, attr: key , extra:'', bonus: (extra + (isSelect ? _self.prortry:0) + parseInt( val.bonus))};
         });
     },
     skillItems1 () {
