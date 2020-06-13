@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import SpellBookPage from './../containers/SpellBookPage.vue';
 import Charactor from '../containers/Charactor.vue';
+import Editor from '../containers/Editor';
 Vue.use(VueRouter)
 
 const routes = [{
@@ -13,7 +14,12 @@ const routes = [{
     path: '/charactor',
     name: 'Charactor',
     component: Charactor
-  }
+  },
+    {
+        path: '/editor',
+        name: 'Editor',
+        component: Editor
+    }
 ]
 
 const router = new VueRouter({
