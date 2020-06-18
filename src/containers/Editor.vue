@@ -24,14 +24,15 @@
             v-row(align="baseline")
               v-col(cols="2")
                 v-text-field(label="力量" v-model="abilities.str" outlined)
-              v-col(cols="2")
-                div(style="display: flex;")
-                  v-btn(icon class="mx-2" fab color="green" small)
-                    v-icon(dark) mdi-plus 
-                  v-btn(icon class="mx-2" fab color="red" small)
+              v-col(cols="4")
+                div(style="display: flex;align-items: center;")
+                  v-btn(icon class="mx-2" fab color="green" small @click="modifyValue('str')")
+                    v-icon(dark ) mdi-plus 
+                  span /
+                  v-btn(icon class="mx-2" fab color="red" small @click="modifyValue('str', false)")
                     v-icon(dark) mdi-minus
-              v-col(cols="2")
-                v-chip(class="ma-2" color="red" text-color="white") -1
+                  v-chip(class="ma-2" color="red" text-color="white") {{parseValue2Bonus(abilities.str)}}
+               
           v-card-actions
             v-btn(text @click="step = 4") 确认
             v-btn(text @click="step = 2") 返回
@@ -96,6 +97,20 @@ export default {
             feats: ["警觉","运动员","演员","冲锋手","强弩专家","防御式决斗","双持客","地城探索者","耐性","元素导师","擒抱者","巨武器大师","医疗师","重甲运用","重甲大师","领袖之证","敏锐心灵","轻甲运用","语言学家","幸运","巫师杀手","魔法学徒","战技专家","中甲大师","灵活移动","中甲运用","骑乘战斗","观察力","长柄武器大师","强健身心","仪式施法者","凶蛮打手","哨兵"]
         }
     },
+    methods: {
+      modifyValue(attr, plus = true) {
+        if( this.abilities[attr] === 8 && !plus) {
+          return;
+        } 
+        if(this.abilities[attr] === 15 && plus) {
+          return;
+        }
+        this.abilities[attr] =  this.abilities[attr] + (plus ? 1 : -1);
+      },
+      parseValue2Bonus(val) {
+        return Math.floor( (parseInt(val) - 10) /2);
+      }
+    }
 }
 </script>
 
