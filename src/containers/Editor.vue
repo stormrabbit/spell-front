@@ -22,16 +22,15 @@
           v-card-title 剩余点数：27
           v-card-text
             v-row(align="baseline")
-              v-col(cols="2")
-                v-text-field(label="力量" v-model="abilities.str" outlined)
-              v-col(cols="4")
+              v-col(cols="6" v-for="(key, index) in Object.keys(abilities)" :key="index")
                 div(style="display: flex;align-items: center;")
-                  v-btn(icon class="mx-2" fab color="green" small @click="modifyValue('str')")
+                  v-text-field( v-model="abilities[key]"  :label="key" outlined)
+                  v-btn(icon class="mx-2" fab color="green" small @click="modifyValue(key)")
                     v-icon(dark ) mdi-plus 
                   span /
-                  v-btn(icon class="mx-2" fab color="red" small @click="modifyValue('str', false)")
+                  v-btn(icon class="mx-2" fab color="red" small @click="modifyValue(key, false)")
                     v-icon(dark) mdi-minus
-                  v-chip(class="ma-2" color="red" text-color="white") {{parseValue2Bonus(abilities.str)}}
+                  v-chip(class="ma-2" style="width: 32px;height: 32px;" color="red" text-color="white") {{parseValue2Bonus(abilities[key])}}
                
           v-card-actions
             v-btn(text @click="step = 4") 确认
@@ -117,5 +116,11 @@ export default {
 <style scoped>
 /deep/ .v-input--selection-controls .v-input__control {
   width: 100%;
+}
+/deep/ .v-text-field__details {
+  display: none;
+}
+/deep/ .v-input__slot {
+  margin-bottom: 0px;
 }
 </style>>
