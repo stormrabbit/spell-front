@@ -24,7 +24,7 @@
             v-row(align="baseline")
               v-col(cols="6" v-for="(key, index) in Object.keys(abilities)" :key="index")
                 div(style="display: flex;align-items: center;")
-                  v-text-field( v-model="abilities[key]"  :label="key" outlined)
+                  v-text-field( v-model="abilities[key]"  :label="thisKeyAttrEn2Cn(key)" outlined)
                   v-btn(icon class="mx-2" fab color="green" small @click="modifyValue(key)")
                     v-icon(dark ) mdi-plus 
                   span /
@@ -72,6 +72,7 @@
 <script>
 import GridRadio from './../components/GridRadio';
 import GridCheckbox from './../components/GridCheckbox';
+import {keyAttrEn2Cn} from './../data/const';
 export default {
   components: {
     'grid-radio': GridRadio,
@@ -97,6 +98,9 @@ export default {
         }
     },
     methods: {
+      thisKeyAttrEn2Cn(key) {
+        return keyAttrEn2Cn(key);
+      },
       modifyValue(attr, plus = true) {
         if( this.abilities[attr] === 8 && !plus) {
           return;
