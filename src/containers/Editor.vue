@@ -19,19 +19,26 @@
       v-stepper-step(:complete="step > 3" step="3") 属性值
       v-stepper-content(step="3")
         v-card(color="grey lighten-3" class="mb-12")
-          v-card-title 剩余点数：27
+          v-card-title 剩余点数：{{points}}
           v-card-text
             v-row(align="baseline")
               v-col(cols="6" v-for="(key, index) in Object.keys(abilities)" :key="index")
                 div(style="display: flex;align-items: center;")
-                  v-text-field( v-model="abilities[key]"  :label="thisKeyAttrEn2Cn(key)" outlined)
+                  span {{`${thisKeyAttrEn2Cn(key)}基础值：`}}
+                  span {{abilities[key]< 10 ? `0${abilities[key]}` : abilities[key]}}
+                  v-spacer
+                  span {{`种族加值：`}}
+                  span {{0 + '\t'}}
+                  v-spacer
+                  //- v-text-field( v-model="abilities[key]"  :label="thisKeyAttrEn2Cn(key)" outlined)
                   v-btn(icon class="mx-2" fab color="green" small @click="modifyValue(key)")
                     v-icon(dark ) mdi-plus 
                   span /
                   v-btn(icon class="mx-2" fab color="red" small @click="modifyValue(key, false)")
                     v-icon(dark) mdi-minus
+                  v-spacer
                   v-chip(class="ma-2" style="width: 32px;height: 32px;" color="red" text-color="white") {{parseValue2Bonus(abilities[key])}}
-               
+                  v-spacer
           v-card-actions
             v-btn(text @click="step = 4") 确认
             v-btn(text @click="step = 2") 返回
@@ -80,6 +87,7 @@ export default {
   },
     data () {
         return {
+            points: 27,
             step: 3,
             abilities: {
               str: 8,
@@ -102,11 +110,21 @@ export default {
         return keyAttrEn2Cn(key);
       },
       modifyValue(attr, plus = true) {
-        if( this.abilities[attr] === 8 && !plus) {
+        const temp = this.abilities[attr];
+
+        if( temp === 8 && !plus) {
           return;
         } 
-        if(this.abilities[attr] === 15 && plus) {
+        if(temp === 15 && plus) {
           return;
+        }
+        const cost = plus ? (temp <13 ? -1:-2) : (temp > 13 ? 2:1);
+        if((this.points + cost < 0) || (this.points + cost >27)) {
+          return;
+        }
+        this.points = this.points + cost;
+        if((!plus && this.points === 0) || (plus && this.points === 27)) {
+          return ;
         }
         this.abilities[attr] =  this.abilities[attr] + (plus ? 1 : -1);
       },
