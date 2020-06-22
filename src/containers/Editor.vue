@@ -30,15 +30,20 @@
                   span {{`种族加值：`}}
                   span {{0 + '\t'}}
                   v-spacer
-                  //- v-text-field( v-model="abilities[key]"  :label="thisKeyAttrEn2Cn(key)" outlined)
-                  v-btn(icon class="mx-2" fab color="green" small @click="modifyValue(key)")
-                    v-icon(dark ) mdi-plus 
+                  v-btn(class="ma-2" text icon color="blue lighten-2" @click="modifyValue(key)")
+                    v-icon mdi-thumb-up
                   span /
-                  v-btn(icon class="mx-2" fab color="red" small @click="modifyValue(key, false)")
-                    v-icon(dark) mdi-minus
+                  v-btn(class="ma-2" text icon color="red lighten-2" @click="modifyValue(key, false)")
+                    v-icon(dark) mdi-thumb-down
                   v-spacer
-                  v-chip(class="ma-2" style="width: 32px;height: 32px;" color="red" text-color="white") {{parseValue2Bonus(abilities[key])}}
+                  span 调整值：
+                  v-icon(:color="parseValue2Bonus(abilities[key]) < 0 ? 'red':'green'" :style="(parseValue2Bonus(abilities[key]) === 0)?{visibility: 'hidden'} :{}") {{parseValue2Bonus(abilities[key]) < 0 ? 'mdi-minus':'mdi-plus'}}
+                  v-chip(class="ma-2"  style="width: 32px;height: 32px;" :color="parseColor(parseValue2Bonus(abilities[key]))" text-color="white") {{Math.abs (parseValue2Bonus(abilities[key]))}}
                   v-spacer
+            div(class="title" style="width: 100%;text-align: left;") 种族点数：2
+              v-row
+                v-col(cols="2" v-for="(key, index) in Object.keys(abilities)" :key="index")
+                  v-checkbox(:label="`${thisKeyAttrEn2Cn(key)} + 1`")
           v-card-actions
             v-btn(text @click="step = 4") 确认
             v-btn(text @click="step = 2") 返回
@@ -106,6 +111,9 @@ export default {
         }
     },
     methods: {
+      parseColor(color) {
+        return parseInt(color) > 0 ? 'green' : parseInt(color) === 0 ? 'grey':'red';
+      },
       thisKeyAttrEn2Cn(key) {
         return keyAttrEn2Cn(key);
       },
@@ -129,7 +137,7 @@ export default {
         this.abilities[attr] =  this.abilities[attr] + (plus ? 1 : -1);
       },
       parseValue2Bonus(val) {
-        return Math.floor( (parseInt(val) - 10) /2);
+        return  Math.floor( (parseInt(val) - 10) /2);
       }
     }
 }
@@ -144,5 +152,13 @@ export default {
 }
 /deep/ .v-input__slot {
   margin-bottom: 0px;
+}
+.title {
+  flex-wrap: wrap;
+  font-size: 1.25rem;
+  font-weight: 500;
+  letter-spacing: 0.0125em;
+  line-height: 2rem;
+  word-break: break-all;
 }
 </style>>
