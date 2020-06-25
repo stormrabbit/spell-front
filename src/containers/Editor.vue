@@ -37,13 +37,16 @@
                     v-icon(dark) mdi-thumb-down
                   v-spacer
                   span 调整值：
-                  v-icon(:color="parseValue2Bonus(abilities[key]) < 0 ? 'red':'green'" :style="(parseValue2Bonus(abilities[key]) === 0)?{visibility: 'hidden'} :{}") {{parseValue2Bonus(abilities[key]) < 0 ? 'mdi-minus':'mdi-plus'}}
-                  v-chip(class="ma-2"  style="width: 32px;height: 32px;" :color="parseColor(parseValue2Bonus(abilities[key]))" text-color="white") {{Math.abs (parseValue2Bonus(abilities[key]))}}
+                  v-icon(:color="parseValue2Bonus(abilities[key] + (extra[key] ? 1: 0)) < 0 ? 'red':'green'" :style="(parseValue2Bonus(abilities[key] + (extra[key] ? 1: 0)) === 0)?{visibility: 'hidden'} :{}") {{parseValue2Bonus(abilities[key] + (extra[key] ? 1: 0)) < 0 ? 'mdi-minus':'mdi-plus'}}
+                  v-chip(class="ma-2"  style="width: 32px;height: 32px;" :color="parseColor(parseValue2Bonus(abilities[key] + (extra[key] ? 1: 0)))" text-color="white") {{Math.abs (parseValue2Bonus(abilities[key] + (extra[key] ? 1: 0)))}}
                   v-spacer
             div(class="title" style="width: 100%;text-align: left;") 种族点数：{{extraPoints}}
               v-row
                 v-col(cols="2" v-for="(key, index) in Object.keys(abilities)" :key="index")
                   v-checkbox( :disabled="!extraPoints && !extra[key]" :label="`${thisKeyAttrEn2Cn(key)} + 1`" v-model="extra[key]")
+              v-row
+                v-col(cols="2" v-for="(key, index) in Object.keys(abilities)" :key="index")
+                  v-checkbox( disabled :label="`${thisKeyAttrEn2Cn(key)} + 2`")
           v-card-actions
             v-btn(text @click="step = 4") 确认
             v-btn(text @click="step = 2") 返回
