@@ -28,7 +28,7 @@
                   span {{abilities[key]< 10 ? `0${abilities[key]}` : abilities[key]}}
                   v-spacer
                   span {{`种族加值：`}}
-                  span {{0 + '\t'}}
+                  span {{extra[key] ? 1: 0 + '\t'}}
                   v-spacer
                   v-btn(class="ma-2" text icon color="blue lighten-2" @click="modifyValue(key)")
                     v-icon mdi-thumb-up
@@ -40,10 +40,10 @@
                   v-icon(:color="parseValue2Bonus(abilities[key]) < 0 ? 'red':'green'" :style="(parseValue2Bonus(abilities[key]) === 0)?{visibility: 'hidden'} :{}") {{parseValue2Bonus(abilities[key]) < 0 ? 'mdi-minus':'mdi-plus'}}
                   v-chip(class="ma-2"  style="width: 32px;height: 32px;" :color="parseColor(parseValue2Bonus(abilities[key]))" text-color="white") {{Math.abs (parseValue2Bonus(abilities[key]))}}
                   v-spacer
-            div(class="title" style="width: 100%;text-align: left;") 种族点数：2
+            div(class="title" style="width: 100%;text-align: left;") 种族点数：{{extraPoints}}
               v-row
                 v-col(cols="2" v-for="(key, index) in Object.keys(abilities)" :key="index")
-                  v-checkbox(:label="`${thisKeyAttrEn2Cn(key)} + 1`")
+                  v-checkbox( :disabled="!extraPoints && !extra[key]" :label="`${thisKeyAttrEn2Cn(key)} + 1`" v-model="extra[key]")
           v-card-actions
             v-btn(text @click="step = 4") 确认
             v-btn(text @click="step = 2") 返回
@@ -94,6 +94,14 @@ export default {
         return {
             points: 27,
             step: 3,
+            extra: {
+              str: 0,
+              dex: 0,
+              con: 0,
+              wis: 0,
+              int: 0,
+              cha: 0
+            },
             abilities: {
               str: 8,
               dex: 8,
@@ -109,6 +117,12 @@ export default {
             skills: ["运动","体操","巧手","隐匿","奥秘","历史","调查","自然","宗教","驯兽","洞悉","医药","察觉","求生","欺瞒","威吓","表演","游说"],
             feats: ["警觉","运动员","演员","冲锋手","强弩专家","防御式决斗","双持客","地城探索者","耐性","元素导师","擒抱者","巨武器大师","医疗师","重甲运用","重甲大师","领袖之证","敏锐心灵","轻甲运用","语言学家","幸运","巫师杀手","魔法学徒","战技专家","中甲大师","灵活移动","中甲运用","骑乘战斗","观察力","长柄武器大师","强健身心","仪式施法者","凶蛮打手","哨兵"]
         }
+    },
+    computed: {
+      extraPoints() {
+        const _self = this;
+        return 2 - Object.keys( _self.extra).reduce( (pre, cur ) =>  (_self.extra[cur] ? pre + 1: pre), 0)
+      }
     },
     methods: {
       parseColor(color) {
