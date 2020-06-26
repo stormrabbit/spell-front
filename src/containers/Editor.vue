@@ -5,7 +5,7 @@
       v-stepper-content(step="1")
         v-card(class="mb-12" color="grey lighten-3")
           v-card-text
-            grid-radio(:vals="races")
+            grid-radio(:vals="races.map(race => race.cn_name)")
           v-card-actions
             v-btn(text @click="step = 2" ) 确认
       v-stepper-step(:complete="step > 2" step="2") 选择职业
@@ -88,6 +88,7 @@
 import GridRadio from './../components/GridRadio';
 import GridCheckbox from './../components/GridCheckbox';
 import {keyAttrEn2Cn} from './../data/const';
+import {races} from './../data/races';
 export default {
   components: {
     'grid-radio': GridRadio,
@@ -113,7 +114,7 @@ export default {
               int: 8,
               cha: 8
             },
-            races:["矮人","精灵","半身人","人类","龙裔","侏儒","半精灵","半兽人","提夫林"],
+            races,
             classes: ["野蛮人","吟游诗人","牧师","德鲁伊","战士","武僧","圣武士","游侠","游荡者","邪术师","法师"],
             alignments: ["守序善良","中立善良","混乱善良","守序中立","绝对中立","混乱中立","守序邪恶","中立邪恶","混乱邪恶"],
             backgrounds: ["侍僧","骗子","罪犯","艺人","平民英雄","公会工匠","隐士","贵族","化外之民","智者","水手","士兵","流浪儿"],
