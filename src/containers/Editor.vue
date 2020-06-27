@@ -5,14 +5,15 @@
       v-stepper-content(step="1")
         v-card(class="mb-12" color="grey lighten-3")
           v-card-text
-            grid-radio(:vals="races.map(race => race.cn_name)")
+            grid-radio(:text="races.map(race => race.cn_name)" :value="races.map(race => race.en_name)" :onchange="onchange")  
+            grid-radio(:text="pickedSubRace.map(race => race.cn_name)" :value="pickedSubRace.map(race => race.en_name)" :onchange="()=>{}")
           v-card-actions
             v-btn(text @click="step = 2" ) 确认
       v-stepper-step(:complete="step > 2" step="2") 选择职业
       v-stepper-content(step="2")
         v-card(color="grey lighten-3" class="mb-12")
           v-card-text
-            grid-radio(:vals="classes")
+            grid-radio(:text="classes")
           v-card-actions
             v-btn(text @click="step = 3") 确认
             v-btn(text @click="step = 1") 返回
@@ -54,7 +55,7 @@
       v-stepper-content(step="4")
         v-card(color="grey lighten-3" class="mb-12")
           v-card-text
-            grid-radio(:vals="alignments")
+            grid-radio(:text="alignments")
           v-card-actions
             v-btn(text @click="step = 5") 确认
             v-btn(text @click="step = 3") 返回
@@ -62,7 +63,7 @@
       v-stepper-content(step="5")
         v-card(color="grey lighten-3" class="mb-12")
           v-card-text
-            grid-radio(:vals="backgrounds")
+            grid-radio(:text="backgrounds")
           v-card-actions
             v-btn(text @click="step = 6") 确认
             v-btn(text @click="step = 4") 返回
@@ -70,7 +71,7 @@
       v-stepper-content(step="6")
         v-card(color="grey lighten-3" class="mb-12")
           v-card-text
-            grid-checkbox(:vals="skills")
+            grid-checkbox(:text="skills")
           v-card-actions
             v-btn(text @click="step = 7") 确认
             v-btn(text @click="step = 5") 返回
@@ -78,7 +79,7 @@
       v-stepper-content(step="7")
         v-card(color="grey lighten-3" class="mb-12")
           v-card-text
-            grid-checkbox(:vals="feats")
+            grid-checkbox(:text="feats")
           v-card-actions
             v-btn(text @click="step = 8") 确认
             v-btn(text @click="step = 6") 返回    
@@ -96,8 +97,11 @@ export default {
   },
     data () {
         return {
+          temp:'',
+            pickedRace: {},
+            pickedSubRace: [],
             points: 27,
-            step: 3,
+            step: 1,
             extra: {
               str: 0,
               dex: 0,
@@ -129,6 +133,11 @@ export default {
       }
     },
     methods: {
+      onchange(val) {
+        this.pickedRace = val;
+        const pickedSubRace = races.find(race => race.en_name === val).sub;
+        this.pickedSubRace = pickedSubRace ? pickedSubRace : [];
+      },
       parseColor(color) {
         return parseInt(color) > 0 ? 'green' : parseInt(color) === 0 ? 'grey':'red';
       },
