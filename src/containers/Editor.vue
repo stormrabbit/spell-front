@@ -1,19 +1,19 @@
 <template lang="pug">
   v-app(id="inspire")
     v-stepper(v-model="step" vertical)
-      v-stepper-step(:complete="step > 1" step="1") 选择种族
+      v-stepper-step(:complete="step > 1" step="1") {{raceTips}}
       v-stepper-content(step="1")
         v-card(class="mb-12" color="grey lighten-3")
           v-card-text
-            grid-radio(:text="races.map(race => race.cn_name)" :value="races.map(race => race.en_name)" :onchange="onchange")  
-            grid-radio(:text="pickedSubRace.map(race => race.cn_name)" :value="pickedSubRace.map(race => race.en_name)" :onchange="()=>{}")
+            grid-radio(:text="races.map(race => race.cn_name)" :value="races.map(race => race.en_name)" :onchange="onPickRace")  
+            grid-radio(:text="toBePickedSubRace.map(race => race.cn_name)" :value="toBePickedSubRace.map(race => race.en_name)" :onchange="onPickSubRace")
           v-card-actions
             v-btn(text @click="step = 2" ) 确认
-      v-stepper-step(:complete="step > 2" step="2") 选择职业
+      v-stepper-step(:complete="step > 2" step="2") {{classTips}}
       v-stepper-content(step="2")
         v-card(color="grey lighten-3" class="mb-12")
           v-card-text
-            grid-radio(:text="classes")
+            grid-radio(:text="classes.map(clz => clz.cn_name)" :value="classes.map(clz => clz.en_name)" :onchange="onPickClass")
           v-card-actions
             v-btn(text @click="step = 3") 确认
             v-btn(text @click="step = 1") 返回
@@ -89,7 +89,8 @@
 import GridRadio from './../components/GridRadio';
 import GridCheckbox from './../components/GridCheckbox';
 import {keyAttrEn2Cn} from './../data/const';
-import {races} from './../data/races';
+import {races, raceEn2Cn, subRaceEn2Cn} from './../data/races';
+import {classes, classEn2Cn} from '../data/classes';
 export default {
   components: {
     'grid-radio': GridRadio,
@@ -97,9 +98,12 @@ export default {
   },
     data () {
         return {
-          temp:'',
-            pickedRace: {},
-            pickedSubRace: [],
+            temp:'',  
+            sub: false,
+            pickedRace: '',
+            toBePickedSubRace: [],
+            pickedSubRace : '',
+            pickedClass: '',
             points: 27,
             step: 1,
             extra: {
@@ -119,7 +123,7 @@ export default {
               cha: 8
             },
             races,
-            classes: ["野蛮人","吟游诗人","牧师","德鲁伊","战士","武僧","圣武士","游侠","游荡者","邪术师","法师"],
+            classes,
             alignments: ["守序善良","中立善良","混乱善良","守序中立","绝对中立","混乱中立","守序邪恶","中立邪恶","混乱邪恶"],
             backgrounds: ["侍僧","骗子","罪犯","艺人","平民英雄","公会工匠","隐士","贵族","化外之民","智者","水手","士兵","流浪儿"],
             skills: ["运动","体操","巧手","隐匿","奥秘","历史","调查","自然","宗教","驯兽","洞悉","医药","察觉","求生","欺瞒","威吓","表演","游说"],
@@ -130,13 +134,27 @@ export default {
       extraPoints() {
         const _self = this;
         return 2 - Object.keys( _self.extra).reduce( (pre, cur ) =>  (_self.extra[cur] ? pre + 1: pre), 0)
+      },
+      raceTips() {
+        return this.pickedRace ? `${raceEn2Cn(this.pickedRace)} ${subRaceEn2Cn(this.pickedRace, this.pickedSubRace) }`: '请选择种族';
+      },
+      classTips() {
+        return this.pickedClass ? classEn2Cn(this.pickedClass) : '请选择职业';
       }
     },
     methods: {
-      onchange(val) {
+      onPickRace(val) {
         this.pickedRace = val;
         const pickedSubRace = races.find(race => race.en_name === val).sub;
-        this.pickedSubRace = pickedSubRace ? pickedSubRace : [];
+       
+      this.toBePickedSubRace = pickedSubRace ? pickedSubRace : [];
+       this.pickedSubRace = pickedSubRace && pickedSubRace.length? pickedSubRace[0].en_name: '';
+      },
+      onPickSubRace(val) {
+        this.pickedSubRace = val;
+      },
+      onPickClass(val) {
+        this.pickedClass = val;
       },
       parseColor(color) {
         return parseInt(color) > 0 ? 'green' : parseInt(color) === 0 ? 'grey':'red';

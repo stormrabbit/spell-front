@@ -1,6 +1,6 @@
 <!--  -->
 <template lang="pug">
-    v-radio-group(row @change="thisonchange")
+    v-radio-group(row @change="thisonchange" v-model="radioGroup")
         v-row(align="center" )
             v-col(cols="2" v-for="(val, index) in text" :key="index" style="text-align: center;")
                 v-radio(:label="val" v-model="thisValue[index]" )
@@ -16,14 +16,30 @@ components: {},
 props: ['text','value', 'onchange'],
 data() {
 //这里存放数据
-return {
-    thisValue: this.value || []
+return {    
+    radioGroup: '',
+    tips: '',
 };
 },
 //监听属性 类似于data概念
-computed: {},
+computed: {
+     thisValue() {
+         return this.value || [];
+     } 
+},
 //监控data中的数据变化
-watch: {},
+watch: {
+    value:{
+      handler(newVal){
+          if(newVal && newVal.length) {
+              this.radioGroup = newVal[0];
+          } else {
+              this.radioGroup = '';
+          }
+      },
+      deep: true,
+    }
+},
 //方法集合
 methods: {
     thisonchange(val) {
