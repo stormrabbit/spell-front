@@ -137,9 +137,13 @@ const races = [
     }
 ];
 const raceEn2Cn = (en) => races.find(race => race.en_name === en).cn_name; 
-const subRaceEn2Cn = (main, sub) => sub ? races.find(race => race.en_name === main).sub.find(subrace => subrace.en_name === sub).cn_name: ''; 
+const subRaceEn2Cn = (main, sub) => sub ? races.find(race => race.en_name === main).sub.find(subrace => subrace.en_name === sub).cn_name: {}; 
+const locateRaceByEN = (en) => races.find(race => race.en_name === en);
+const locateSubRaceEn2Cn = (main, sub) => sub ? races.find(race => race.en_name === main).sub.find(subrace => subrace.en_name === sub): {}; 
 export  {
     races,
     raceEn2Cn,
-    subRaceEn2Cn
+    subRaceEn2Cn,
+    locateRaceByEN,
+    locateSubRaceEn2Cn
 }

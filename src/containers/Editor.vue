@@ -41,10 +41,10 @@
                   v-icon(:color="parseValue2Bonus(abilities[key] + (extra[key] ? 1: 0)) < 0 ? 'red':'green'" :style="(parseValue2Bonus(abilities[key] + (extra[key] ? 1: 0)) === 0)?{visibility: 'hidden'} :{}") {{parseValue2Bonus(abilities[key] + (extra[key] ? 1: 0)) < 0 ? 'mdi-minus':'mdi-plus'}}
                   v-chip(class="ma-2"  style="width: 32px;height: 32px;" :color="parseColor(parseValue2Bonus(abilities[key] + (extra[key] ? 1: 0)))" text-color="white") {{Math.abs (parseValue2Bonus(abilities[key] + (extra[key] ? 1: 0)))}}
                   v-spacer
-            div(class="title" style="width: 100%;text-align: left;") 种族点数：{{extraPoints}}
+            div(class="title" style="width: 100%;text-align: left;") 种族点数：{{freePointsDisabled ?0:extraPoints}}
               v-row
                 v-col(cols="2" v-for="(key, index) in Object.keys(abilities)" :key="index")
-                  v-checkbox( :disabled="!extraPoints && !extra[key]" :label="`${thisKeyAttrEn2Cn(key)} + 1`" v-model="extra[key]")
+                  v-checkbox( :disabled="freePointsDisabled || (!extraPoints && !extra[key])" :label="`${thisKeyAttrEn2Cn(key)} + 1`" v-model="extra[key]")
               v-row
                 v-col(cols="2" v-for="(key, index) in Object.keys(abilities)" :key="index")
                   v-checkbox( disabled :label="`${thisKeyAttrEn2Cn(key)} + 2`")
@@ -89,7 +89,7 @@
 import GridRadio from './../components/GridRadio';
 import GridCheckbox from './../components/GridCheckbox';
 import {keyAttrEn2Cn} from './../data/const';
-import {races, raceEn2Cn, subRaceEn2Cn} from './../data/races';
+import {races, raceEn2Cn, subRaceEn2Cn, locateRaceByEN} from './../data/races';
 import {classes, classEn2Cn} from '../data/classes';
 export default {
   components: {
@@ -140,6 +140,15 @@ export default {
       },
       classTips() {
         return this.pickedClass ? classEn2Cn(this.pickedClass) : '请选择职业';
+      }, 
+      freePointsDisabled() {
+        const {
+          extra
+        } =locateRaceByEN(this.pickedRace )|| {};
+        const {
+          extra:extraSub
+        } = this.pickedSubRace || {};
+        return ((extra || {}).free )||( (extraSub || {}).free) ;
       }
     },
     methods: {
