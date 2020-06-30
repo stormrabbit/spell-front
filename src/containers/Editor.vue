@@ -89,7 +89,7 @@
 import GridRadio from './../components/GridRadio';
 import GridCheckbox from './../components/GridCheckbox';
 import {keyAttrEn2Cn} from './../data/const';
-import {races, raceEn2Cn, subRaceEn2Cn, locateRaceByEN} from './../data/races';
+import {races, raceEn2Cn, subRaceEn2Cn, locateRaceByEN, locateSubRaceEn2Cn} from './../data/races';
 import {classes, classEn2Cn} from '../data/classes';
 export default {
   components: {
@@ -141,23 +141,23 @@ export default {
       classTips() {
         return this.pickedClass ? classEn2Cn(this.pickedClass) : '请选择职业';
       }, 
+      
       freePointsDisabled() {
         const {
           extra
         } =locateRaceByEN(this.pickedRace )|| {};
         const {
           extra:extraSub
-        } = this.pickedSubRace || {};
-        return ((extra || {}).free )||( (extraSub || {}).free) ;
+        } =locateSubRaceEn2Cn( this.pickedRace, this.pickedSubRace ) || {};
+        return !(((extra || {}).free )||( (extraSub || {}).free)) ;
       }
     },
     methods: {
       onPickRace(val) {
         this.pickedRace = val;
         const pickedSubRace = races.find(race => race.en_name === val).sub;
-       
-      this.toBePickedSubRace = pickedSubRace ? pickedSubRace : [];
-       this.pickedSubRace = pickedSubRace && pickedSubRace.length? pickedSubRace[0].en_name: '';
+        this.toBePickedSubRace = pickedSubRace ? pickedSubRace : [];
+        this.pickedSubRace = pickedSubRace && pickedSubRace.length? pickedSubRace[0].en_name: '';
       },
       onPickSubRace(val) {
         this.pickedSubRace = val;
