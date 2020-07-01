@@ -142,11 +142,7 @@ const raceEn2Cn = (en) => locateRaceByEN(en).cn_name;
 const subRaceEn2Cn = (raceEn, subEn)  => locateSubRaceByRaceAndEn(raceEn, subEn).cn_name; 
 const locateRaceByEN = (en) => races.find(race => race.en_name === en);
 const locateSubRacesByRaceEn = (raceEn) => (locateRaceByEN(raceEn).sub )|| [];  
-const locateSubRaceByRaceAndEn = (raceEn, subRaceEn) => {
-    // eslint-disable-next-line no-console
-    console.log('艹');
-    const temp = locateSubRacesByRaceEn(raceEn);
-    return temp.find(subrace => subrace.en_name === subRaceEn)}; 
+const locateSubRaceByRaceAndEn = (raceEn, subRaceEn) => locateSubRacesByRaceEn(raceEn).find(subrace => subrace.en_name === subRaceEn)
 export  {
     races,
     raceLabels,

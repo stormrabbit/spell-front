@@ -1,6 +1,6 @@
 <template lang="pug">
   v-app(id="inspire")
-    
+    span {{extraPoints}}
     v-stepper(v-model="step" vertical)
       v-stepper-step(:complete="step > 1" step="1") {{raceTips}}
       v-stepper-content(step="1")
@@ -16,38 +16,10 @@
           @modify-classes="modifyClasses")
       v-stepper-step(:complete="step > 3" step="3") 属性值
       v-stepper-content(step="3")
-        v-card(color="grey lighten-3" class="mb-12")
-          v-card-title 剩余点数：{{points}}
-          v-card-text
-            v-row(align="baseline")
-              v-col(cols="6" v-for="(key, index) in Object.keys(abilities)" :key="index")
-                div(style="display: flex;align-items: center;")
-                  span {{`${thisKeyAttrEn2Cn(key)}基础值：`}}
-                  span {{abilities[key]< 10 ? `0${abilities[key]}` : abilities[key]}}
-                  v-spacer
-                  span {{`种族加值：`}}
-                  span {{extra[key] ? 1: 0 + '\t'}}
-                  v-spacer
-                  v-btn(class="ma-2" text icon color="blue lighten-2" @click="modifyValue(key)")
-                    v-icon mdi-thumb-up
-                  span /
-                  v-btn(class="ma-2" text icon color="red lighten-2" @click="modifyValue(key, false)")
-                    v-icon(dark) mdi-thumb-down
-                  v-spacer
-                  span 调整值：
-                  v-icon(:color="parseValue2Bonus(abilities[key] + (extra[key] ? 1: 0)) < 0 ? 'red':'green'" :style="(parseValue2Bonus(abilities[key] + (extra[key] ? 1: 0)) === 0)?{visibility: 'hidden'} :{}") {{parseValue2Bonus(abilities[key] + (extra[key] ? 1: 0)) < 0 ? 'mdi-minus':'mdi-plus'}}
-                  v-chip(class="ma-2"  style="width: 32px;height: 32px;" :color="parseColor(parseValue2Bonus(abilities[key] + (extra[key] ? 1: 0)))" text-color="white") {{Math.abs (parseValue2Bonus(abilities[key] + (extra[key] ? 1: 0)))}}
-                  v-spacer
-            div(class="title" style="width: 100%;text-align: left;") 种族点数：{{freePointsDisabled ?0:extraPoints}}
-              v-row
-                v-col(cols="2" v-for="(key, index) in Object.keys(abilities)" :key="index")
-                  v-checkbox( :disabled="freePointsDisabled || (!extraPoints && !extra[key])" :label="`${thisKeyAttrEn2Cn(key)} + 1`" v-model="extra[key]")
-              v-row
-                v-col(cols="2" v-for="(key, index) in Object.keys(abilities)" :key="index")
-                  v-checkbox( disabled :label="`${thisKeyAttrEn2Cn(key)} + 2`")
-          v-card-actions
-            v-btn(text @click="step = 4") 确认
-            v-btn(text @click="step = 2") 返回
+        attributes-card(
+          :extraPoints="extraPoints"   
+          @cancel="() => {step = 2}"
+          @confirm="() => {step = 4}")
       v-stepper-step(:complete="step > 4" step="4") 选择阵营
       v-stepper-content(step="4")
         v-card(color="grey lighten-3" class="mb-12")
@@ -85,117 +57,75 @@
 <script>
 import GridRadio from './../components/GridRadio';
 import GridCheckbox from './../components/GridCheckbox';
-import {keyAttrEn2Cn} from './../data/const';
-import {classes} from '../data/classes';
 import raceCard from './../components/editor/RacesCard';
 import classesCard from '../components/editor/ClassesCard';
+import attributesCard from '../components/editor/AttributesCard';
+// eslint-disable-next-line no-unused-vars
+import { locateRaceByEN, locateSubRaceByRaceAndEn } from '../data/races';
 export default {
   components: {
     'grid-radio': GridRadio,
     'grid-checkbox' :GridCheckbox,
     raceCard,
-    classesCard
+    classesCard,
+    attributesCard
   },
-    data () {
-        return {
-            temp:'',  
-            sub: false,
-            pickedRace: {},
-            toBePickedSubRace: [],
-            pickedSubRace : {},
-            pickedClass: '',
-            points: 27,
-            step: 1,
-            extra: {
-              str: 0,
-              dex: 0,
-              con: 0,
-              wis: 0,
-              int: 0,
-              cha: 0
-            },
-            abilities: {
-              str: 8,
-              dex: 8,
-              con: 8,
-              wis: 8,
-              int: 8,
-              cha: 8
-            },
-            classes,
-            alignments: ["守序善良","中立善良","混乱善良","守序中立","绝对中立","混乱中立","守序邪恶","中立邪恶","混乱邪恶"],
-            backgrounds: ["侍僧","骗子","罪犯","艺人","平民英雄","公会工匠","隐士","贵族","化外之民","智者","水手","士兵","流浪儿"],
-            skills: ["运动","体操","巧手","隐匿","奥秘","历史","调查","自然","宗教","驯兽","洞悉","医药","察觉","求生","欺瞒","威吓","表演","游说"],
-            feats: ["警觉","运动员","演员","冲锋手","强弩专家","防御式决斗","双持客","地城探索者","耐性","元素导师","擒抱者","巨武器大师","医疗师","重甲运用","重甲大师","领袖之证","敏锐心灵","轻甲运用","语言学家","幸运","巫师杀手","魔法学徒","战技专家","中甲大师","灵活移动","中甲运用","骑乘战斗","观察力","长柄武器大师","强健身心","仪式施法者","凶蛮打手","哨兵"]
-        }
-    },
-    computed: {
-      extraPoints() {
-        const _self = this;
-        return 2 - Object.keys( _self.extra).reduce( (pre, cur ) =>  (_self.extra[cur] ? pre + 1: pre), 0)
-      },
-      raceTips() {
-        const {
-          cn_name:name
-        } = (this.pickedRace || {});
-        const {
-          cn_name:subName
-        } = (this.pickedSubRace || {})
-        return  `${name ? name:'请选择种族'} ${subName ? subName:''  }`;
-      },
-      classTips() {
-        const {
-          cn_name
-        } = (this.pickedClass || {});
-        return cn_name ? cn_name : '请选择职业';
-      }, 
-      freePointsDisabled() {
-        return (this.pickedRace || {}).free || (this.pickedSubRace || {}).free;
+  data () {
+      return {
+          pickedRace: {},
+          toBePickedSubRace: [],
+          pickedSubRace : {},
+          pickedClass: {},
+          step: 3,
+          alignments: ["守序善良","中立善良","混乱善良","守序中立","绝对中立","混乱中立","守序邪恶","中立邪恶","混乱邪恶"],
+          backgrounds: ["侍僧","骗子","罪犯","艺人","平民英雄","公会工匠","隐士","贵族","化外之民","智者","水手","士兵","流浪儿"],
+          skills: ["运动","体操","巧手","隐匿","奥秘","历史","调查","自然","宗教","驯兽","洞悉","医药","察觉","求生","欺瞒","威吓","表演","游说"],
+          feats: ["警觉","运动员","演员","冲锋手","强弩专家","防御式决斗","双持客","地城探索者","耐性","元素导师","擒抱者","巨武器大师","医疗师","重甲运用","重甲大师","领袖之证","敏锐心灵","轻甲运用","语言学家","幸运","巫师杀手","魔法学徒","战技专家","中甲大师","灵活移动","中甲运用","骑乘战斗","观察力","长柄武器大师","强健身心","仪式施法者","凶蛮打手","哨兵"]
       }
+  },
+  mounted() {
+    this.pickedRace = locateRaceByEN('half_elf');
+    // this.pickedSubRace = locateSubRaceByRaceAndEn('dwarf','mountain_dwarf' );
+  },
+  computed: {
+    raceTips() {
+      const {
+        cn_name:name
+      } = (this.pickedRace || {});
+      const {
+        cn_name:subName
+      } = (this.pickedSubRace || {})
+      return  `${name ? name:'请选择种族'} ${subName ? subName:''  }`;
     },
-    methods: {
-      modifyRace(race) {
-        this.pickedRace = race;
-        this.pickedSubRace = {};
-      },
-      modifySubrace(subrace) {
-        this.pickedSubRace = subrace;
-      },
-      modifyClasses(clazz) {
-        this.pickedClass = clazz;
-      },
-      onPickClass(val) {
-        this.pickedClass = val;
-      },
-      parseColor(color) {
-        return parseInt(color) > 0 ? 'green' : parseInt(color) === 0 ? 'grey':'red';
-      },
-      thisKeyAttrEn2Cn(key) {
-        return keyAttrEn2Cn(key);
-      },
-      modifyValue(attr, plus = true) {
-        const temp = this.abilities[attr];
+    extraPoints() {
+      const {
+        extra = {}
+      } = this.pickedRace || {};
+      const {
+        extra:extraSub = {}
+      } = this.pickedSubRace || {};
+      return {...extra, ...extraSub};
+    },
 
-        if( temp === 8 && !plus) {
-          return;
-        } 
-        if(temp === 15 && plus) {
-          return;
-        }
-        const cost = plus ? (temp <13 ? -1:-2) : (temp > 13 ? 2:1);
-        if((this.points + cost < 0) || (this.points + cost >27)) {
-          return;
-        }
-        this.points = this.points + cost;
-        if((!plus && this.points === 0) || (plus && this.points === 27)) {
-          return ;
-        }
-        this.abilities[attr] =  this.abilities[attr] + (plus ? 1 : -1);
-      },
-      parseValue2Bonus(val) {
-        return  Math.floor( (parseInt(val) - 10) /2);
-      }
-    }
+    classTips() {
+      const {
+        cn_name
+      } = (this.pickedClass || {});
+      return cn_name ? cn_name : '请选择职业';
+    }, 
+  },
+  methods: {
+    modifyRace(race) {
+      this.pickedRace = race;
+      this.pickedSubRace = {};
+    },
+    modifySubrace(subrace) {
+      this.pickedSubRace = subrace;
+    },
+    modifyClasses(clazz) {
+      this.pickedClass = clazz;
+    },
+  }
 }
 </script>
 
