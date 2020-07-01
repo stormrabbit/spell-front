@@ -1,22 +1,19 @@
 <template lang="pug">
   v-app(id="inspire")
+    
     v-stepper(v-model="step" vertical)
       v-stepper-step(:complete="step > 1" step="1") {{raceTips}}
       v-stepper-content(step="1")
-        v-card(class="mb-12" color="grey lighten-3")
-          v-card-text
-            grid-radio(:text="races.map(race => race.cn_name)" :value="races.map(race => race.en_name)" :onchange="onPickRace")  
-            grid-radio(:text="toBePickedSubRace.map(race => race.cn_name)" :value="toBePickedSubRace.map(race => race.en_name)" :onchange="onPickSubRace")
-          v-card-actions
-            v-btn(text @click="step = 2" ) 确认
+        race-card(
+          @confirm="() => {step = 2}" 
+          @modify-race="modifyRace" 
+          @modify-subrace="modifySubrace")
       v-stepper-step(:complete="step > 2" step="2") {{classTips}}
       v-stepper-content(step="2")
-        v-card(color="grey lighten-3" class="mb-12")
-          v-card-text
-            grid-radio(:text="classes.map(clz => clz.cn_name)" :value="classes.map(clz => clz.en_name)" :onchange="onPickClass")
-          v-card-actions
-            v-btn(text @click="step = 3") 确认
-            v-btn(text @click="step = 1") 返回
+        classes-card(
+          @cancel="() => {step = 1}"
+          @confirm="() => {step = 3}"
+          @modify-classes="modifyClasses")
       v-stepper-step(:complete="step > 3" step="3") 属性值
       v-stepper-content(step="3")
         v-card(color="grey lighten-3" class="mb-12")
@@ -89,20 +86,23 @@
 import GridRadio from './../components/GridRadio';
 import GridCheckbox from './../components/GridCheckbox';
 import {keyAttrEn2Cn} from './../data/const';
-import {races, raceEn2Cn, subRaceEn2Cn, locateRaceByEN, locateSubRaceEn2Cn} from './../data/races';
-import {classes, classEn2Cn} from '../data/classes';
+import {classes} from '../data/classes';
+import raceCard from './../components/editor/RacesCard';
+import classesCard from '../components/editor/ClassesCard';
 export default {
   components: {
     'grid-radio': GridRadio,
-    'grid-checkbox' :GridCheckbox
+    'grid-checkbox' :GridCheckbox,
+    raceCard,
+    classesCard
   },
     data () {
         return {
             temp:'',  
             sub: false,
-            pickedRace: '',
+            pickedRace: {},
             toBePickedSubRace: [],
-            pickedSubRace : '',
+            pickedSubRace : {},
             pickedClass: '',
             points: 27,
             step: 1,
@@ -122,7 +122,6 @@ export default {
               int: 8,
               cha: 8
             },
-            races,
             classes,
             alignments: ["守序善良","中立善良","混乱善良","守序中立","绝对中立","混乱中立","守序邪恶","中立邪恶","混乱邪恶"],
             backgrounds: ["侍僧","骗子","罪犯","艺人","平民英雄","公会工匠","隐士","贵族","化外之民","智者","水手","士兵","流浪儿"],
@@ -136,31 +135,34 @@ export default {
         return 2 - Object.keys( _self.extra).reduce( (pre, cur ) =>  (_self.extra[cur] ? pre + 1: pre), 0)
       },
       raceTips() {
-        return this.pickedRace ? `${raceEn2Cn(this.pickedRace)} ${subRaceEn2Cn(this.pickedRace, this.pickedSubRace) }`: '请选择种族';
+        const {
+          cn_name:name
+        } = (this.pickedRace || {});
+        const {
+          cn_name:subName
+        } = (this.pickedSubRace || {})
+        return  `${name ? name:'请选择种族'} ${subName ? subName:''  }`;
       },
       classTips() {
-        return this.pickedClass ? classEn2Cn(this.pickedClass) : '请选择职业';
+        const {
+          cn_name
+        } = (this.pickedClass || {});
+        return cn_name ? cn_name : '请选择职业';
       }, 
-      
       freePointsDisabled() {
-        const {
-          extra
-        } =locateRaceByEN(this.pickedRace )|| {};
-        const {
-          extra:extraSub
-        } =locateSubRaceEn2Cn( this.pickedRace, this.pickedSubRace ) || {};
-        return !(((extra || {}).free )||( (extraSub || {}).free)) ;
+        return (this.pickedRace || {}).free || (this.pickedSubRace || {}).free;
       }
     },
     methods: {
-      onPickRace(val) {
-        this.pickedRace = val;
-        const pickedSubRace = races.find(race => race.en_name === val).sub;
-        this.toBePickedSubRace = pickedSubRace ? pickedSubRace : [];
-        this.pickedSubRace = pickedSubRace && pickedSubRace.length? pickedSubRace[0].en_name: '';
+      modifyRace(race) {
+        this.pickedRace = race;
+        this.pickedSubRace = {};
       },
-      onPickSubRace(val) {
-        this.pickedSubRace = val;
+      modifySubrace(subrace) {
+        this.pickedSubRace = subrace;
+      },
+      modifyClasses(clazz) {
+        this.pickedClass = clazz;
       },
       onPickClass(val) {
         this.pickedClass = val;

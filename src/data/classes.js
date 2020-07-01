@@ -1,8 +1,10 @@
 export {
     classes,
-    classEn2Cn
+    classEn2Cn,
+    locateClassByEn
 }
-const classEn2Cn  = (classEn) => classes.find(clz => clz.en_name === classEn).cn_name;
+const classEn2Cn  = (classEn) => locateClassByEn(classEn).cn_name;
+const locateClassByEn  = (classEn) => classes.find(clz => clz.en_name === classEn)
 const classes = [
     {
         cn_name:"野蛮人", 

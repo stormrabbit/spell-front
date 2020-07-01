@@ -1,39 +1,48 @@
 <template  lang="pug">
   v-card(class="mb-12" color="grey lighten-3")
     v-card-text
-      grid-radio(:text="races.map(race => race.cn_name)" :value="races.map(race => race.en_name)" :onchange="onPickRace")
-      grid-radio(:text="toBePickedSubRace.map(race => race.cn_name)" :value="toBePickedSubRace.map(race => race.en_name)" :onchange="onPickSubRace")
+      grid-radio(:text="raceLabels" :value="raceValues" @on-change="onRaceChange")
+      grid-radio(:text="subRaceLabels" :value="subRaceValues" @on-change="onSubRaceChange")
     v-card-actions
-      v-btn(text @click="step = 2" ) 确认
+      v-btn(text @click="$emit('confirm')" ) 确认
 </template>
 
 <script>
-    export default {
-        name: "RacesCard.vue",
-        props: {
-            races: {
-                type: Array,
-                default() {
-                  return []
-                }
-            }
-        },
-        data:() =>({
-            pickedRace: '',
-            toBePickedSubRace: [],
-        }),
-        methods: {
-          onPickRace(val) {
-            this.pickedRace = val;
-            const pickedSubRace = this.races.find(race => race.en_name === val).sub;
-            this.toBePickedSubRace = pickedSubRace ? pickedSubRace : [];
-            this.pickedSubRace = pickedSubRace && pickedSubRace.length? pickedSubRace[0].en_name: '';
-          },
-          onPickSubRace(val) {
-            this.pickedSubRace = val;
-          },
-        }
+import gridRadio from '../../components/GridRadio';
+import {races, raceLabels, raceValues, locateRaceByEN, locateSubRaceByRaceAndEn} from './../../data/races';
+export default {
+    name: "RacesCard.vue",
+    components: {
+      gridRadio
+    },
+    data:() =>({
+        races,
+        raceLabels,
+        raceValues,
+        pickedRace: '',
+    }),
+    computed: {
+      subRaces() {
+        return (this.pickedRace && this.pickedRace.sub ) ? this.pickedRace.sub : [];
+      },
+      subRaceLabels () {
+        return this.subRaces.map(subRace => subRace.cn_name);
+      },
+      subRaceValues () {
+        return this.subRaces.map(subRace => subRace.en_name);
+      },
+    },
+    methods: {
+      onRaceChange(enName) {
+        this.pickedRace =locateRaceByEN(enName);
+        this.$emit('modify-race',  this.pickedRace);
+      },
+      onSubRaceChange(enName) {
+        this.pickedSubRace = locateSubRaceByRaceAndEn(this.pickedRace.en_name,  enName);
+        this.$emit('modify-subrace', this.pickedSubRace);
+      },
     }
+}
 </script>
 
 <style scoped>

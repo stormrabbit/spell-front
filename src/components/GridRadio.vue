@@ -1,9 +1,9 @@
 <!--  -->
 <template lang="pug">
-    v-radio-group(row @change="thisonchange" v-model="radioGroup")
+    v-radio-group(row @change="modifyValue" v-model="radioGroup")
         v-row(align="center" )
             v-col(cols="2" v-for="(val, index) in text" :key="index" style="text-align: center;")
-                v-radio(:label="val" v-model="thisValue[index]" )
+                v-radio(:label="val" v-model="value[index]" )
 </template>
 
 <script>
@@ -13,7 +13,16 @@
 export default {
 //import引入的组件需要注入到对象中才能使用
 components: {},
-props: ['text','value', 'onchange'],
+props: {
+    text: {
+        type: Array,
+        default: () => []
+    },
+    value: {
+        type: Array,
+         default: () => []
+    }
+},
 data() {
 //这里存放数据
 return {    
@@ -23,29 +32,20 @@ return {
 },
 //监听属性 类似于data概念
 computed: {
-     thisValue() {
-         return this.value || [];
-     } 
 },
 //监控data中的数据变化
 watch: {
     value:{
-      handler(newVal){
-          if(newVal && newVal.length) {
-              this.radioGroup = newVal[0];
-          } else {
-              this.radioGroup = '';
-          }
+      handler(){
+        this.radioGroup = '';
       },
       deep: true,
     }
 },
 //方法集合
 methods: {
-    thisonchange(val) {
-        if(this.onchange) {
-            this.onchange(val);
-        }
+    modifyValue(val) {
+       this.$emit('on-change', val);
     }
 },
 //生命周期 - 创建完成（可以访问当前this实例）

@@ -6,7 +6,7 @@ const races = [
             con: 2
         },
         sub:[{
-            cn_name: '丘陵矮人',
+            cn_name: '山地矮人',
             en_name: 'hill_dwarf',
             extra: {
                 wis: 1,
@@ -136,14 +136,24 @@ const races = [
         }
     }
 ];
-const raceEn2Cn = (en) => races.find(race => race.en_name === en).cn_name; 
-const subRaceEn2Cn = (main, sub) => sub ? races.find(race => race.en_name === main).sub.find(subrace => subrace.en_name === sub).cn_name: {}; 
+const raceLabels = races.map( race => race.cn_name);
+const raceValues = races.map(race => race.en_name);
+const raceEn2Cn = (en) => locateRaceByEN(en).cn_name; 
+const subRaceEn2Cn = (raceEn, subEn)  => locateSubRaceByRaceAndEn(raceEn, subEn).cn_name; 
 const locateRaceByEN = (en) => races.find(race => race.en_name === en);
-const locateSubRaceEn2Cn = (main, sub) => sub ? races.find(race => race.en_name === main).sub.find(subrace => subrace.en_name === sub): {}; 
+const locateSubRacesByRaceEn = (raceEn) => (locateRaceByEN(raceEn).sub )|| [];  
+const locateSubRaceByRaceAndEn = (raceEn, subRaceEn) => {
+    // eslint-disable-next-line no-console
+    console.log('艹');
+    const temp = locateSubRacesByRaceEn(raceEn);
+    return temp.find(subrace => subrace.en_name === subRaceEn)}; 
 export  {
     races,
+    raceLabels,
+    raceValues,
     raceEn2Cn,
     subRaceEn2Cn,
     locateRaceByEN,
-    locateSubRaceEn2Cn
+    locateSubRacesByRaceEn,
+    locateSubRaceByRaceAndEn,
 }

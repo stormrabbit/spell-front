@@ -1,18 +1,26 @@
 <!--  -->
-<template>
-    <div class="content">
-        hello，world
-    </div>
+<template lang="pug">
+    v-card(color="grey lighten-3" class="mb-12")
+        v-card-text
+            grid-radio(:text="classes.map(clz => clz.cn_name)" :value="classes.map(clz => clz.en_name)" @on-change="onClassesChange")
+        v-card-actions
+            v-btn(text @click="$emit('confirm')" ) 确认
+            v-btn(text @click="$emit('cancel')") 返回
 </template>
 
 <script>
 //这里可以导入其他文件（比如：组件，工具js，第三方插件js，json文件，图片文件等等）
 //例如：import 《组件名称》 from '《组件路径》';
-
+import {classes, locateClassByEn} from './../../data/classes';
+import gridRadio from '../../components/GridRadio';
 export default {
     //import引入的组件需要注入到对象中才能使用
-    components: {},
-    data:() => ({}),
+    components: {
+        gridRadio
+    },
+    data:() => ({
+        classes
+    }),
     //监听属性 类似于data概念
     computed: {},
     //监控data中的数据变化
@@ -29,7 +37,11 @@ export default {
     //destroyed() {}, //生命周期 - 销毁完成
     //activated() {}, //如果页面有keep-alive缓存功能，这个函数会触发
     //方法集合
-    methods: {},
+    methods: {
+        onClassesChange(val) {
+            this.$emit('modify-classes' , locateClassByEn(val));
+        }
+    },
 }
 </script>
 <style lang='scss' scoped>
