@@ -2,7 +2,7 @@
 <template lang="pug">
     v-card(color="grey lighten-3" class="mb-12")
         v-card-text
-            grid-radio(:text="skillsCN" :value="skillsEN" @on-change="onSkillsChange")
+            grid-checkbox(:text="skillsCN" :value="skillsEN" @on-change="onSkillsChange")
         v-card-actions
             v-btn(text @click="$emit('confirm')" ) 确认
             v-btn(text @click="$emit('cancel')") 返回
@@ -12,11 +12,11 @@
 //这里可以导入其他文件（比如：组件，工具js，第三方插件js，json文件，图片文件等等）
 //例如：import 《组件名称》 from '《组件路径》';
 import {skillsCN, skillsEN, locateSkillByEN} from '../../data/skills';
-import gridRadio from '../../components/GridRadio';
+import gridCheckbox from '../../components/GridCheckbox';
 export default {
     //import引入的组件需要注入到对象中才能使用
     components: {
-        gridRadio
+        gridCheckbox
     },
     data:() => ({
         skillsCN,
@@ -39,8 +39,8 @@ export default {
     //activated() {}, //如果页面有keep-alive缓存功能，这个函数会触发
     //方法集合
     methods: {
-        onSkillsChange(val) {
-            this.$emit('modify-skill',locateSkillByEN(val))
+        onSkillsChange(vals) {
+            this.$emit('modify-skill',vals.map(val => locateSkillByEN(val)))
         }
     },
 }

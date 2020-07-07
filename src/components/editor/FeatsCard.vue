@@ -2,7 +2,7 @@
 <template lang="pug">
     v-card(color="grey lighten-3" class="mb-12")
         v-card-text
-            grid-radio(:text="featsCN" :value="featsEN" @on-change="onFeatChange")
+            grid-checkbox(:text="featsCN" :value="featsEN" @on-change="onFeatChange")
         v-card-actions
             v-btn(text @click="$emit('confirm')" ) 确认
             v-btn(text @click="$emit('cancel')") 返回
@@ -13,10 +13,12 @@
 //例如：import 《组件名称》 from '《组件路径》';
 import {featsCN, featsEN, locateFeatByEn} from './../../data/feats';
 import gridRadio from '../../components/GridRadio';
+import gridCheckbox from '../../components/GridCheckbox';
 export default {
     //import引入的组件需要注入到对象中才能使用
     components: {
-        gridRadio
+        gridRadio,
+        gridCheckbox
     },
     data:() => ({
         featsCN,
@@ -40,7 +42,7 @@ export default {
     //方法集合
     methods: {
         onFeatChange(val) {
-            this.$emit('modify-feat' , locateFeatByEn(val));
+            this.$emit('modify-feat' , val.map(vl => locateFeatByEn(vl)) );
         }
     },
 }

@@ -1,8 +1,8 @@
 <!--  -->
 <template lang="pug">
     v-row(align="center" )
-        v-col(cols="2" v-for="(val, index) in vals" :key="index" style="text-align: center;")
-            v-checkbox(:label="val")
+        v-col(cols="2" v-for="(txt, index) in text" :key="index" style="text-align: center;")
+            v-checkbox(:label="txt" :value="value[index]" v-model="selected")
 </template>
 
 <script>
@@ -12,17 +12,37 @@
 export default {
 //import引入的组件需要注入到对象中才能使用
 components: {},
-props: ['vals'],
+props: {
+    text: {
+        type: Array,
+        default: function() {
+            return [];
+        }
+    },
+    value: {
+        type: Array,
+        default: function() {
+            return [];
+        }
+    }
+},
 data() {
 //这里存放数据
 return {
-
+    selected: []
 };
 },
 //监听属性 类似于data概念
 computed: {},
 //监控data中的数据变化
-watch: {},
+watch: {
+    selected: {
+        handler(newVal) {
+            this.$emit('on-change', newVal);
+        },
+        deep: true
+    }
+},
 //方法集合
 methods: {
 

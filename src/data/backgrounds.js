@@ -40,8 +40,10 @@ const backgrounds = [{
 }];
 const backgroundsCN = backgrounds.map(bg => bg.cn_name);
 const backgroundsEN = backgrounds.map(bg => bg.en_name);
+const locateBackgroundByEN = (en) => backgrounds.find( background => background.en_name === en);
 export {
     backgrounds,
     backgroundsCN,
-    backgroundsEN
+    backgroundsEN,
+    locateBackgroundByEN
 }

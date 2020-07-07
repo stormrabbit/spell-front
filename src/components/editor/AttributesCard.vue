@@ -6,10 +6,10 @@ v-card(color="grey lighten-3" class="mb-12")
         v-row(align="baseline")
             v-col(cols="6" v-for="(key, index) in Object.keys(attributes)" :key="index")
                 div(style="display: flex;align-items: center;")
-                    span {{`${keyAttrEn2Cn(key)}基础值：`}}
+                    span {{`${keyAttrEn2Cn(key)}  基础值  `}}
                     span {{attributes[key]< 10 ? `0${attributes[key]}` : attributes[key]}}
                     span +
-                    span {{`种族加值：`}}
+                    span {{`种族加值  `}}
                     span {{computedRaceBonus(key)}}
                     span {{`=`}}
                     span {{computedSumByAttribute(key)}}
@@ -20,7 +20,7 @@ v-card(color="grey lighten-3" class="mb-12")
                     v-btn(class="ma-2" text icon color="red lighten-2" @click="modifyValue(key, false)")
                         v-icon(dark) mdi-thumb-down
                     v-spacer
-                    span 调整值：
+                    span 调整值
                     v-icon(:color="parseValue2Bonus(key) < 0 ? 'red':'green'" :style="(parseValue2Bonus(key) === 0)?{visibility: 'hidden'} :{}") {{parseValue2Bonus(key) < 0 ? 'mdi-minus':'mdi-plus'}}
                     v-chip(class="ma-2"  style="width: 32px;height: 32px;" :color="parseColor(parseValue2Bonus(key))" text-color="white") {{Math.abs (parseValue2Bonus(key))}}
                     v-spacer
@@ -73,24 +73,24 @@ export default {
                 free = 0 
             } = this.extraPoints;
             const cost = Object.keys( this.extra).reduce((pre, cur) => (pre +(  this.extra[cur]? 1:0)), 0);
-            return free - cost;
+            return (free - cost) < 0 ? 0:(free - cost);
         }
     },
     //监控data中的数据变化
     watch: {
         extraPoints:{
-        handler(newVal){
-            const extra = {...this.extra};
-            const highExtra = (point = 1) => Object.keys({...extra, ...newVal}).reduce( (pre, cur) => {
-                if (newVal[cur] === point){
-                    pre[cur] =  newVal[cur];
-                }
-                return pre;
-            }, {});
-            this.extra = highExtra(1);
-            this.extraTwo = highExtra(2);
-        },
-        deep: true,
+            handler(newVal){
+                const extra = {...this.extra};
+                const highExtra = (point = 1) => Object.keys({...extra, ...newVal}).reduce( (pre, cur) => {
+                    if (newVal[cur] === point){
+                        pre[cur] =  newVal[cur];
+                    }
+                    return pre;
+                }, {});
+                this.extra = highExtra(1);
+                this.extraTwo = highExtra(2);
+            },
+            deep: true,
         }
     },
     //生命周期 - 创建完成（可以访问当前this实例）

@@ -44,12 +44,6 @@
           @modify-feat="modifyFeat"
           @cancel="() => {step = 6}"
           @confirm="() => {step = 7}")
-        //- v-card(color="grey lighten-3" class="mb-12")
-        //-   v-card-text
-        //-     grid-checkbox(:text="feats")
-        //-   v-card-actions
-        //-     v-btn(text @click="step = 8") 确认
-        //-     v-btn(text @click="step = 6") 返回    
 </template>
 
 <script>
@@ -84,15 +78,13 @@ export default {
           pickedClass: {},
           pickedAlignment: '请选择阵营',
           pickedBackground: '请选择背景',
-          pickedSkill: {},
-          pickedFeat: {},
-          step: 7,
+          pickedSkill: [],
+          pickedFeat: [],
+          step: 1,
           alignments: ["守序善良","中立善良","混乱善良","守序中立","绝对中立","混乱中立","守序邪恶","中立邪恶","混乱邪恶"],
       }
   },
   mounted() {
-    this.pickedRace = locateRaceByEN('half_elf');
-    // this.pickedSubRace = locateSubRaceByRaceAndEn('dwarf','mountain_dwarf' );
   },
   computed: {
     raceTips() {
@@ -124,19 +116,16 @@ export default {
       return this.pickedAlignment;
     },
     backgroundTips() {
-      return this.pickedBackground;
+      const {
+        cn_name
+      }  = this.pickedBackground;
+      return cn_name;
     },
     skillTips() {
-      const {
-        cn_name
-      } = this.pickedSkill;
-      return cn_name ? cn_name: '请选择技能';
+      return (this.pickedSkill&& this.pickedSkill.length) ? this.pickedSkill.map(skill=> skill.cn_name).join(','): '请选择技能';
     },
     featTips() {
-      const {
-        cn_name
-      } = this.pickedFeat;
-      return cn_name ? cn_name: '请选择专长';
+      return  (this.pickedFeat && this.pickedFeat.length)? this.pickedFeat.map(feat => feat.cn_name).join(','): '请选择专长';
     }
   },
   methods: {
