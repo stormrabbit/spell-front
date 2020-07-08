@@ -3,6 +3,7 @@
 v-card(color="grey lighten-3" class="mb-12")
     v-card-title 27 购点法剩余点数：{{points}}
     v-card-text
+        v-data-table(:headers="headers" hide-default-footer :items="parsedAttributes" :items-per-page="6" class="elevation-1")
         v-row(align="baseline")
             v-col(cols="6" v-for="(key, index) in Object.keys(attributes)" :key="index")
                 div(style="display: flex;align-items: center;")
@@ -56,6 +57,23 @@ export default {
     data:() => ({
         points: 27,
         attributes,
+        headers: [{
+            text: '属性名',
+            align: 'start',
+            sortable: false,
+            value: 'name',
+          },
+          { text: '属性值', value: 'value',
+            sortable: false },
+          { text: '种族加值', value: 'race' ,
+            sortable: false},
+            { text: '总值', value: 'total' ,
+            sortable: false},
+          { text: '调整值', value: 'bonus' ,
+            sortable: false},
+          { text: '操作', value: 'operation',
+            sortable: false }
+        ],
         extra: {
       
         },
@@ -65,6 +83,15 @@ export default {
     }),
     //监听属性 类似于data概念
     computed: {
+        parsedAttributes() {
+            return Object.keys(this.attributes).map(attr => ({
+                name: keyAttrEn2Cn(attr),
+                value: this.attributes[attr],
+                race: this.computedRaceBonus(attr),
+                total: this.computedSumByAttribute(attr),
+                bonus: this.parseValue2Bonus(attr)
+            }))
+        },
         disabledExtra() {
             return !this.freePoints;
         },
@@ -147,6 +174,6 @@ export default {
 //@import url(); 引入公共css类
 
 .content {
-    background: #fff
+  background: #fff;
 }
 </style>
