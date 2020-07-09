@@ -12,10 +12,10 @@ v-card(color="grey lighten-3" class="mb-12")
                 span /
                 v-btn(class="ma-2" text icon color="red lighten-2" @click="modifyValue(item.name, false)")
                     v-icon(dark) mdi-thumb-down
-        v-row(align="baseline")
+        v-row(align="baseline" :style="{display: 'none'}")
             v-col(cols="6" v-for="(key, index) in Object.keys(attributes)" :key="index")
                 div(style="display: flex;align-items: center;")
-                    span {{`${keyAttrEn2Cn(key)}  基础值  `}}
+                    span {{`${keyAttrEn2Cn(key)}  基础值 1 `}}
                     span {{attributes[key]< 10 ? `0${attributes[key]}` : attributes[key]}}
                     span +
                     span {{`种族加值  `}}
@@ -67,19 +67,19 @@ export default {
         attributes,
         headers: [{
             text: '属性名',
-            align: 'start',
+            align: 'center',
             sortable: false,
             value: 'name',
           },
-          { text: '属性值', value: 'value',
+          { text: '属性值', align: 'center', value: 'value',
             sortable: false },
-          { text: '种族加值', value: 'race' ,
+          { text: '种族加值', align: 'center', value: 'race' ,
             sortable: false},
-            { text: '总值', value: 'total' ,
+            { text: '总值',  align: 'center',value: 'total' ,
             sortable: false},
-          { text: '调整值', value: 'bonus' ,
+          { text: '调整值', align: 'center', value: 'bonus' ,
             sortable: false},
-          { text: '操作', value: 'action',
+          { text: '操作',  align: 'center',value: 'action',
             sortable: false }
         ],
         extra: {
@@ -97,7 +97,8 @@ export default {
                 value: this.attributes[attr],
                 race: this.computedRaceBonus(attr),
                 total: this.computedSumByAttribute(attr),
-                bonus: this.parseValue2Bonus(attr)
+                bonus: this.parseValue2Bonus(attr),
+                tips: `${keyAttrEn2Cn(attr)}-${this.computedSumByAttribute(attr)}`
             }))
         },
         disabledExtra() {
@@ -113,6 +114,12 @@ export default {
     },
     //监控data中的数据变化
     watch: {
+        parsedAttributes: {
+            handler(newVal) {
+                this.$emit('modify-attributes', newVal);
+            },
+            deep: true
+        },
         extraPoints:{
             handler(newVal){
                 const extra = {...this.extra};

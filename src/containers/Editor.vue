@@ -13,10 +13,11 @@
           @cancel="() => {step = 1}"
           @confirm="() => {step = 3}"
           @modify-classes="modifyClasses")
-      v-stepper-step(:complete="step > 3" step="3") 属性值
+      v-stepper-step(:complete="step > 3" step="3") {{attributesTips}}
       v-stepper-content(step="3")
         attributes-card(
-          :extraPoints="extraPoints"   
+          :extraPoints="extraPoints"
+          @modify-attributes="modifyAttributes"   
           @cancel="() => {step = 2}"
           @confirm="() => {step = 4}")
       v-stepper-step(:complete="step > 4" step="4") {{alignmentTips}}
@@ -72,6 +73,7 @@ export default {
   },
   data () {
       return {
+          attributesTips:'请选择属性',
           pickedRace: {},
           toBePickedSubRace: [],
           pickedSubRace : {},
@@ -129,6 +131,9 @@ export default {
     }
   },
   methods: {
+    modifyAttributes(val ) {
+      this.attributesTips = val && val.length ? val.map(vl => vl.tips).join('\t||\t') : '';
+    },
     modifyRace(race) {
       this.pickedRace = race;
       this.pickedSubRace = {};
