@@ -4,6 +4,14 @@ v-card(color="grey lighten-3" class="mb-12")
     v-card-title 27 购点法剩余点数：{{points}}
     v-card-text
         v-data-table(:headers="headers" hide-default-footer :items="parsedAttributes" :items-per-page="6" class="elevation-1")
+            template( v-slot:item.name="{ item }")
+                span {{keyAttrEn2Cn(item.name)}}
+            template( v-slot:item.action="{ item }")
+                v-btn(class="ma-2" text icon color="blue lighten-2" @click="modifyValue(item.name)")
+                    v-icon mdi-thumb-up
+                span /
+                v-btn(class="ma-2" text icon color="red lighten-2" @click="modifyValue(item.name, false)")
+                    v-icon(dark) mdi-thumb-down
         v-row(align="baseline")
             v-col(cols="6" v-for="(key, index) in Object.keys(attributes)" :key="index")
                 div(style="display: flex;align-items: center;")
@@ -71,7 +79,7 @@ export default {
             sortable: false},
           { text: '调整值', value: 'bonus' ,
             sortable: false},
-          { text: '操作', value: 'operation',
+          { text: '操作', value: 'action',
             sortable: false }
         ],
         extra: {
@@ -85,7 +93,7 @@ export default {
     computed: {
         parsedAttributes() {
             return Object.keys(this.attributes).map(attr => ({
-                name: keyAttrEn2Cn(attr),
+                name: attr,
                 value: this.attributes[attr],
                 race: this.computedRaceBonus(attr),
                 total: this.computedSumByAttribute(attr),
