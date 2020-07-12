@@ -12,27 +12,6 @@ v-card(color="grey lighten-3" class="mb-12")
                 span /
                 v-btn(class="ma-2" text icon color="red lighten-2" @click="modifyValue(item.name, false)")
                     v-icon(dark) mdi-thumb-down
-        v-row(align="baseline" :style="{display: 'none'}")
-            v-col(cols="6" v-for="(key, index) in Object.keys(attributes)" :key="index")
-                div(style="display: flex;align-items: center;")
-                    span {{`${keyAttrEn2Cn(key)}  基础值 1 `}}
-                    span {{attributes[key]< 10 ? `0${attributes[key]}` : attributes[key]}}
-                    span +
-                    span {{`种族加值  `}}
-                    span {{computedRaceBonus(key)}}
-                    span {{`=`}}
-                    span {{computedSumByAttribute(key)}}
-                    v-spacer
-                    v-btn(class="ma-2" text icon color="blue lighten-2" @click="modifyValue(key)")
-                        v-icon mdi-thumb-up
-                    span /
-                    v-btn(class="ma-2" text icon color="red lighten-2" @click="modifyValue(key, false)")
-                        v-icon(dark) mdi-thumb-down
-                    v-spacer
-                    span 调整值
-                    v-icon(:color="parseValue2Bonus(key) < 0 ? 'red':'green'" :style="(parseValue2Bonus(key) === 0)?{visibility: 'hidden'} :{}") {{parseValue2Bonus(key) < 0 ? 'mdi-minus':'mdi-plus'}}
-                    v-chip(class="ma-2"  style="width: 32px;height: 32px;" :color="parseColor(parseValue2Bonus(key))" text-color="white") {{Math.abs (parseValue2Bonus(key))}}
-                    v-spacer
         div(class="title" style="width: 100%;text-align: left;") 可自由支配点数：{{freePoints}}
         v-row
             v-col(cols="2" v-for="(key, index) in Object.keys(attributes)" :key="index")
@@ -53,10 +32,6 @@ export default {
     //import引入的组件需要注入到对象中才能使用
     components: {},
     props: {
-        // freePoints: {
-        //     type: Number,
-        //     default: 0
-        // },
         extraPoints: {
             type: Object,
             default: () => ({})
