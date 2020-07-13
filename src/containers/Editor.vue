@@ -82,7 +82,7 @@ export default {
           pickedBackground: '请选择背景',
           pickedSkill: [],
           pickedFeat: [],
-          step: 3,
+          step: 1,
           alignments: ["守序善良","中立善良","混乱善良","守序中立","绝对中立","混乱中立","守序邪恶","中立邪恶","混乱邪恶"],
       }
   },
@@ -119,7 +119,7 @@ export default {
     },
     backgroundTips() {
       const {
-        cn_name
+        cn_name = '请选择背景'
       }  = this.pickedBackground;
       return cn_name;
     },

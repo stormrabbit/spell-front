@@ -77,6 +77,8 @@ export default {
             }))
         },
         disabledExtra() {
+            // eslint-disable-next-line no-console
+            console.log(this.freePoints);
             return !this.freePoints;
         },
         freePoints() {
