@@ -116,7 +116,7 @@ export default {
     loadCharactors: function() {
       const _self = this;
       this.$axios
-        .get(`http://localhost:3000/charactor/${_self.chosenOne.id}`)
+        .get(`http://angrykitty.link:38080/app/mock/16/charactor/${_self.chosenOne.id}`)
         .then(res => {
           _self.charactor = res.data;
         });
@@ -124,8 +124,8 @@ export default {
     loadSpells: function(cls) {
       this.spellsCanBePick = [];
       const _self = this;
-      this.$axios.get(`http://localhost:3000/spells?cls=${cls}`).then(res => {
-        _self.spellsCanBePick = res.data;
+      this.$axios.get(`http://angrykitty.link:38080/app/mock/16/spells?cls=${cls}`).then(res => {
+        _self.spellsCanBePick = res.data.list;
       });
     },
     parseCls(cls) {
@@ -152,10 +152,10 @@ export default {
       this.classesList = [];
       const _self = this;
       this.$axios
-        .get("http://localhost:3000/charactor/list")
+        .get("http://angrykitty.link:38080/app/mock/16/charactor/list")
         .then(res => {
           if (res) {
-            _self.classesList = res.data;
+            _self.classesList = res.data.list;
             const temps =  _self.classesList.filter(cl => cl.id === _self.charactor._id);  
             _self.chooseClass(temps.length ? temps[0]: _self.classesList[0]);
           }

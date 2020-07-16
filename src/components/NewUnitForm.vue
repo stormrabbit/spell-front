@@ -135,7 +135,7 @@ export default {
       const _self = this;
       if (this.id) {
         this.$axios
-          .delete(`http://localhost:3000/charactor/${this.id}`)
+          .delete(`http://angrykitty.link:38080/app/mock/16/charactor/${this.id}`)
           .then(res => {
             const { ok = 1, deletedCount = 0 } = res.data;
             if (ok === 1 && deletedCount !== 0) {
@@ -173,7 +173,7 @@ export default {
       const _self = this;
       this.$axios
         .put(
-          `http://localhost:3000/charactor/update/${charactor._id}`,
+          `http://angrykitty.link:38080/app/mock/16/charactor/update/${charactor._id}`,
           qs.stringify(charactor)
         )
         .then(res => {
@@ -188,7 +188,7 @@ export default {
     createCharactor: function(charactor) {
       const _self = this;
       this.$axios
-        .post(`http://localhost:3000/charactor/create`, qs.stringify(charactor))
+        .post(`http://angrykitty.link:38080/app/mock/16/charactor/create`, qs.stringify(charactor))
         .then(res => {
           this.reset();
           _self.snackbar = true;
@@ -200,7 +200,7 @@ export default {
         });
     },
     loadClasses: function() {
-      this.$axios.get(`http://localhost:3000/classes`).then(res => {
+      this.$axios.get(`http://angrykitty.link:38080/app/mock/16/classes`).then(res => {
         this.clsList = res.data;
         const temp = this.clsList.filter(itm => itm.nickname === this.clazz)[0];
         this.toBePickedSub = temp.sub;

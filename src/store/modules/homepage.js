@@ -30,7 +30,7 @@ export default {
             cls
         }) {
 
-            const result = await get('http://localhost:3000/spells', {
+            const result = await get('http://angrykitty.link:38080/app/mock/16/spells', {
                 cls
             });
             commit('putSpells', result);

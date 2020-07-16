@@ -25,7 +25,7 @@ export default {
             id,
             spell,
         }) {
-            const result = await put(`http://localhost:3000/personal/${id}`, {}, spell);
+            const result = await put(`http://angrykitty.link:38080/app/mock/16/personal/${id}`, {}, spell);
             commit('putSpells', result);
         }
     }
