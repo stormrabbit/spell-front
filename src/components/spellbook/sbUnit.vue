@@ -1,6 +1,7 @@
 <!--  -->
 <template lang="pug">
     v-card
+        span {{charactor}}
         v-snackbar(v-model="snackbar" :timeout="timeout") {{ logTips }}
           span test
         v-card-title
@@ -9,23 +10,23 @@
             v-container
                 v-form(ref="form", v-model="valid")
                   v-row
-                      v-col(cols="12", sm="6", md="4")
-                          v-text-field(label="姓名", v-model="name", :rules="namerules")
-                      v-col(cols="12", sm="6", md="4")
-                          v-select(label="种族", :items="['人类', '精灵', '矮人', '半精灵', '提夫林', '半兽人']", v-model="race")
-                      v-col(cols="12", sm="6", md="4")
-                          v-select(label="职业", :items="clses", v-model="clazz", @change="onChangeCallBack")
-                      v-col(cols="12", sm="6", md="4")
-                          v-text-field(label="等级", required, v-model="lvl", :rules="lvlrules")
-                      v-col(cols="12", sm="6", md="4", type="number")
-                          v-select(label="子职", required, v-model="school", :items="thisToBePickedSub")
-                      v-col(cols="12", sm="6", md="4", type="number")
-                          v-text-field(:label="thisKeyword", required, v-model="value", :rules="rules")
+                    v-col(cols="12", sm="6", md="4")
+                        v-text-field(label="姓名", v-model="name", :rules="namerules")
+                    v-col(cols="12", sm="6", md="4")
+                        v-select(label="种族", :items="['人类', '精灵', '矮人', '半精灵', '提夫林', '半兽人']", v-model="race")
+                    v-col(cols="12", sm="6", md="4")
+                        v-select(label="职业", :items="clses", v-model="clazz", @change="onChangeCallBack")
+                    v-col(cols="12", sm="6", md="4")
+                        v-text-field(label="等级", required, v-model="lvl", :rules="lvlrules")
+                    v-col(cols="12", sm="6", md="4", type="number")
+                        v-select(label="子职", required, v-model="school", :items="thisToBePickedSub")
+                    v-col(cols="12", sm="6", md="4", type="number")
+                        v-text-field(:label="thisKeyword", required, v-model="value", :rules="rules")
         v-card-actions
             v-spacer
             v-btn(v-if="title === `修改`",color="primary", text, @click="removeCharactor") 删除角色
-            v-btn(color="primary", text, @click="cancelFunction") 关闭
-            v-btn(color="primary", text, @click="update", :disabled="!valid") 保存
+            v-btn(color="primary", text, @click="close") 关闭
+            v-btn(color="primary", text, @click="save", :disabled="!valid") 保存
             
 </template>
 
@@ -33,6 +34,7 @@
 //这里可以导入其他文件（比如：组件，工具js，第三方插件js，json文件，图片文件等等）
 //例如：import 《组件名称》 from '《组件路径》';
 import qs from "qs";
+import { mapActions, mapGetters } from 'vuex';
 export default {
   props: {
     closeCallBack: Function,
@@ -63,7 +65,6 @@ export default {
           return pattern.test(value) || '请输入数字'
         },
       ],
-      clsList: [],
       logTips: "",
       timeout: 2000,
       snackbar: false,
@@ -87,6 +88,7 @@ export default {
   },
   //监听属性 类似于data概念
   computed: {
+    ...mapGetters('homepage', ['clsList']),
     thisToBePickedSub: function() {
       return this.toBePickedSub;
     },
@@ -103,20 +105,19 @@ export default {
   watch: {},
   //方法集合
   methods: {
+    ...mapActions('homepage',['retrieveClasses']),
     onChangeCallBack: function(val) {
       const filterClass = this.clsList.filter(itm => itm.nickname === val)[0];
       this.toBePickedSub = filterClass.sub;
       this.school = this.toBePickedSub[0];
       this.keyword = filterClass.keyword;
     },
-    cancelFunction: function() {
-      if (this.closeCallBack) {
-        this.closeCallBack();
-      }
+    close: function() {
       this.reset();
+      this.$emit('close');
     },
     reset: function() {
-      (this.id = this.charactor ? this.charactor._id : ""),
+        (this.id = this.charactor ? this.charactor._id : ""),
         (this.name = this.charactor ? this.charactor.name : ""),
         (this.school = this.charactor ? this.charactor.school : ""),
         (this.clazz = this.charactor ? this.charactor.cls : "法师"),
@@ -147,9 +148,9 @@ export default {
           });
       }
     },
-    update: function() {
+    save: function() {
       if (this.id) {
-        this.updateCharactor({
+        this.saveCharactor({
           _id: this.id,
           name: this.name,
           cls: this.clazz,
@@ -168,12 +169,13 @@ export default {
           lvl: this.lvl
         });
       }
+      this.$emit('save');
     },
-    updateCharactor: function(charactor) {
+    saveCharactor: function(charactor) {
       const _self = this;
       this.$axios
         .put(
-          `http://angrykitty.link:38080/app/mock/16/charactor/update/${charactor._id}`,
+          `http://angrykitty.link:38080/app/mock/16/charactor/save/${charactor._id}`,
           qs.stringify(charactor)
         )
         .then(res => {
@@ -200,13 +202,7 @@ export default {
         });
     },
     loadClasses: function() {
-      this.$axios.get(`http://angrykitty.link:38080/app/mock/16/classes`).then(res => {
-        this.clsList = res.data;
-        const temp = this.clsList.filter(itm => itm.nickname === this.clazz)[0];
-        this.toBePickedSub = temp.sub;
-        this.school = temp.sub[0];
-        this.keyword = temp.keyword;
-      });
+      this.retrieveClasses();
     }
   },
   //生命周期 - 创建完成（可以访问当前this实例）
@@ -218,8 +214,8 @@ export default {
   },
   beforeCreate() {}, //生命周期 - 创建之前
   beforeMount() {}, //生命周期 - 挂载之前
-  beforeUpdate() {}, //生命周期 - 更新之前
-  updated() {}, //生命周期 - 更新之后
+  beforesave() {}, //生命周期 - 更新之前
+  saved() {}, //生命周期 - 更新之后
   beforeDestroy() {}, //生命周期 - 销毁之前
   destroyed() {}, //生命周期 - 销毁完成
   activated() {} //如果页面有keep-alive缓存功能，这个函数会触发

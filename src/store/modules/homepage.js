@@ -1,25 +1,39 @@
+
 import {
-    get
-} from './../../request/http';
+    retrieveCharactorList,
+    retrieveCharactorById
+} from '@request/charactorApi';
+import {
+    retrieveSpellsByClass
+} from '@request/spellApi';
+import {
+    retrieveClasses
+} from '@request/classesApi';
 export default {
     namespaced: true,
     state: {
         spells: [],
         selectedCharactor: {},
         overlay: false,
+        clsList: [],
+        charactors: []
     },
     getters: {
-        spells: state => {
-            return state.spells
-        },
+        charactors: state => state.charactors,
+        spells: state => state.spells,
         overlay: state => state.overlay,
         selectedCharactor: state => state.selectedCharactor,
+        clsList: state => state.clsList
     },
     mutations: {
+        putCharactors(state, charactors = []) {
+            state.charactors = [...charactors];
+        },
         putSpells(state, spells) {
-            state.spells = [
-                ...spells
-            ]
+            state.spells = [...spells]
+        },
+        putClasses(state, classes) {
+            state.clsList = [...classes];
         },
         putCharactor(state, charactor) {
             state.selectedCharactor = {...state.selectedCharactor, ...charactor};
@@ -29,16 +43,30 @@ export default {
         }
     },
     actions: {
+        async retrieveCharactors({commit, dispatch}) {
+            const {
+                data = []
+            } = await retrieveCharactorList();
+            commit('putCharactors', data);
+            if(data && data.length) {
+                dispatch('retrieveCharactorById',data.id )
+            }
+        },
+        async retrieveClasses({commit}) {
+            const {
+                data = []
+            } = await retrieveClasses();
+            commit('putClasses', data);        
+        },
+        
         async retrieveCharactorById({commit}, id) {
-            const result = await get(`/charactor/${id}`);
-            commit('putCharactor', result); 
+            const data = await retrieveCharactorById(id);
+            commit('putCharactor', data); 
         },
         async retrevePersonalSpells({commit}, {cls}) { 
             const {
                 data = []
-            } = await get('/spells', {
-                cls
-            });
+            } = await retrieveSpellsByClass(cls);
             commit('putSpells', data);
         }
     }

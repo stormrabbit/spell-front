@@ -6,7 +6,7 @@
             v-icon mdi-plus
           v-list-item-content
             v-list-item-title 新建
-        v-list-item(link, v-for="(tp, index) in classeslist", :key="index", @click="onSelect(tp)")
+        v-list-item(link, v-for="(tp, index) in charactors", :key="index", @click="onSelect(tp)")
             v-list-item-action
                 v-icon(:color="tp.color") mdi-account
             v-list-item-content
@@ -19,8 +19,10 @@
 
 export default {
   props: {
-    classeslist: Array,
-    oncallback: Function
+    charactors: {
+      type: Array,
+      default: () => [],
+    },
   },
   //import引入的组件需要注入到对象中才能使用
   components: {},
@@ -35,21 +37,8 @@ export default {
   //方法集合
   methods: {
     onSelect: function(cls) {
-      if (this.oncallback) {
-        this.oncallback(cls);
-      }
+      this.$emit('change', cls);
     }
   },
-  //生命周期 - 创建完成（可以访问当前this实例）
-  created() {},
-  //生命周期 - 挂载完成（可以访问DOM元素）
-  mounted() {},
-  beforeCreate() {}, //生命周期 - 创建之前
-  beforeMount() {}, //生命周期 - 挂载之前
-  beforeUpdate() {}, //生命周期 - 更新之前
-  updated() {}, //生命周期 - 更新之后
-  beforeDestroy() {}, //生命周期 - 销毁之前
-  destroyed() {}, //生命周期 - 销毁完成
-  activated() {} //如果页面有keep-alive缓存功能，这个函数会触发
 };
 </script>

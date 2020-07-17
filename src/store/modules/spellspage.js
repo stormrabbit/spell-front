@@ -1,6 +1,6 @@
 import {
     put
-} from '../../request/http';
+} from '../../request/api';
 export default {
     namespaced: true,
     state: {
