@@ -29,7 +29,10 @@ import {mapGetters, mapActions, mapMutations} from 'vuex';
 export default {
   props: {
     // test: Function,
-    charactor: Object,
+    charactor: {
+      type: Object,
+      default: () => ({})
+    },
     scribe: Function,
   },
   //import引入的组件需要注入到对象中才能使用
@@ -78,7 +81,7 @@ export default {
       }, [[], [], [] , [] , [], [] , [] , [] , [] , []]);
     },
     parseValue: function() {
-      const temp = this.charactor.value? `${parseInt(this.charactor.value) - 10 }`:'0';
+      const temp = this.charactor.value? `${parseInt(this.charactor.value.match(/[0-9]/g).join('')) - 10 }`:'0';
       return Math.floor(parseInt(temp.replace('感知', '').replace('魅力', '').replace('智力',''))/2);
     },
     finalCircle0: function() {
@@ -176,7 +179,6 @@ export default {
   created() {},
   //生命周期 - 挂载完成（可以访问DOM元素）
   mounted() {
-    // this.retrevePersonalSpells({cls: this.charactor.cls});
     if(this.isMobile()) {
       this.cols = 6;
     }else {

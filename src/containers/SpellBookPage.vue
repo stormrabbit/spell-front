@@ -1,19 +1,19 @@
 <template lang="pug">
   v-app(id="inspire")
+    
     v-overlay(:value="overlay")
       v-progress-circular(indeterminate size="64")
     v-navigation-drawer(v-model="drawer", app)
       ClassesSideList(:classeslist="cClassesList",:oncallback="chooseClass")
-    ClassesTitleBar(:charactor="charactorVal", :onCallBack="() => {drawer = !drawer}", :resetClass="() => {this.updateValue = true}")
-  
-    v-dialog(v-if="sheet" v-model="sheet", scrollable, fullscreen, hide-overlay, transition="dialog-bottom-transition")
-      SepllsPage(:charactor="charactorVal" :spells="sps", :onBack="() => {sheet = !sheet}")
+    ClassesTitleBar(:charactor="selectedCharactor", :onCallBack="() => {drawer = !drawer}", :resetClass="() => {this.updateValue = true}")
+    v-dialog(v-if="sheet" v-model="sheet",transition="dialog-bottom-transition")
+      SepllsPage(:charactor="selectedCharactor" :spells="sps", :onBack="() => {sheet = !sheet}")
     v-dialog(v-model="dialog", persistent, v-if="dialog")
       NewUnitForm(:clsList="cClassesList", :doneCallBack="() => this.createCharactor()",:closeCallBack="() => {this.dialog = false}", :title="`新建`")
     v-dialog(v-model="updateValue", persistent, v-if="updateValue")
-      NewUnitForm(:clsList="cClassesList", :charactor="charactorVal",:doneCallBack="() => this.updateCharactor()", :closeCallBack="() => {this.updateValue = false}", :title="`修改`")
+      NewUnitForm(:clsList="cClassesList", :charactor="selectedCharactor",:doneCallBack="() => this.updateCharactor()", :closeCallBack="() => {this.updateValue = false}", :title="`修改`")
     v-content
-      HomePage(:charactor="charactorVal" :scribe="() => {sheet = !sheet}")
+      HomePage(:charactor="selectedCharactor" :scribe="() => {sheet = !sheet}")
     v-footer(color="primary",dark, app)
       SpellFunctionBotton(:scribe="() => {sheet = !sheet}")    
       span(class="white--text") &copy; stormrabbit
@@ -27,7 +27,7 @@ import HomePage from "./HomePage";
 import SepllsPage from "./SpellsPage";
 import SpellFunctionBotton from "../components/SpellFunctionBotton";
 import NewUnitForm from "../components/NewUnitForm";
-import { mapGetters, mapMutations } from 'vuex';
+import { mapGetters, mapMutations, mapActions } from 'vuex';
 // import RouteView from 'vue-router';
 
 export default {
@@ -74,7 +74,7 @@ export default {
     updateValue: false
   }),
   computed: {
-    ...mapGetters('homepage', ['overlay']),
+    ...mapGetters('homepage', ['overlay', 'selectedCharactor']),
     cClassesList: function() {
       return this.classesList;
     },
@@ -90,6 +90,7 @@ export default {
   },
   methods: {
     ...mapMutations('homepage', ['putLoading']),
+    ...mapActions('homepage', ['retrieveCharactorById']),
     createCharactor: function() {
       this.dialog = false;
       this.charactor._id = undefined;
@@ -115,17 +116,18 @@ export default {
     },
     loadCharactors: function() {
       const _self = this;
-      this.$axios
-        .get(`http://angrykitty.link:38080/app/mock/16/charactor/${_self.chosenOne.id}`)
-        .then(res => {
-          _self.charactor = res.data;
-        });
+      this.retrieveCharactorById(_self.chosenOne.id);
+      // this.$axios
+      //   .get(`http://angrykitty.link:38080/app/mock/16/charactor/${_self.chosenOne.id}`)
+      //   .then(res => {
+      //     _self.charactor = res.data;
+      //   });
     },
     loadSpells: function(cls) {
       this.spellsCanBePick = [];
       const _self = this;
       this.$axios.get(`http://angrykitty.link:38080/app/mock/16/spells?cls=${cls}`).then(res => {
-        _self.spellsCanBePick = res.data.list;
+        _self.spellsCanBePick = res.data.data;
       });
     },
     parseCls(cls) {
@@ -155,7 +157,7 @@ export default {
         .get("http://angrykitty.link:38080/app/mock/16/charactor/list")
         .then(res => {
           if (res) {
-            _self.classesList = res.data.list;
+            _self.classesList = res.data.data;
             const temps =  _self.classesList.filter(cl => cl.id === _self.charactor._id);  
             _self.chooseClass(temps.length ? temps[0]: _self.classesList[0]);
           }

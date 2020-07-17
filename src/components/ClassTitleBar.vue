@@ -25,7 +25,11 @@ export default {
     list: Array,
     onCallBack: Function,
     resetClass: Function,
-    charactor: Object,
+    charactor: {
+      type: Object,
+      default: () => ({name: '查内姆', lvl: '', race: '种族', school: '子职', cls: '职业', value: '关键属性'
+      })
+    },
   },
   //import引入的组件需要注入到对象中才能使用
   components: {},
