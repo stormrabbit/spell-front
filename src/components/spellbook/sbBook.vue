@@ -4,7 +4,7 @@
     v-card-title 
       v-btn(color="primary" @click="resetSpell" v-if="spells.length") 休息
         v-icon mdi-cached
-      v-btn(v-if="!spells.length" color="primary" @click="scribe") {{`准备${parsedSpellType}`}}
+      v-btn(v-if="!spells.length" color="primary" @click="$emit('scribe')") {{`准备${parsedSpellType}`}}
         v-icon mdi-script-text-outline
     v-card-text
       v-list(v-if="spells.length")

@@ -1,7 +1,6 @@
 <!--  -->
 <template lang="pug">
     v-card
-        span {{charactor}}
         v-snackbar(v-model="snackbar" :timeout="timeout") {{ logTips }}
           span test
         v-card-title
@@ -15,11 +14,11 @@
                     v-col(cols="12", sm="6", md="4")
                         v-select(label="种族", :items="['人类', '精灵', '矮人', '半精灵', '提夫林', '半兽人']", v-model="race")
                     v-col(cols="12", sm="6", md="4")
-                        v-select(label="职业", :items="clses", v-model="clazz", @change="onChangeCallBack")
+                        v-select(label="职业", :items="toBePickedClasses", v-model="clazz", @change="onChangeCallBack")
                     v-col(cols="12", sm="6", md="4")
                         v-text-field(label="等级", required, v-model="lvl", :rules="lvlrules")
                     v-col(cols="12", sm="6", md="4", type="number")
-                        v-select(label="子职", required, v-model="school", :items="thisToBePickedSub")
+                        v-select(label="子职", required, v-model="school", :items="toBePickedSub")
                     v-col(cols="12", sm="6", md="4", type="number")
                         v-text-field(:label="thisKeyword", required, v-model="value", :rules="rules")
         v-card-actions
@@ -38,7 +37,6 @@ import { mapActions, mapGetters } from 'vuex';
 export default {
   props: {
     closeCallBack: Function,
-    doneCallBack: Function,
     title: String,
     charactor: Object
   },
@@ -71,10 +69,10 @@ export default {
       id: this.charactor ? this.charactor._id : "",
       name: this.charactor ? this.charactor.name : "",
       toBePickedSub: [],
-      school: this.charactor ? this.charactor.sub : "",
-      clazz: this.charactor ? this.charactor.cls : "法师",
+      school: this.charactor ? this.charactor.school : "",
+      clazz: this.charactor ? this.charactor.cls : "",
       keyword: "",
-      race: this.charactor ? this.charactor.race : "人类",
+      race: this.charactor ? this.charactor.race : "",
       lvl: this.charactor ? this.charactor.lvl : 1,
       value: this.charactor
         ? parseInt(
@@ -92,20 +90,37 @@ export default {
     thisToBePickedSub: function() {
       return this.toBePickedSub;
     },
-    thisKeyword: function() {
-      return this.keyword;
-    },
-    clses: function() {
+    toBePickedClasses: function() {
       return this.clsList && this.clsList.length
         ? this.clsList.map(cls => cls.nickname)
         : [];
+    },
+    thisKeyword: function() {
+      return this.keyword;
     }
+    
   },
   //监控data中的数据变化
-  watch: {},
+  watch: {
+    clsList: {
+       handler: function(newVal, oldVal) {
+         if(oldVal && oldVal.length) {
+           return ;
+         }
+         if(this.clazz) {
+           const selectedClz = newVal.find(val => val.nickname === this.clazz);
+           if(selectedClz) {
+             this.toBePickedSub = selectedClz.sub;
+           }
+         }
+      },
+      deep: true,
+      immediate: true
+    }
+  },
   //方法集合
   methods: {
-    ...mapActions('homepage',['retrieveClasses']),
+    ...mapActions('homepage',['retrieveClasses', 'createCharactor']),
     onChangeCallBack: function(val) {
       const filterClass = this.clsList.filter(itm => itm.nickname === val)[0];
       this.toBePickedSub = filterClass.sub;
@@ -133,7 +148,6 @@ export default {
           : 10);
     },
     removeCharactor: function() {
-      const _self = this;
       if (this.id) {
         this.$axios
           .delete(`http://angrykitty.link:38080/app/mock/16/charactor/${this.id}`)
@@ -141,9 +155,6 @@ export default {
             const { ok = 1, deletedCount = 0 } = res.data;
             if (ok === 1 && deletedCount !== 0) {
               `输出成功`;
-              if (_self.doneCallBack) {
-                _self.doneCallBack();
-              }
             }
           });
       }
@@ -175,30 +186,13 @@ export default {
       const _self = this;
       this.$axios
         .put(
-          `http://angrykitty.link:38080/app/mock/16/charactor/save/${charactor._id}`,
+          `http://angrykitty.link:38080/app/mock/16/charactor/${charactor._id}`,
           qs.stringify(charactor)
         )
         .then(res => {
           _self.snackbar = true;
           _self.logTips = res;
           this.reset();
-          if (_self.doneCallBack) {
-            _self.doneCallBack();
-          }
-        });
-    },
-    createCharactor: function(charactor) {
-      const _self = this;
-      this.$axios
-        .post(`http://angrykitty.link:38080/app/mock/16/charactor/create`, qs.stringify(charactor))
-        .then(res => {
-          this.reset();
-          _self.snackbar = true;
-          _self.charactor  = {};
-          _self.logTips = res;
-          if (_self.doneCallBack) {
-            _self.doneCallBack();
-          }
         });
     },
     loadClasses: function() {
@@ -210,7 +204,7 @@ export default {
   //生命周期 - 挂载完成（可以访问DOM元素）
   mounted() {
     this.loadClasses();
-    this.reset();
+    // this.reset();
   },
   beforeCreate() {}, //生命周期 - 创建之前
   beforeMount() {}, //生命周期 - 挂载之前

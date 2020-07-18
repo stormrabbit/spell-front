@@ -6,15 +6,15 @@
       sb-side(:charactors="charactors",@change="chooseCharactor")
     sb-title-bar(:charactor="selectedCharactor" @icon-click="drawer = !drawer" @clip-click="unitStatus = true")
     v-dialog(v-if="spellsDialogStatus" v-model="spellsDialogStatus",transition="dialog-bottom-transition")
-      sb-spell(:charactor="selectedCharactor" :spells="sps" :onBack="() => {spellsDialogStatus = !spellsDialogStatus}")
+      sb-spell(:charactor="selectedCharactor" @close="spellsDialogStatus = false")
     v-dialog(v-model="newStatus" persistent v-if="newStatus")
       sb-unit(@save="resetData",@close="newStatus = false" :title="`新建`")
     v-dialog(v-model="unitStatus" persistent v-if="unitStatus")
       sb-unit(@save="resetData" @close="unitStatus = false" :charactor="selectedCharactor" :title="`修改`")
     v-content
-      sb-book(:charactor="selectedCharactor" :scribe="() => {spellsDialogStatus = !spellsDialogStatus}")
+      sb-book(:charactor="selectedCharactor" @scribe="spellsDialogStatus = true")
     v-footer(color="primary",dark app)
-      sb-button(:scribe="() => {spellsDialogStatus = !spellsDialogStatus}")    
+      sb-button(@scribe="spellsDialogStatus = true")    
       span(class="white--text") &copy; 龙骑将杨影枫
 </template>
 
@@ -75,15 +75,6 @@ export default {
   }),
   computed: {
     ...mapGetters('homepage', ['overlay', 'selectedCharactor', 'charactors']),
-    cTitle: function() {
-      return this.chosenOne.nickname;
-    },
-    sps: function() {
-      return this.spellsCanBePick;
-    },
-    charactorVal: function() {
-      return this.charactor;
-    }
   },
   methods: {
     ...mapMutations('homepage', ['putLoading']),

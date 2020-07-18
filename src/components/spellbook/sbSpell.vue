@@ -7,7 +7,7 @@
         v-icon(color="white" size="16" @click="snackbar = false") mdi-close-circle
       v-toolbar(dense)
         v-text-field(hide-details,single-line, v-model="keyword", :loading="isLoading", :label="`请输入法术名或法术环数`", persistent-hint)
-        v-btn(icon, @click="onBack")
+        v-btn(icon, @click="$emit('close')")
           v-icon mdi-cancel
       v-list(two-line,subheader)
         v-list-item(v-for="(spell, index) in computedSpells", :key="index", link)
@@ -23,14 +23,14 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 //这里可以导入其他文件（比如：组件，工具js，第三方插件js，json文件，图片文件等等）
 //例如：import 《组件名称》 from '《组件路径》';
 // const blues = ['#E3F2FD', '#BBDEFB', '#90CAF9', '#64B5F6', '#42A5F5', '#1E88E5', '#1976D2', '#1565C0'];
 export default {
   props: {
-    spells: Array,
-    onBack: Function,
+    // spells: Array,
+    // onBack: Function,
     charactor: Object,
   },
   //import引入的组件需要注入到对象中才能使用
@@ -49,6 +49,7 @@ export default {
   },
   //监听属性 类似于data概念
   computed: {
+    ...mapGetters('homepage', ['spells']),
     logTips: function() {
       return this.tips;
     },
@@ -78,6 +79,7 @@ export default {
   //方法集合
   methods: {
     ...mapActions('spellspage',['updateSpell']),
+    ...mapActions('homepage', ['retrevePersonalSpells']),
     enableSearch: function() {
       this.snackbar = true;
     },
@@ -90,7 +92,9 @@ export default {
   //生命周期 - 创建完成（可以访问当前this实例）
   created() {},
   //生命周期 - 挂载完成（可以访问DOM元素）
-  mounted() {},
+  mounted() {
+    this.retrevePersonalSpells({cls: this.charactor.cls});
+  },
   beforeCreate() {}, //生命周期 - 创建之前
   beforeMount() {}, //生命周期 - 挂载之前
   beforeUpdate() {}, //生命周期 - 更新之前

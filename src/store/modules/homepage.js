@@ -1,7 +1,8 @@
 
 import {
     retrieveCharactorList,
-    retrieveCharactorById
+    retrieveCharactorById,
+    createCharactor
 } from '@request/charactorApi';
 import {
     retrieveSpellsByClass
@@ -43,13 +44,16 @@ export default {
         }
     },
     actions: {
+        async createCharactor(_, charactor){
+          await createCharactor(charactor);
+        },
         async retrieveCharactors({commit, dispatch}) {
             const {
                 data = []
             } = await retrieveCharactorList();
             commit('putCharactors', data);
             if(data && data.length) {
-                dispatch('retrieveCharactorById',data.id )
+                dispatch('retrieveCharactorById',data[0].id )
             }
         },
         async retrieveClasses({commit}) {

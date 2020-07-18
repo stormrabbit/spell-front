@@ -7,7 +7,7 @@
           v-icon(v-else) mdi-emoticon-outline
       v-tooltip(bottom)
         template(v-slot:activator="{ on }")
-          v-btn(fab,dark,small,color="primary", @click="myScribe", v-on="on")
+          v-btn(fab,dark,small,color="primary", @click="$emit('scribe')", v-on="on")
             v-icon mdi-script-text-outline
         span 准备法术
       v-tooltip(bottom)
