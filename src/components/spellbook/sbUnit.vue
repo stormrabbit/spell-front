@@ -32,13 +32,15 @@
 <script>
 //这里可以导入其他文件（比如：组件，工具js，第三方插件js，json文件，图片文件等等）
 //例如：import 《组件名称》 from '《组件路径》';
-import qs from "qs";
-import { mapActions, mapGetters } from 'vuex';
 export default {
   props: {
     closeCallBack: Function,
     title: String,
-    charactor: Object
+    charactor: Object,
+    clsList: {
+      type: Array,
+      default: ()=>[]
+    }
   },
   //import引入的组件需要注入到对象中才能使用
   components: {},
@@ -86,7 +88,6 @@ export default {
   },
   //监听属性 类似于data概念
   computed: {
-    ...mapGetters('homepage', ['clsList']),
     thisToBePickedSub: function() {
       return this.toBePickedSub;
     },
@@ -120,12 +121,14 @@ export default {
   },
   //方法集合
   methods: {
-    ...mapActions('homepage',['retrieveClasses', 'createCharactor']),
     onChangeCallBack: function(val) {
-      const filterClass = this.clsList.filter(itm => itm.nickname === val)[0];
-      this.toBePickedSub = filterClass.sub;
-      this.school = this.toBePickedSub[0];
-      this.keyword = filterClass.keyword;
+      const filterClass = this.clsList.find(itm => itm.nickname === val) || {};
+      this.toBePickedSub = filterClass.sub || [];
+      if(this.toBePickedSub.length) {
+        this.school = this.toBePickedSub[0];
+        this.keyword = filterClass.keyword;
+      }
+   
     },
     close: function() {
       this.reset();
@@ -149,19 +152,12 @@ export default {
     },
     removeCharactor: function() {
       if (this.id) {
-        this.$axios
-          .delete(`http://angrykitty.link:38080/app/mock/16/charactor/${this.id}`)
-          .then(res => {
-            const { ok = 1, deletedCount = 0 } = res.data;
-            if (ok === 1 && deletedCount !== 0) {
-              `输出成功`;
-            }
-          });
+        this.$emit('delete', this.id);
       }
+      this.$emit('close');
     },
     save: function() {
-      if (this.id) {
-        this.saveCharactor({
+      this.$emit('save', {
           _id: this.id,
           name: this.name,
           cls: this.clazz,
@@ -170,49 +166,9 @@ export default {
           race: this.race,
           lvl: this.lvl
         });
-      } else {
-        this.createCharactor({
-          name: this.name,
-          cls: this.clazz,
-          value: `${this.value} ${this.thisKeyword}`,
-          school: this.school,
-          race: this.race,
-          lvl: this.lvl
-        });
-      }
-      this.$emit('save');
     },
-    saveCharactor: function(charactor) {
-      const _self = this;
-      this.$axios
-        .put(
-          `http://angrykitty.link:38080/app/mock/16/charactor/${charactor._id}`,
-          qs.stringify(charactor)
-        )
-        .then(res => {
-          _self.snackbar = true;
-          _self.logTips = res;
-          this.reset();
-        });
-    },
-    loadClasses: function() {
-      this.retrieveClasses();
-    }
+    
   },
-  //生命周期 - 创建完成（可以访问当前this实例）
-  created() {},
-  //生命周期 - 挂载完成（可以访问DOM元素）
-  mounted() {
-    this.loadClasses();
-    // this.reset();
-  },
-  beforeCreate() {}, //生命周期 - 创建之前
-  beforeMount() {}, //生命周期 - 挂载之前
-  beforesave() {}, //生命周期 - 更新之前
-  saved() {}, //生命周期 - 更新之后
-  beforeDestroy() {}, //生命周期 - 销毁之前
-  destroyed() {}, //生命周期 - 销毁完成
-  activated() {} //如果页面有keep-alive缓存功能，这个函数会触发
 };
 </script>
 <style lang='scss' scoped>

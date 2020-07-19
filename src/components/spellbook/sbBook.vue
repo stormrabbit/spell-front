@@ -23,13 +23,15 @@
 <script>
 //这里可以导入其他文件（比如：组件，工具js，第三方插件js，json文件，图片文件等等）
 //例如：import 《组件名称》 from '《组件路径》';
-import {mapGetters, mapActions, mapMutations} from 'vuex';
 export default {
   props: {
-    // test: Function,
     charactor: {
       type: Object,
       default: () => ({})
+    },
+    spells: {
+      type: Array,
+      default: () => []
     },
     scribe: Function,
   },
@@ -54,7 +56,6 @@ export default {
   },
   //监听属性 类似于data概念
   computed: {
-    ...mapGetters('homepage', ['spells']),
     thisCol() {
       return this.cols;
     },
@@ -115,17 +116,9 @@ export default {
   },
   //监控data中的数据变化
   watch: {
-    'charactor.cls':{
-      handler(newVal){
-        this.retrevePersonalSpells({cls:this.parseCls(newVal)});
-      },
-      deep: true,
-    }
   },
   //方法集合
   methods: {
-    ...mapActions('homepage', ['retrevePersonalSpells']),
-    ...mapMutations('homepage', ['putLoading']),
     parseCls(cls) {
       switch(cls){
         case '邪术师':
@@ -155,7 +148,6 @@ export default {
       for(; index< 10 ;index++) {
         this[`circle${index}`] = 0;
       }
-      this.retrevePersonalSpells({cls:this.parseCls(this.charactor.cls)});
     },
     getCircle(index) {
       return this[`finalCircle${index}`];

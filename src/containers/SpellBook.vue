@@ -4,17 +4,31 @@
       v-progress-circular(indeterminate size="64")
     v-navigation-drawer(v-model="drawer" app)
       sb-side(:charactors="charactors",@change="chooseCharactor")
-    sb-title-bar(:charactor="selectedCharactor" @icon-click="drawer = !drawer" @clip-click="unitStatus = true")
-    v-dialog(v-if="spellsDialogStatus" v-model="spellsDialogStatus",transition="dialog-bottom-transition")
-      sb-spell(:charactor="selectedCharactor" @close="spellsDialogStatus = false")
-    v-dialog(v-model="newStatus" persistent v-if="newStatus")
-      sb-unit(@save="resetData",@close="newStatus = false" :title="`新建`")
-    v-dialog(v-model="unitStatus" persistent v-if="unitStatus")
-      sb-unit(@save="resetData" @close="unitStatus = false" :charactor="selectedCharactor" :title="`修改`")
+    sb-title-bar(:charactor="selectedCharactor" @icon-click="drawer = !drawer" @clip-click="updateDialogVisible = true")
+    v-dialog(v-if="spellDialogVisible" v-model="spellDialogVisible",transition="dialog-bottom-transition")
+      sb-spell(:charactor="selectedCharactor" :spells="spells" @close="spellDialogVisible = false")
+    v-dialog(v-model="createDialogVisible" persistent v-if="createDialogVisible")
+      sb-unit(
+        @save="resetData",
+        @close="createDialogVisible = false"
+        :title="`新建`" 
+        :clsList="clsList")
+    v-dialog(v-model="updateDialogVisible" persistent v-if="updateDialogVisible")
+      sb-unit(
+        @save="resetData" 
+        @close="updateDialogVisible = false" 
+        @delete="deleteCharactor"
+        :charactor="selectedCharactor" 
+        :title="`修改`" 
+        :clsList="clsList")
     v-content
-      sb-book(:charactor="selectedCharactor" @scribe="spellsDialogStatus = true")
+      sb-book(
+        :charactor="selectedCharactor" 
+        :spells="spells" 
+        @scribe="spellDialogVisible = true"
+      )
     v-footer(color="primary",dark app)
-      sb-button(@scribe="spellsDialogStatus = true")    
+      sb-button(@scribe="spellDialogVisible = true")    
       span(class="white--text") &copy; 龙骑将杨影枫
 </template>
 
@@ -38,6 +52,7 @@ export default {
     sbUnit
   },
   mounted() {
+    this.retrieveClasses();
     this.reload();
   },
   watch:{
@@ -56,10 +71,9 @@ export default {
     }
   },
   data: () => ({
-    spellsCanBePick: [],
-    spellsDialogStatus: false,
+    spellDialogVisible: false,
     drawer: false,
-    newStatus: false,
+    createDialogVisible: false,
     chosenOne: {
       nickname: "待选择"
     },
@@ -71,43 +85,37 @@ export default {
       school: "",
       cls: ""
     },
-    unitStatus: false
+    updateDialogVisible: false
   }),
   computed: {
-    ...mapGetters('homepage', ['overlay', 'selectedCharactor', 'charactors']),
+    ...mapGetters('homepage', ['overlay', 'selectedCharactor', 'charactors', 'spells', 'clsList']),
   },
   methods: {
     ...mapMutations('homepage', ['putLoading']),
-    ...mapActions('homepage', ['retrieveCharactorById', 'retrieveCharactors']),
-    resetData: function() {
-      this.newStatus = false;
+    ...mapActions('homepage', ['retrieveClasses', 'retrieveCharactorById', 'retrieveCharactors', 'createCharactor', 'updateCharactor', 'deleteCharactor']),
+    resetData: function(charactor) {
+      if(charactor._id) {
+        this.updateCharactor(charactor);
+      } else{
+        this.createCharactor(charactor);
+      }
+      this.updateDialogVisible = false;
+      this.createDialogVisible = false;
       this.charactor._id = undefined;
-      this.reload();
-    },
-    updateCharactor: function() {
-      this.unitStatus = false;
       this.reload();
     },
     chooseCharactor: function(charactor) {
       this.drawer = false;
       if (!charactor) {
-        this.newStatus = true;
+        this.createDialogVisible = true;
         return;
       }
       this.modifyTheme(charactor.color);
-      this.loadSpells(this.parseCls(charactor.clsName));
       this.retrieveCharactorById(charactor.id);
     },
     modifyTheme(color) {
         this.$vuetify.theme.themes.light.primary = color;
         this.$vuetify.theme.themes.dark.primary = color;
-    },
-    loadSpells: function(cls) {
-      this.spellsCanBePick = [];
-      const _self = this;
-      this.$axios.get(`http://angrykitty.link:38080/app/mock/16/spells?cls=${cls}`).then(res => {
-        _self.spellsCanBePick = res.data.data;
-      });
     },
     parseCls(cls) {
       switch(cls){

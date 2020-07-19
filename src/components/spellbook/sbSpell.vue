@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex';
+import { mapActions } from 'vuex';
 //这里可以导入其他文件（比如：组件，工具js，第三方插件js，json文件，图片文件等等）
 //例如：import 《组件名称》 from '《组件路径》';
 // const blues = ['#E3F2FD', '#BBDEFB', '#90CAF9', '#64B5F6', '#42A5F5', '#1E88E5', '#1976D2', '#1565C0'];
@@ -32,6 +32,10 @@ export default {
     // spells: Array,
     // onBack: Function,
     charactor: Object,
+    spells: {
+      type: Array,
+      default: () => []
+    }
   },
   //import引入的组件需要注入到对象中才能使用
   components: {},
@@ -49,7 +53,6 @@ export default {
   },
   //监听属性 类似于data概念
   computed: {
-    ...mapGetters('homepage', ['spells']),
     logTips: function() {
       return this.tips;
     },
@@ -79,7 +82,6 @@ export default {
   //方法集合
   methods: {
     ...mapActions('spellspage',['updateSpell']),
-    ...mapActions('homepage', ['retrevePersonalSpells']),
     enableSearch: function() {
       this.snackbar = true;
     },
@@ -93,7 +95,6 @@ export default {
   created() {},
   //生命周期 - 挂载完成（可以访问DOM元素）
   mounted() {
-    this.retrevePersonalSpells({cls: this.charactor.cls});
   },
   beforeCreate() {}, //生命周期 - 创建之前
   beforeMount() {}, //生命周期 - 挂载之前

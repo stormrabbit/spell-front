@@ -2,7 +2,9 @@
 import {
     retrieveCharactorList,
     retrieveCharactorById,
-    createCharactor
+    createCharactor,
+    updateCharactor,
+    deleteCharactor
 } from '@request/charactorApi';
 import {
     retrieveSpellsByClass
@@ -44,8 +46,14 @@ export default {
         }
     },
     actions: {
+        async deleteCharactor(_, id) {
+            await deleteCharactor(id);
+        },
         async createCharactor(_, charactor){
           await createCharactor(charactor);
+        },
+        async updateCharactor(_, charactor) {
+            await updateCharactor(charactor);
         },
         async retrieveCharactors({commit, dispatch}) {
             const {
@@ -63,11 +71,14 @@ export default {
             commit('putClasses', data);        
         },
         
-        async retrieveCharactorById({commit}, id) {
-            const data = await retrieveCharactorById(id);
-            commit('putCharactor', data); 
+        async retrieveCharactorById({commit, dispatch}, id) {
+            const charactor = await retrieveCharactorById(id);
+            commit('putCharactor', charactor); 
+            if(charactor && charactor.cls) {
+                dispatch('retreveSpellsByClass', {cls:charactor.cls});
+            }
         },
-        async retrevePersonalSpells({commit}, {cls}) { 
+        async retreveSpellsByClass({commit}, {cls}) { 
             const {
                 data = []
             } = await retrieveSpellsByClass(cls);

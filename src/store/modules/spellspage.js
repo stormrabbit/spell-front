@@ -1,6 +1,6 @@
 import {
-    put
-} from '../../request/api';
+    updateSpellToCharactor
+} from '../../request/spellApi';
 export default {
     namespaced: true,
     state: {
@@ -25,7 +25,7 @@ export default {
             id,
             spell,
         }) {
-            const result = await put(`http://angrykitty.link:38080/app/mock/16/personal/${id}`, {}, spell);
+            const result = await updateSpellToCharactor(id , spell);
             commit('putSpells', result);
         }
     }
