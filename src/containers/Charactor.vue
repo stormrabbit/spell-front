@@ -6,7 +6,7 @@
                 v-col(cols="12")
                     span {{dice}}
         v-row(align="center")
-            v-col(cols="2")
+            v-col(:cols="base")
                 v-card
                     v-card-title(v-text="`攻防`")
                     v-card-text
@@ -17,7 +17,7 @@
                                         span(v-if="isRoll(item.attr)") {{item.bonus}}
                                         v-btn(v-else text @click="rollDice(item.bonus, item.attr)") {{item.bonus}}
                                         
-            v-col(cols="3")
+            v-col(:cols="saves")
                 v-card
                     v-card-title(v-text="`豁免 & 鉴定`")
                     v-card-text
@@ -29,7 +29,7 @@
                                         strong(v-else) {{keyAttrEn2Cn(item.attr)}}
                                     template( v-slot:item.saving="{ item }")
                                         v-btn(text @click="rollDice(`${parseInt(item.bonus) +(isFirstSaving(item.attr) ? parseInt(prortry):0)}`, `${keyAttrEn2Cn(item.attr)}豁免 & 鉴定`)") {{`${parseInt(item.bonus) +(isFirstSaving(item.attr) ? parseInt(prortry):0)}`}}
-            v-col(cols="7")
+            v-col(:cols="skills")
                 v-card
                     v-card-title(v-text="`技能鉴定 & 对抗`")
                     v-card-text
@@ -55,7 +55,7 @@
                                         strong(v-else) {{`${item.attr.name_cn}(${keyAttrEn2Cn(item.attr.key_attr)})`}}
                                     template( v-slot:item.bonus="{ item }")
                                       v-btn(text @click="rollDice(item.bonus, `${item.attr.name_cn}(${keyAttrEn2Cn(item.attr.key_attr)})`)") {{item.bonus}}
-            v-col(cols="3")
+            v-col(:cols="classes")
                 v-card
                     v-card-title(v-text="`职业`")
                     v-card-text
@@ -113,6 +113,7 @@
 //例如：import 《组件名称》 from '《组件路径》';
 import {skills, keyAttrEn2Cn} from './../data/const';
 import CHARACTORS from './../data/charactors';
+import {isMobile} from './../utils/common';
 export default {
 //import引入的组件需要注入到对象中才能使用
 components: {},
@@ -121,6 +122,10 @@ data() {
 return {
     snackbar: false,
     dice: 0,
+    base:2,
+    saves: 3,
+    skills: 7,
+    classes: 3,
     featsHeader:[
              {
             text: '专长',
@@ -151,21 +156,12 @@ return {
             value: 'lvlTotal',
             sortable: false
         },
-        // {
-        //     text: '职业',
-        //     value:'clazz',
-        //     sortable: false
-        // },
-        // {
-        //     text: '生命骰',
-        //     value:'hd',
-        //     sortable: false
-        // }
     ],
     baseHeaders : [{
         text: '属性',
         value: 'attr',
         sortable: false,
+        align: 'start',
         width: 100
     }, {
         sortable: false,
@@ -392,7 +388,17 @@ created() {
 },
 //生命周期 - 挂载完成（可以访问DOM元素）
 mounted() {
-
+    if(isMobile()) {
+        this.base = 12;
+        this.saves = 12;
+        this.skills= 12;
+        this.classes = 12;
+    }else {
+       this.base = 2;
+        this.saves = 3;
+        this.skills= 7;
+        this.classes = 3;
+    }
 },
 beforeCreate() {}, //生命周期 - 创建之前
 beforeMount() {}, //生命周期 - 挂载之前

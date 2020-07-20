@@ -21,6 +21,9 @@
 </template>
 
 <script>
+import {
+  isMobile
+} from '../../utils/common';
 //这里可以导入其他文件（比如：组件，工具js，第三方插件js，json文件，图片文件等等）
 //例如：import 《组件名称》 from '《组件路径》';
 export default {
@@ -139,10 +142,6 @@ export default {
           return 'sorcerer';
       }
     },
-    isMobile() {
-      let flag = navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i);
-      return flag;
-    },
     resetSpell() {
       let index = 0;
       for(; index< 10 ;index++) {
@@ -169,7 +168,7 @@ export default {
   created() {},
   //生命周期 - 挂载完成（可以访问DOM元素）
   mounted() {
-    if(this.isMobile()) {
+    if(isMobile()) {
       this.cols = 6;
     }else {
       this.cols = 2;
