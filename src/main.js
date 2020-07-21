@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import './plugins/axios'
+import './slamdunk'
 import App from './App.vue'
 import vuetify from './plugins/vuetify';
 import store from './store'

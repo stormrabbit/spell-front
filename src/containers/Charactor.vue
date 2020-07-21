@@ -388,17 +388,10 @@ created() {
 },
 //生命周期 - 挂载完成（可以访问DOM元素）
 mounted() {
-    if(isMobile()) {
-        this.base = 12;
-        this.saves = 12;
-        this.skills= 12;
-        this.classes = 12;
-    }else {
-       this.base = 2;
-        this.saves = 3;
-        this.skills= 7;
-        this.classes = 3;
-    }
+    this.base = isMobile()?12: 2;
+    this.saves =isMobile()?12:  3;
+    this.skills= isMobile()?12: 7;
+    this.classes =isMobile()?12:  3;
 },
 beforeCreate() {}, //生命周期 - 创建之前
 beforeMount() {}, //生命周期 - 挂载之前
