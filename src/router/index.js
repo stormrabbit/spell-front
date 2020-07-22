@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import SpellBookPage from '@containers/SpellBook.vue';
 import Charactor from '@containers/Charactor.vue';
 import Editor from '@containers/Editor';
+import SlamDunk from '@containers/SlamDunk';
 Vue.use(VueRouter)
 
 const routes = [{
@@ -19,6 +20,11 @@ const routes = [{
         path: '/editor',
         name: 'Editor',
         component: Editor
+    },
+    {
+        path: '/slamdunk',
+        name: 'SlamDunk',
+        component: SlamDunk
     }
 ]
 

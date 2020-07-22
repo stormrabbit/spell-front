@@ -1,6 +1,7 @@
+import Vue from 'vue';
 import Logger from './logger';
-const slamdunk = {
-    log:Logger.getInstance(true)
-};
+const logger = Logger();
 
-window.slamdunk = slamdunk;
+
+Vue.prototype.logger = logger;
+window.logger = logger;

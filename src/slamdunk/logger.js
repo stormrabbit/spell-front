@@ -1,23 +1,8 @@
-class Logger {
-    #_enable;
-    #_console;
-    constructor(enable) {
-        this.#_enable = enable;
-        this.#_console = console;
-    }
-    static getInstance(enable = false) {
-        if(!this.instance) {
-            this.instance = new Logger(enable);
-        }
-        return this.instance;
-    }   
-    info(val) {
-        if(this.#_enable) {
-            this.#_console.info(val);
-        }
-        
-    }
-  
-}
-
+import factory from './factory';
+const Logger = factory(() => {
+    const {
+        info
+    } = console;
+   return {info: process.env.VUE_APP_ADMIN_LOG ? info: val => val};
+});
 export default Logger;
