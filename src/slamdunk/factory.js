@@ -1,7 +1,7 @@
-const factory  =(init) => {
+const factory  =(init = ()=>({})) => {
     let instance;
     return () => {
-        if(!instance) {
+        if(!instance && (typeof init === 'function')) {
             instance = init();
         }
         return instance;
