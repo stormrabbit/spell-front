@@ -1,5 +1,5 @@
 <template lang="pug">
-  v-app(id="inspire")
+  v-app
     v-overlay(:value="overlay")
       v-progress-circular(indeterminate size="64")
     v-navigation-drawer(v-model="drawer" app)

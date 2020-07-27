@@ -1,5 +1,5 @@
 <template lang="pug">
-  v-app(id="inspire")
+  v-app
     v-stepper(v-model="step" vertical)
       v-stepper-step(:complete="step > 1" step="1") {{raceTips}}
       v-stepper-content(step="1")
