@@ -160,7 +160,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="css" scoped>
 /deep/ .v-input--selection-controls .v-input__control {
   width: 100%;
 }
