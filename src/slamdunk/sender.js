@@ -40,7 +40,7 @@ const Sender = factory(
               xhr.send(payload);
             })
           }
-          const send = (event) => _makeXhrRequest('POST', 'http://localhost:40439/v1/events', JSON.stringify({eventStr: JSON.stringify(event)}), {'Access-Control-Allow-Credentials':true, 'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json'})
+          const send = (event) => _makeXhrRequest('POST', `${process.env.VUE_APP_ADMIN_API_SLAMDUCK}/v1/events`, JSON.stringify({eventStr: JSON.stringify(event)}), {'Access-Control-Allow-Credentials':true, 'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json'})
           return {
             send
           }
