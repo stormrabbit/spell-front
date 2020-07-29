@@ -12,13 +12,12 @@ const Listener = factory(
             window.addEventListener('click', e => {
                 const event = click2Event(e);
                 sender.send(event);
-               
-                // sender.send(event);
             })
         };
         const registerLifecycleListener = () => {
             window.addEventListener("DOMContentLoaded",e => {
               logger.info(e);
+              sender.sendBeacon(event);
               // sender.send(e);
             });
         }

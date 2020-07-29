@@ -36,7 +36,6 @@ const generateEvent = (event = {
 }) => {
     event.timestamp = Date.now();
     event.start = window.performance.now();
-
     return event;
 }
 
