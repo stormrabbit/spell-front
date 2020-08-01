@@ -42,11 +42,22 @@ const Sender = factory(
           }
           const send = (event) => _makeXhrRequest('POST', `${process.env.VUE_APP_ADMIN_API_SLAMDUCK}/v1/events`, JSON.stringify({eventStr: JSON.stringify(event)}), {'Access-Control-Allow-Credentials':true, 'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json'})
           const sendBeacon = (event) => {
-            const headers = {
-              type: 'application/x-www-form-urlencoded',
-            }
-            const blob = new Blob([JSON.stringify(event)], headers);
-            navigator.sendBeacon(`${process.env.VUE_APP_ADMIN_API_SLAMDUCK}/v1/events`, blob)};
+            event;
+            const header = {
+              // type: 'application/x-www-form-urlencoded',
+              type: 'application/json'
+            };
+            // const header = {
+            //   type: 'application/json',
+            //   Origin: 'http://localhost:8080/',
+            //   Host: 'localhost'
+            // };
+            const blob = new Blob(['eventStr',':test'], header)
+            // send(event);
+            navigator.sendBeacon(`${process.env.VUE_APP_ADMIN_API_SLAMDUCK}/v1/events`, blob)
+            // const str = JSON.stringify({eventStr: event});
+            // navigator.sendBeacon(`${process.env.VUE_APP_ADMIN_API_SLAMDUCK}/v1/events`, str)
+          };
           return {
             send,
             sendBeacon

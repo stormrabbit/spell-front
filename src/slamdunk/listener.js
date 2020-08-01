@@ -17,14 +17,17 @@ const Listener = factory(
         const registerLifecycleListener = () => {
             window.addEventListener("DOMContentLoaded",e => {
               logger.info(e);
-              sender.sendBeacon(event);
-              // sender.send(e);
+            //   sender.send(e);
+              sender.sendBeacon(e);
+            //   sender.send(e);
             });
         }
         const registerPopstateListener = () => {
             window.addEventListener('popstate', e => {
                 logger.info(e);
-                sender.send({eventStr: JSON.stringify(e)});
+                
+                sender.sendBeacon(e);
+                // sender.send(e);
             });
         }
         registerClickListener();
