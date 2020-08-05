@@ -1,5 +1,6 @@
 import { getClickPath } from "./pathUtils";
 import rng from 'uuid/dist/rng-browser';
+import {generateEvent} from './commonUtils';
 export const click2Event = (e) => {
     window.te = e;
     const {
@@ -31,13 +32,7 @@ export const click2Event = (e) => {
     return event;
 }
 
-const generateEvent = (event = {
-    type: '',
-}) => {
-    event.timestamp = Date.now();
-    event.start = window.performance.now();
-    return event;
-}
+
 
 const getEventInfo = (e) => {
     const {

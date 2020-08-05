@@ -44,19 +44,11 @@ const Sender = factory(
           const sendBeacon = (event) => {
             event;
             const header = {
-              // type: 'application/x-www-form-urlencoded',
-              type: 'application/json'
+              type: 'application/x-www-form-urlencoded',
+              // type: 'application/json'
             };
-            // const header = {
-            //   type: 'application/json',
-            //   Origin: 'http://localhost:8080/',
-            //   Host: 'localhost'
-            // };
-            const blob = new Blob(['eventStr',':test'], header)
-            // send(event);
-            navigator.sendBeacon(`${process.env.VUE_APP_ADMIN_API_SLAMDUCK}/v1/events`, blob)
-            // const str = JSON.stringify({eventStr: event});
-            // navigator.sendBeacon(`${process.env.VUE_APP_ADMIN_API_SLAMDUCK}/v1/events`, str)
+            const blob = new Blob([JSON.stringify(event)], header)
+            navigator.sendBeacon(`${process.env.VUE_APP_ADMIN_API_SLAMDUCK}/v1/events/beacon`, blob)
           };
           return {
             send,
