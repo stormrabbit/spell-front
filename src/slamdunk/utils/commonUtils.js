@@ -53,3 +53,11 @@ export const generateEvent = (event = {
     event.start = window.performance.now();
     return event;
 }
+
+export const getPageMetadata = () =>({
+    page: {
+      referer: document && document.referrer || '',
+      url: window && window.location.href || '',
+    }
+  }) 
+  

@@ -1,3 +1,5 @@
+import { getPageMetadata } from './utils/commonUtils';
+
 const { default: factory } = require("./factory");
 
 const Sender = factory(
@@ -40,14 +42,17 @@ const Sender = factory(
               xhr.send(payload);
             })
           }
-          const send = (event) => _makeXhrRequest('POST', `${process.env.VUE_APP_ADMIN_API_SLAMDUCK}/v1/events`, JSON.stringify({eventStr: JSON.stringify(event)}), {'Access-Control-Allow-Credentials':true, 'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json'})
+          const send = (event) => _makeXhrRequest('POST', `${process.env.VUE_APP_ADMIN_API_SLAMDUCK}/v1/events`, JSON.stringify({eventStr: JSON.stringify({event, ...getPageMetadata()})}), {'Access-Control-Allow-Credentials':true, 'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json'})
           const sendBeacon = (event) => {
-            event;
+            const e  = {
+              event,
+              ...getPageMetadata()
+            };
             const header = {
               type: 'application/x-www-form-urlencoded',
               // type: 'application/json'
             };
-            const blob = new Blob([JSON.stringify(event)], header)
+            const blob = new Blob([JSON.stringify(e)], header)
             navigator.sendBeacon(`${process.env.VUE_APP_ADMIN_API_SLAMDUCK}/v1/events/beacon`, blob)
           };
           return {
