@@ -1,6 +1,7 @@
 <!--  -->
 <template lang="pug">
     div(style="padding: 12px;")
+        span(@click="throwErr") 大傻帽
         v-snackbar(v-model="snackbar" top style="text-align:center")
             v-row
                 v-col(cols="12")
@@ -355,6 +356,9 @@ watch: {
 },
 //方法集合
 methods: {
+    throwErr() {
+        window.config.logger;
+    },
     isRoll(attr) {
         const disabled = ['血量', '防御', '法术豁免'];
         return disabled.find( dis => dis === attr);
