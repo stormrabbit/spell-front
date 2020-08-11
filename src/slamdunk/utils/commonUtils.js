@@ -1,4 +1,6 @@
+import rng from 'uuid/dist/rng-browser';
 // 获取 设备系统 与 应用的端
+const slice = [].slice;
 export const getOSInfo = () => {
     const info = {
         platform: '',
@@ -59,5 +61,73 @@ export const getPageMetadata = () =>({
       referer: document && document.referrer || '',
       url: window && window.location.href || '',
     }
-  }) 
+})
+
+
+export function merge (dst) {
+    return baseExtend(dst, slice.call(arguments, 1), true)
+}
   
+
+export function baseExtend (dst, objs, deep) {
+    for (let i = 0, ii = objs.length; i < ii; ++i) {
+      const obj = objs[i]
+      if (!isObject(obj) && !isFunction(obj)) continue
+      const keys = Object.keys(obj)
+      for (let j = 0, jj = keys.length; j < jj; j++) {
+        const key = keys[j]
+        const src = obj[key]
+  
+        if (deep && isObject(src)) {
+          if (!isObject(dst[key])) dst[key] = Array.isArray(src) ? [] : {}
+          baseExtend(dst[key], [src], false) // only one level of deep merge
+        } else {
+          dst[key] = src
+        }
+      }
+    }
+  
+    return dst
+  }
+  
+
+export const isObject = value => value !== null && typeof value === 'object';
+  
+export const isFunction = value => typeof value === 'function';
+
+
+export  const generateRandomId = (length) => {
+    const id = bytesToHex(rng())
+    return id.substr(0, length)
+}
+const bytesToHex = (buf, offset) => {
+    let i = offset || 0
+    let bth = byteToHex
+    // join used to fix memory issue caused by concatenation: https://bugs.chromium.org/p/v8/issues/detail?id=3175#c4
+    return [
+        bth[buf[i++]],
+        bth[buf[i++]],
+        bth[buf[i++]],
+        bth[buf[i++]],
+        bth[buf[i++]],
+        bth[buf[i++]],
+        bth[buf[i++]],
+        bth[buf[i++]],
+        bth[buf[i++]],
+        bth[buf[i++]],
+        bth[buf[i++]],
+        bth[buf[i++]],
+        bth[buf[i++]],
+        bth[buf[i++]],
+        bth[buf[i++]],
+        bth[buf[i++]]
+    ].join('')
+}
+
+const byteToHex = (() => {
+    const hexs = [];
+    for (let i = 0; i < 256; ++i) {
+        hexs.push((i + 0x100).toString(16).substr(1));
+    }
+    return hexs;
+})()

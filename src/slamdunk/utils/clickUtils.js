@@ -1,9 +1,9 @@
 import {
     getClickPath
 } from "./pathUtils";
-import rng from 'uuid/dist/rng-browser';
 import {
-    generateEvent
+    generateEvent,
+    generateRandomId
 } from './commonUtils';
 export const click2Event = (e) => {
     window.te = e;
@@ -57,41 +57,9 @@ const getEventInfo = (e) => {
     }
 
 }
-const byteToHex = (() => {
-    const hexs = [];
-    for (let i = 0; i < 256; ++i) {
-        hexs.push((i + 0x100).toString(16).substr(1));
-    }
-    return hexs;
-})()
 
-const generateRandomId = (length) => {
-    const id = bytesToHex(rng())
-    return id.substr(0, length)
-}
-const bytesToHex = (buf, offset) => {
-    let i = offset || 0
-    let bth = byteToHex
-    // join used to fix memory issue caused by concatenation: https://bugs.chromium.org/p/v8/issues/detail?id=3175#c4
-    return [
-        bth[buf[i++]],
-        bth[buf[i++]],
-        bth[buf[i++]],
-        bth[buf[i++]],
-        bth[buf[i++]],
-        bth[buf[i++]],
-        bth[buf[i++]],
-        bth[buf[i++]],
-        bth[buf[i++]],
-        bth[buf[i++]],
-        bth[buf[i++]],
-        bth[buf[i++]],
-        bth[buf[i++]],
-        bth[buf[i++]],
-        bth[buf[i++]],
-        bth[buf[i++]]
-    ].join('')
-}
+
+
 // const getEventPath = (e) => {
 //     let eventPath = [];
 //     if (e && e.target) {
