@@ -33,12 +33,11 @@ const createErrorDataModel = (errorEvent) => {
       }
     }
 
-    const configContext = this._configService.get('context')
     let errorContext
     if (typeof errorEvent.error === 'object') {
       errorContext = this._getErrorProperties(errorEvent.error)
     }
-    const context = merge({}, configContext, errorContext)
+    const context = merge({}, errorContext)
 
     const errorObject = {
       id: generateRandomId(16),
