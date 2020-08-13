@@ -35,7 +35,7 @@ const createErrorDataModel = (errorEvent) => {
 
     let errorContext
     if (typeof errorEvent.error === 'object') {
-      errorContext = this._getErrorProperties(errorEvent.error)
+      errorContext = getErrorProperties(errorEvent.error)
     }
     const context = merge({}, errorContext)
 
@@ -51,6 +51,28 @@ const createErrorDataModel = (errorEvent) => {
     
     return errorObject
   }
+
+const getErrorProperties = (error) => {
+  const properties = {}
+  if (typeof error === 'object' && error !== null) {
+    Object.keys(error).forEach(key => {
+      if (key === 'stack') return
+      let val = error[key]
+      if (val === null) return // null is typeof object and well break the switch below
+      switch (typeof val) {
+        case 'function':
+          return
+        case 'object':
+          // ignore all objects except Dates
+          if (typeof val.toISOString !== 'function') return
+          val = val.toISOString()
+      }
+      properties[key] = val
+    })
+  }
+  return properties
+}
+
 export {
     error2Event
 }
