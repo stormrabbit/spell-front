@@ -4,6 +4,7 @@ import SpellBookPage from '@containers/SpellBook.vue';
 import Charactor from '@containers/Charactor.vue';
 import Editor from '@containers/Editor';
 import SlamDunk from '@containers/SlamDunk';
+import Charts from '@containers/Charts';
 Vue.use(VueRouter)
 
 const routes = [{
@@ -25,6 +26,10 @@ const routes = [{
         path: '/slamdunk',
         name: 'SlamDunk',
         component: SlamDunk
+    },{
+      path: '/charts',
+      name: 'Charts',
+      component: Charts
     }
 ]
 
