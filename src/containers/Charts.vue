@@ -1,6 +1,8 @@
 <template lang="pug">
 .content
+
   ve-line(:data="chartData", :setting="chartSettings")
+  ve-histogram(:data="chartData")
 </template>
 
 <script>
