@@ -3,6 +3,12 @@
 
   ve-line(:data="chartData", :setting="chartSettings")
   ve-histogram(:data="chartData")
+  ve-bar(:data="chartData")
+  ve-pie(:data="chartData")
+  ve-ring(:data="chartData")
+  ve-funnel(:data="chartData")
+  ve-radar(:data="chartData")
+  ve-map(:data="chartData")
 </template>
 
 <script>
