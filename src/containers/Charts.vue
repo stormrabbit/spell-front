@@ -1,10 +1,11 @@
 <template lang="pug">
 .content
-
+  p 被点击日期：{{ name }}
+    ve-pie(:data="chartData", :events="chartEvents")
   ve-line(:data="chartData", :setting="chartSettings")
   ve-histogram(:data="chartData")
   ve-bar(:data="chartData")
-  ve-pie(:data="chartData")
+
   ve-ring(:data="chartData")
   ve-funnel(:data="chartData")
   ve-radar(:data="chartData")
@@ -19,6 +20,7 @@ export default {
     //import引入的组件需要注入到对象中才能使用
     components: {},
     data: () => ({
+        name: '',
         chartSettings: {
             metrics: ["访问用户", "下单用户"],
             dimension: ["日期"],
@@ -39,6 +41,13 @@ export default {
                 { 日期: "1/6", 访问用户: 4593, 下单用户: 4293, 下单率: 0.78 },
             ],
         },
+        chartEvents : {
+        click: function (e) {
+          self.name = e.name
+          // eslint-disable-next-line no-console
+          console.log(e)
+        }
+      }
     }),
     //监听属性 类似于data概念
     computed: {},
@@ -56,13 +65,14 @@ export default {
     //destroyed() {}, //生命周期 - 销毁完成
     //activated() {}, //如果页面有keep-alive缓存功能，这个函数会触发
     //方法集合
-    methods: {},
+    methods: {
+    },
 };
 </script>
 <style lang="scss" scoped>
 //@import url(); 引入公共css类
 
 .content {
-    background: #fff;
+  background: #fff;
 }
 </style>
