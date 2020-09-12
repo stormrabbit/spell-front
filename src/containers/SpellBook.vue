@@ -22,6 +22,7 @@
         :title="`修改`" 
         :clsList="clsList")
     v-content
+      span {{demo}}
       sb-book(
         :charactor="selectedCharactor" 
         :spells="spells" 
@@ -41,7 +42,7 @@ import sbSpell from "@components/spellbook/sbSpell";
 import sbButton from "@components/spellbook/sbButton";
 import sbUnit from "@components/spellbook/sbUnit";
 import { mapGetters, mapMutations, mapActions } from 'vuex';
-
+import introMixin from './../mixin/intro';
 export default {
   components: {
     sbSide,
@@ -51,6 +52,7 @@ export default {
     sbSpell,
     sbUnit
   },
+  mixins: [introMixin],
   mounted() {
     this.retrieveClasses();
     this.reload();
