@@ -1,4 +1,8 @@
-import Vue from 'vue'
+// import Vue from 'vue'
+import { createApp } from 'vue'
+
+const app = createApp({})
+
 import './plugins/axios'
 import './slamdunk'
 import App from './App.vue'
@@ -11,24 +15,24 @@ import VCharts from 'v-charts';
 import introJs from 'intro.js'
 import VueIntro from 'vue-introjs'
 window.introJs = introJs
-Vue.use(VueIntro);
+app.use(VueIntro);
 import 'intro.js/introjs.css';
 import {
   error2Event
 } from './slamdunk/utils/errorUtils';
 
-Vue.use(VCharts);
+app.use(VCharts);
 
-Vue.config.productionTip = false
+app.config.productionTip = false
 
-Vue.config.errorHandler = (err) => {
-  Sender().send(error2Event(err));
-  throw err
-}
-
-new Vue({
-  vuetify,
-  store,
-  router,
-  render: h => h(App)
-}).$mount('#app')
+// app.config.errorHandler = (err) => {
+//   Sender().send(error2Event(err));
+//   throw err
+// }
+app.mount('#app');
+// new Vue({
+//   vuetify,
+//   store,
+//   router,
+//   render: h => h(App)
+// }).$mount('#app')
