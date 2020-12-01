@@ -15,7 +15,7 @@ const Sender = factory(
         
               if (headers) {
                 for (let header in headers) {
-                  if (headers.hasOwnProperty(header)) {
+                  if (Object.prototype.hasOwnProperty.call(headers, header)) {
                     xhr.setRequestHeader(header, headers[header])
                   }
                 }
